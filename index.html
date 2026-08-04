@@ -146,7 +146,7 @@
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm lg:col-span-2 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-slate-900 mb-1">월별 전체 자산 추이</h3>
-                        <p class="text-xs text-slate-400 mb-4">유효한 자산 데이터가 존재하는 월만 자동 필터링</p>
+                        <p class="text-xs text-slate-400 mb-4">유효한 자산 데이터가 존재하는 월만 자동 필터링 (Y축 억 단위 표기)</p>
                     </div>
                     <div class="relative h-52">
                         <canvas id="totalAssetTrendChart"></canvas>
@@ -166,14 +166,14 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] tracking-wider">
+                        <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] tracking-wider select-none">
                             <tr>
-                                <th class="p-3 rounded-l-lg">계좌종류</th>
-                                <th class="p-3">증권사</th>
-                                <th class="p-3">종목명</th>
-                                <th class="p-3">수량</th>
-                                <th class="p-3">평가금액</th>
-                                <th class="p-3 rounded-r-lg">수익률</th>
+                                <th onclick="sortTable('계좌종류')" class="p-3 rounded-l-lg cursor-pointer hover:bg-slate-100 transition">계좌종류 <i id="sort-icon-계좌종류" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('증권사')" class="p-3 cursor-pointer hover:bg-slate-100 transition">증권사 <i id="sort-icon-증권사" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('종목명')" class="p-3 cursor-pointer hover:bg-slate-100 transition">종목명 <i id="sort-icon-종목명" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('수량')" class="p-3 cursor-pointer hover:bg-slate-100 transition">수량 <i id="sort-icon-수량" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('평가금액')" class="p-3 cursor-pointer hover:bg-slate-100 transition">평가금액 <i id="sort-icon-평가금액" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('수익률')" class="p-3 rounded-r-lg cursor-pointer hover:bg-slate-100 transition">수익률 <i id="sort-icon-수익률" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium" id="stock-table-tbody"></tbody>
@@ -377,6 +377,10 @@
         let selectedExpenseMonth = "";
         let activeAccountFilters = new Set();
 
+        // 테이블 정렬 상태 관리 변수
+        let currentSortColumn = null;
+        let currentSortDirection = 'asc'; // 'asc' 또는 'desc'
+
         function switchTab(tabName) {
             const tabs = ['portfolio', 'dividend', 'accountbook'];
             tabs.forEach(t => {
@@ -398,7 +402,7 @@
         }
 
         /**
-         * [요구사항 1] 소수점 절삭(정수 표시) 포맷터
+         * [요구사항] 금액 소수점 완전 절삭(정수 표시) 포맷터
          */
         function formatKRW(num) {
             const val = Number(num);
@@ -408,7 +412,7 @@
         }
 
         /**
-         * [요구사항 2] 수익률 퍼센트 포맷터 (소수점 첫째 자리, 예: 12.9%)
+         * [요구사항] 수익률 퍼센트 포맷터 (소수점 첫째 자리, 예: 12.9%)
          */
         function formatPercent(val) {
             if (val === null || val === undefined || val === '') return '0.0%';
@@ -419,7 +423,7 @@
             } else {
                 num = parseFloat(str);
                 if (!isNaN(num)) {
-                    num = num * 100; // 소수 형태(0.129)를 퍼센트(12.9)로 변환
+                    num = num * 100;
                 }
             }
             if (isNaN(num)) return '0.0%';
@@ -520,7 +524,7 @@
         }
 
         /**
-         * [요구사항 3 반영] 데이터 가공 프로세서 (배당금 월과 가계부 월 각각 독립 조회)
+         * 데이터 가공 메인 프로세서 (가계부 총 수입은 selectedExpenseMonth 기준 독립 조회)
          */
         function processAllData(dataObj) {
             const accountHistory = Array.isArray(dataObj['계좌내역']) ? dataObj['계좌내역'] : [];
@@ -644,7 +648,7 @@
             });
 
 
-            // 3. 가계부 탭 데이터 처리 ([요구사항 3] 가계부 탭 선택 월인 selectedExpenseMonth를 기준으로 배당금 및 부가수입 독립 조회)
+            // 3. 가계부 탭 데이터 처리 (가계부 선택 월인 selectedExpenseMonth 기준으로 독립 수입 및 지출 계산)
             const accMonthlyDividends = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const isTargetMonth = normMonth === selectedExpenseMonth;
@@ -659,7 +663,6 @@
             });
             const accSideIncomeSum = accSideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
-            // 가계부 탭 당월 총 수입 = 가계부 선택 월의 생활비 배당금 + 가계부 선택 월의 부가수입
             const totalIncome = accMonthlyDividendSum + accSideIncomeSum;
             
             let reinvestSum = 0;
@@ -771,6 +774,22 @@
             renderCharts(data);
         }
 
+        /**
+         * [요구사항 1] 보유 종목 테이블 클릭 정렬 (Sorting) 로직 추가
+         */
+        function sortTable(columnName) {
+            if (currentSortColumn === columnName) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = columnName;
+                currentSortDirection = 'asc';
+            }
+            if (globalRawData.data) {
+                const processed = processAllData(globalRawData.data);
+                renderAccountFilterChipsAndTable(processed.allStocks);
+            }
+        }
+
         function renderAccountFilterChipsAndTable(allStocks) {
             const chipsContainer = document.getElementById('account-filter-chips');
             const tableBody = document.getElementById('stock-table-tbody');
@@ -797,9 +816,45 @@
             });
             chipsContainer.innerHTML = chipsHTML;
 
-            const filteredStocks = allStocks.filter(stock => {
+            // 필터링
+            let filteredStocks = allStocks.filter(stock => {
                 const acc = String(stock['계좌종류'] || '기타').trim();
                 return activeAccountFilters.has(acc);
+            });
+
+            // 정렬 적용
+            if (currentSortColumn) {
+                filteredStocks.sort((a, b) => {
+                    let valA, valB;
+                    if (['수량', '평가금액'].includes(currentSortColumn)) {
+                        valA = parseCleanNumber(a[currentSortColumn]);
+                        valB = parseCleanNumber(b[currentSortColumn]);
+                    } else if (currentSortColumn === '수익률') {
+                        valA = parseFloat(String(a['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
+                        valB = parseFloat(String(b['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
+                    } else {
+                        // 문자열 정렬 (계좌종류, 증권사, 종목명 등)
+                        const key = currentSortColumn === '종목명' ? ('종목' in a ? '종목' : '이름') : currentSortColumn;
+                        valA = String(a[key] || '').trim();
+                        valB = String(b[key] || '').trim();
+                    }
+
+                    if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            // 테이블 헤더 정렬 아이콘 업데이트
+            ['계좌종류', '증권사', '종목명', '수량', '평가금액', '수익률'].forEach(col => {
+                const icon = document.getElementById(`sort-icon-${col}`);
+                if (icon) {
+                    if (currentSortColumn === col) {
+                        icon.className = `fa-solid fa-sort-${currentSortDirection === 'asc' ? 'up' : 'down'} text-brand-600 ml-1`;
+                    } else {
+                        icon.className = `fa-solid fa-sort text-slate-300 ml-1`;
+                    }
+                }
             });
 
             tableBody.innerHTML = '';
@@ -807,11 +862,12 @@
                 tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">선택된 계좌에 해당하는 보유 종목이 없습니다.</td></tr>`;
             } else {
                 filteredStocks.forEach(stock => {
+                    const stockName = stock['종목'] || stock['이름'] || '-';
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td class="p-3"><span class="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">${stock['계좌종류'] || '-'}</span></td>
                         <td class="p-3 text-slate-600">${stock['증권사'] || '-'}</td>
-                        <td class="p-3 font-bold text-slate-900">${stock['종목'] || stock['이름'] || '-'}</td>
+                        <td class="p-3 font-bold text-slate-900">${stockName}</td>
                         <td class="p-3 text-slate-600">${parseCleanNumber(stock['수량']).toLocaleString()}주</td>
                         <td class="p-3 font-bold text-slate-900">${formatKRW(parseCleanNumber(stock['평가금액']))}</td>
                         <td class="p-3 text-brand-600 font-semibold">${formatPercent(stock['수익률'])}</td>
@@ -868,13 +924,34 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }, cutout: '70%' }
             });
 
+            /**
+             * [요구사항 2] '월별 전체 자산 추이' 차트 Y축 억/만 원 단위 축약 표기 포맷터 (Tick Formatter)
+             */
             chartInstances.totalTrend = new Chart(document.getElementById('totalAssetTrendChart').getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: data.trend.labels.length ? data.trend.labels : ['데이터 없음'],
                     datasets: [{ label: '총 자산', data: data.trend.values, borderColor: '#22c55e', backgroundColor: 'rgba(34, 197, 94, 0.1)', fill: true, tension: 0.3 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 100000000) {
+                                        return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
+                                    } else if (value >= 10000) {
+                                        return (value / 10000).toLocaleString() + '만';
+                                    }
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
             chartInstances.allPie = new Chart(document.getElementById('allStocksPieChart').getContext('2d'), {
@@ -892,7 +969,25 @@
                     labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                     datasets: [{ label: '월 세후 배당금', data: data.dividend.trendArr, backgroundColor: '#10b981', borderRadius: 6 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 100000000) {
+                                        return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
+                                    } else if (value >= 10000) {
+                                        return (value / 10000).toLocaleString() + '만';
+                                    }
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
             const annualMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -932,7 +1027,21 @@
                             }
                         }
                     },
-                    scales: { y: { beginAtZero: true } }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 100000000) {
+                                        return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
+                                    } else if (value >= 10000) {
+                                        return (value / 10000).toLocaleString() + '만';
+                                    }
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
