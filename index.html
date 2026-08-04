@@ -89,19 +89,19 @@
         <section id="tab-portfolio" class="space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-                    <p class="text-xs text-slate-400 font-medium mb-1">총 자산 (최신)</p>
+                    <p class="text-xs text-slate-400 font-medium mb-1">총 자산 (최신 유효 행)</p>
                     <h3 class="text-2xl font-bold text-slate-900" id="card-total-asset">₩ 0</h3>
                     <span class="text-xs text-brand-600 font-semibold mt-2 inline-block">계좌내역 시트 기준</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
                     <p class="text-xs text-slate-400 font-medium mb-1">총 대출 (주담대+부모님)</p>
                     <h3 class="text-2xl font-bold text-rose-500" id="card-total-debt">₩ 0</h3>
-                    <span class="text-xs text-slate-500 mt-2 inline-block">최신 월 합산</span>
+                    <span class="text-xs text-slate-500 mt-2 inline-block">최신 유효 행 합산</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
                     <p class="text-xs text-slate-400 font-medium mb-1">총 주식 자산</p>
                     <h3 class="text-2xl font-bold text-slate-900" id="card-total-stock">₩ 0</h3>
-                    <span class="text-xs text-brand-600 font-semibold mt-2 inline-block">주식 시트 연동</span>
+                    <span class="text-xs text-brand-600 font-semibold mt-2 inline-block">최신 유효 행 기준</span>
                 </div>
             </div>
 
@@ -146,7 +146,7 @@
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm lg:col-span-2 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-slate-900 mb-1">월별 전체 자산 추이</h3>
-                        <p class="text-xs text-slate-400 mb-4">계좌내역 시트 기준 (0원 미래 데이터 제외)</p>
+                        <p class="text-xs text-slate-400 mb-4">유효한 자산 데이터가 존재하는 월만 자동 필터링</p>
                     </div>
                     <div class="relative h-52">
                         <canvas id="totalAssetTrendChart"></canvas>
@@ -373,11 +373,8 @@
         let chartInstances = {};
         let globalRawData = {};
 
-        // 독립적인 월 선택 상태(State) 변수 정의
         let selectedDividendMonth = "";
         let selectedExpenseMonth = "";
-
-        // 포트폴리오 탭 계좌 종류 필터 상태 관리 셋 (Set)
         let activeAccountFilters = new Set();
 
         function switchTab(tabName) {
@@ -406,46 +403,74 @@
             return '₩ ' + val.toLocaleString('ko-KR');
         }
 
-        // 안전한 숫자 정밀 파싱 함수 (쉼표 및 문자열 제거 후 float 변환)
         function parseCleanNumber(val) {
             if (val === null || val === undefined) return 0;
             if (typeof val === 'number') return isNaN(val) ? 0 : val;
-            const cleaned = String(val).replace(/[^0-9.\-]/g, '');
+            const strVal = String(val).trim();
+            if (strVal === '' || strVal.toUpperCase() === '#VALUE!' || strVal.toUpperCase() === 'NaN') return 0;
+            const cleaned = strVal.replace(/[^0-9.\-]/g, '');
             const parsed = parseFloat(cleaned);
             return isNaN(parsed) ? 0 : parsed;
         }
 
-        // 월 문자열 정규화 함수 (예: '2026-07', '2026. 7', '7월' 등 -> '2026-07' 형태로 통일 변환 지원)
-        function normalizeMonthFormat(rawMonth) {
-            if (!rawMonth) return "";
-            const str = String(rawMonth).trim();
+        /**
+         * [요구사항 1] A열(Reference) 날짜 포맷 정규화 ('2025.2.1', '2025-1', '2024. 12. 25' 등 -> 'YYYY-MM')
+         */
+        function normalizeDateToYM(rawDate) {
+            if (!rawDate) return "";
+            const str = String(rawDate).trim();
             
+            // 숫자로만 구성되어 있거나 시리얼 넘버 형태인 경우 방어
+            // 정규식을 이용해 문자열 내에서 4자리 연도와 월 추출
+            const match = str.match(/(\d{4})[^0-9]+(\d{1,2})/);
+            if (match) {
+                const year = match[1];
+                const month = match[2].padStart(2, '0');
+                return `${year}-${month}`;
+            }
+
             // 이미 YYYY-MM 형태인 경우
             if (/^\d{4}-\d{1,2}$/.test(str)) {
                 const parts = str.split('-');
                 return `${parts[0]}-${parts[1].padStart(2, '0')}`;
             }
 
-            // 숫자만 있거나 '7월'인 경우 현재 연도(2026 등)와 결합 시도
-            const digits = str.replace(/[^0-9]/g, '');
-            if (digits.length >= 1 && digits.length <= 2) {
-                const m = digits.padStart(2, '0');
-                return `2026-${m}`;
-            } else if (digits.length === 6) {
-                // 202607 형태
-                return `${digits.slice(0, 4)}-${digits.slice(4, 6)}`;
-            }
-
-            // 구글시트 연도. 월 형태 (예: 2026. 7)
-            const match = str.match(/(\d{4})[^0-9]+(\d{1,2})/);
-            if (match) {
-                return `${match[1]}-${match[2].padStart(2, '0')}`;
+            // 점(.)이나 공백으로 구분된 경우 (예: 2025.2.1 또는 2024. 12. 25)
+            const parts = str.split(/[\.\/\s\-]+/);
+            if (parts.length >= 2 && parts[0].length === 4) {
+                const year = parts[0];
+                const month = parts[1].padStart(2, '0');
+                return `${year}-${month}`;
             }
 
             return str;
         }
 
-        // 월 이동 도우미 함수
+        /**
+         * [요구사항 2] 미래 대출 데이터 자동 무시 및 '최신 유효 행' 자동 탐지
+         * - 총 자산(L열)의 값이 유효한 숫자(0 초과)이고 #VALUE!나 빈칸이 아닌 행들 중 가장 아래에 있는 행 선택
+         */
+        function getLatestValidAccountRow(accountHistory) {
+            if (!Array.isArray(accountHistory) || accountHistory.length === 0) return {};
+            
+            let latestValidRow = {};
+            for (let i = 0; i < accountHistory.length; i++) {
+                const row = accountHistory[i];
+                const totalAssetVal = parseCleanNumber(row['총 자산']);
+                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]); // 첫 번째 열 데이터 대응
+
+                // 총 자산이 0 초과이고 에러가 아닐 때만 유효 행으로 인정하여 갱신
+                if (totalAssetVal > 0 && rawYM) {
+                    latestValidRow = {
+                        ...row,
+                        '_normalizedYM': rawYM,
+                        '_parsedTotalAsset': totalAssetVal
+                    };
+                }
+            }
+            return latestValidRow;
+        }
+
         function shiftMonth(ymString, direction) {
             let [year, month] = (ymString || '2026-06').split('-').map(Number);
             month += direction;
@@ -493,15 +518,16 @@
             const dividendInfoList = Array.isArray(dataObj['분배금정보']) ? dataObj['분배금정보'] : [];
             const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
 
-            // 1. 포트폴리오 탭 데이터 처리
-            const latestAccount = accountHistory.length > 0 ? accountHistory[accountHistory.length - 1] : {};
-            const totalAsset = parseCleanNumber(latestAccount['총 자산']);
-            const mortgageDebt = parseCleanNumber(latestAccount['주택담보대출']);
-            const parentDebt = parseCleanNumber(latestAccount['부모님대출']);
+            // 1. 포트폴리오 탭 데이터 처리 (최신 유효 행 탐지 적용)
+            const latestValidAccount = getLatestValidAccountRow(accountHistory);
+            
+            const totalAsset = parseCleanNumber(latestValidAccount['총 자산']);
+            const mortgageDebt = parseCleanNumber(latestValidAccount['주택담보대출']);
+            const parentDebt = parseCleanNumber(latestValidAccount['부모님대출']);
             const totalDebt = mortgageDebt + parentDebt;
-            const totalStockAsset = parseCleanNumber(latestAccount['총 주식 자산']);
+            const totalStockAsset = parseCleanNumber(latestValidAccount['총 주식 자산']);
 
-            // [조건 반영] 평가금액이 0원(또는 수량이 0)인 종목은 제외
+            // 평가금액이 0원(또는 수량이 0)인 종목 제외
             const validStockList = stockList.filter(item => {
                 const evalAmt = parseCleanNumber(item['평가금액']);
                 const qty = parseCleanNumber(item['수량']);
@@ -532,22 +558,22 @@
                 }
             });
 
-            // [조건 반영] 미래 데이터(0원이거나 빈값)는 자산 추이 차트에서 필터링하여 제외
+            // [요구사항 3] 월별 전체 자산 추이 차트: 총 자산 값이 0 초과인 유효 행들만 필터링
             const trendLabels = [];
             const trendValues = [];
             accountHistory.forEach(row => {
                 const assetVal = parseCleanNumber(row['총 자산']);
-                const ym = String(row['연-월'] || '').trim();
-                if (ym && assetVal > 0) {
-                    trendLabels.push(ym);
+                const normYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]);
+                if (normYM && assetVal > 0) {
+                    trendLabels.push(normYM);
                     trendValues.push(assetVal);
                 }
             });
 
 
-            // 2. 배당금 탭 데이터 처리 (독립된 selectedDividendMonth 활용)
+            // 2. 배당금 탭 데이터 처리
             const monthlyDividends = dividendList.filter(item => {
-                const normMonth = normalizeMonthFormat(item['월']);
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const isTargetMonth = normMonth === selectedDividendMonth;
                 const isLiving = isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
                 return isTargetMonth && isLiving;
@@ -556,7 +582,7 @@
 
             const targetYear = selectedDividendMonth.split('-')[0];
             const annualDividends = dividendList.filter(item => {
-                const normMonth = normalizeMonthFormat(item['월']);
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const isTargetYear = normMonth.startsWith(targetYear);
                 const isLiving = isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
                 return isTargetYear && isLiving;
@@ -564,14 +590,14 @@
             const annualDividendSum = annualDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
             const sideIncomes = dividendList.filter(item => {
-                const normMonth = normalizeMonthFormat(item['월']);
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 return normMonth === selectedDividendMonth && String(item['계좌종류'] || '').trim() === '부가수입';
             });
             const sideIncomeSum = sideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
             // 주담대 상환용 위젯 (토스 & KODEX 200 타겟위클리커버드콜)
             const tossDivItems = dividendList.filter(item => {
-                const normMonth = normalizeMonthFormat(item['월']);
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 return normMonth === selectedDividendMonth && 
                        String(item['증권사'] || '').trim() === '토스' && 
                        String(item['종목'] || '').trim().includes('KODEX 200 타겟위클리커버드콜');
@@ -582,7 +608,7 @@
             validStockList.forEach(item => {
                 const brk = String(item['증권사'] || '').trim();
                 const stg = String(item['종목'] || item['이름'] || '').trim();
-                if (brk === '토ส' || brk === '토스') {
+                if (brk === '토스' || brk === '토스') {
                     if (stg.includes('KODEX 200 타겟위클리커버드콜')) {
                         tossStockQty += parseCleanNumber(item['수량']);
                     }
@@ -591,7 +617,7 @@
 
             let dpsValue = 0;
             const targetInfo = dividendInfoList.find(info => {
-                const normInfoMonth = normalizeMonthFormat(info['월']);
+                const normInfoMonth = normalizeDateToYM(info['월']);
                 return normInfoMonth === selectedDividendMonth && String(info['종목'] || '').trim().includes('KODEX 200 타겟위클리커버드콜');
             });
             if (targetInfo) {
@@ -600,7 +626,7 @@
 
             const monthlyTrendArr = Array(12).fill(0);
             dividendList.forEach(item => {
-                const normMonth = normalizeMonthFormat(item['월']);
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 if (normMonth.startsWith(targetYear)) {
                     let mNum = parseInt(normMonth.split('-')[1], 10);
                     if (mNum >= 1 && mNum <= 12 && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목'])) {
@@ -610,7 +636,7 @@
             });
 
 
-            // 3. 가계부 탭 데이터 처리 (독립된 selectedExpenseMonth 활용)
+            // 3. 가계부 탭 데이터 처리
             const totalIncome = monthlyDividendSum + sideIncomeSum;
             
             let reinvestSum = 0;
@@ -625,7 +651,7 @@
             }
 
             expenseList.forEach(row => {
-                const normRowMonth = normalizeMonthFormat(row['월']);
+                const normRowMonth = normalizeDateToYM(row['월']);
                 if (!normRowMonth || !normRowMonth.includes('-')) return;
                 const parts = normRowMonth.split('-');
                 const mKey = parts[1];
@@ -696,10 +722,8 @@
             document.getElementById('card-retirement-account').innerText = formatKRW(data.retirementAccountSum);
             document.getElementById('card-car-account').innerText = formatKRW(data.carAccountSum);
 
-            // 계좌 종류 필터 칩 렌더링 및 테이블 바인딩
             renderAccountFilterChipsAndTable(data.allStocks);
 
-            // 배당금 탭 UI 바인딩
             document.getElementById('card-monthly-dividend').innerText = formatKRW(data.dividend.monthlySum);
             document.getElementById('card-annual-dividend').innerText = formatKRW(data.dividend.annualSum);
             document.getElementById('card-side-income').innerText = formatKRW(data.dividend.sideIncome);
@@ -714,7 +738,6 @@
             remainEl.innerText = (remainReinvest >= 0 ? '+ ' : '') + formatKRW(remainReinvest);
             remainEl.className = `text-base font-bold mt-0.5 ${remainReinvest >= 0 ? 'text-blue-400' : 'text-rose-400'}`;
 
-            // 가계부 탭 UI 바인딩
             document.getElementById('acc-total-income').innerText = formatKRW(data.accountbook.totalIncome);
             document.getElementById('acc-total-expense').innerText = formatKRW(data.accountbook.totalExpense);
             document.getElementById('acc-surplus').innerText = (data.accountbook.surplus >= 0 ? '+ ' : '') + formatKRW(data.accountbook.surplus);
@@ -726,22 +749,16 @@
             renderCharts(data);
         }
 
-        /**
-         * 계좌종류별 필터 칩 UI 및 테이블 렌더링 로직
-         */
         function renderAccountFilterChipsAndTable(allStocks) {
             const chipsContainer = document.getElementById('account-filter-chips');
             const tableBody = document.getElementById('stock-table-tbody');
 
-            // 고유 계좌 종류 추출
             const uniqueAccounts = Array.from(new Set(allStocks.map(s => String(s['계좌종류'] || '기타').trim())));
 
-            // 최초 진입 시 모든 계좌 활성화 (Active)
             if (activeAccountFilters.size === 0) {
                 uniqueAccounts.forEach(acc => activeAccountFilters.add(acc));
             }
 
-            // 필터 칩 HTML 생성
             let chipsHTML = `
                 <button onclick="toggleAllAccountFilters('${uniqueAccounts.join(',')}')" class="px-3 py-1 rounded-full font-semibold border transition ${activeAccountFilters.size === uniqueAccounts.length ? 'bg-brand-500 text-white border-brand-500' : 'bg-slate-100 text-slate-600 border-slate-200'}">
                     전체 선택
@@ -758,7 +775,6 @@
             });
             chipsContainer.innerHTML = chipsHTML;
 
-            // 필터 적용된 주식 목록 필터링
             const filteredStocks = allStocks.filter(stock => {
                 const acc = String(stock['계좌종류'] || '기타').trim();
                 return activeAccountFilters.has(acc);
@@ -800,7 +816,6 @@
         function toggleAllAccountFilters(allAccStr) {
             const allAccs = allAccStr.split(',');
             if (activeAccountFilters.size === allAccs.length) {
-                // 이미 전체 선택인 경우 최소 1개는 유지하거나 전체 해제 후 첫번째만 남김 등 처리 (여기선 전체 선택 재클릭 시 전체 유지 또는 토글)
                 activeAccountFilters.clear();
                 activeAccountFilters.add(allAccs[0]);
             } else {
@@ -831,7 +846,7 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }, cutout: '70%' }
             });
 
-            // 월별 전체 자산 추이 (0원 미래 데이터 제외된 trend 배열 반영)
+            // 월별 전체 자산 추이 (유효한 행만 렌더링)
             chartInstances.totalTrend = new Chart(document.getElementById('totalAssetTrendChart').getContext('2d'), {
                 type: 'line',
                 data: {
@@ -922,38 +937,31 @@
                 if (jsonResult && jsonResult.data) {
                     globalRawData = jsonResult;
 
-                    // [조건 반영] 초기 진입 월(Selected Month) 자동 설정: 데이터 내 존재하는 가장 최신 월 감지
-                    let latestFoundMonth = "";
-                    const divList = Array.isArray(jsonResult.data['분배금']) ? jsonResult.data['분배금'] : [];
-                    if (divList.length > 0) {
-                        const normalizedMonths = divList.map(item => normalizeMonthFormat(item['월'])).filter(Boolean).sort();
-                        if (normalizedMonths.length > 0) {
-                            latestFoundMonth = normalizedMonths[normalizedMonths.length - 1];
-                        }
-                    }
+                    // 최신 유효 행(현재 달) 감지하여 기본 월 초기화에 활용
+                    const accountHistory = Array.isArray(jsonResult.data['계좌내역']) ? jsonResult.data['계좌내역'] : [];
+                    const latestValidRow = getLatestValidAccountRow(accountHistory);
+                    
+                    let targetDefaultMonth = latestValidRow._normalizedYM;
 
-                    // 만약 분배금 시트에서 월을 못 찾았으면 계좌내역 시트의 최신 연-월 활용
-                    if (!latestFoundMonth) {
-                        const accHistory = Array.isArray(jsonResult.data['계좌내역']) ? jsonResult.data['계좌내역'] : [];
-                        if (accHistory.length > 0) {
-                            const validAccs = accHistory.filter(r => parseCleanNumber(r['총 자산']) > 0);
-                            if (validAccs.length > 0) {
-                                latestFoundMonth = normalizeMonthFormat(validAccs[validAccs.length - 1]['연-월']);
+                    // 만약 계좌내역에서 못 찾았으면 분배금 시트나 오늘 날짜 기준으로 설정
+                    if (!targetDefaultMonth) {
+                        const divList = Array.isArray(jsonResult.data['분배금']) ? jsonResult.data['분배금'] : [];
+                        if (divList.length > 0) {
+                            const normalizedMonths = divList.map(item => normalizeDateToYM(item['월'] || item['지급일'])).filter(Boolean).sort();
+                            if (normalizedMonths.length > 0) {
+                                targetDefaultMonth = normalizedMonths[normalizedMonths.length - 1];
                             }
                         }
                     }
 
-                    // 최후의 보루로 오늘 날짜 기준 지정
-                    if (!latestFoundMonth) {
+                    if (!targetDefaultMonth) {
                         const now = new Date();
-                        latestFoundMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                        targetDefaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
                     }
 
-                    // 각각 독립적인 상태 변수에 초기값 설정
-                    if (!selectedDividendMonth) selectedDividendMonth = latestFoundMonth;
-                    if (!selectedExpenseMonth) selectedExpenseMonth = latestFoundMonth;
+                    if (!selectedDividendMonth) selectedDividendMonth = targetDefaultMonth;
+                    if (!selectedExpenseMonth) selectedExpenseMonth = targetDefaultMonth;
 
-                    // 라벨 업데이트
                     document.getElementById('current-dividend-month-label').innerText = `${selectedDividendMonth} 배당금 분석`;
                     document.getElementById('current-account-month-label').innerText = `${selectedExpenseMonth} 가계부 분석`;
 
