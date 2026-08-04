@@ -291,7 +291,7 @@
                     <p class="text-xs text-emerald-100 font-medium mb-1">당월 총 수입 (배당 + 부가수입)</p>
                     <h3 class="text-2xl font-bold" id="acc-total-income">₩ 0</h3>
                     <div class="mt-3 pt-3 border-t border-emerald-400/40 text-xs flex justify-between text-emerald-100">
-                        <span>선택된 월 기준 수입 합산</span>
+                        <span>가계부 선택 월 기준 수입 합산</span>
                         <span class="font-bold">확정</span>
                     </div>
                 </div>
@@ -397,10 +397,33 @@
             window.scrollTo(0, 0);
         }
 
+        /**
+         * [요구사항 1] 소수점 절삭(정수 표시) 포맷터
+         */
         function formatKRW(num) {
             const val = Number(num);
             if (isNaN(val)) return '₩ 0';
-            return '₩ ' + val.toLocaleString('ko-KR');
+            const rounded = Math.round(val);
+            return '₩ ' + rounded.toLocaleString('ko-KR');
+        }
+
+        /**
+         * [요구사항 2] 수익률 퍼센트 포맷터 (소수점 첫째 자리, 예: 12.9%)
+         */
+        function formatPercent(val) {
+            if (val === null || val === undefined || val === '') return '0.0%';
+            let num = 0;
+            const str = String(val).trim();
+            if (str.endsWith('%')) {
+                num = parseFloat(str.replace('%', ''));
+            } else {
+                num = parseFloat(str);
+                if (!isNaN(num)) {
+                    num = num * 100; // 소수 형태(0.129)를 퍼센트(12.9)로 변환
+                }
+            }
+            if (isNaN(num)) return '0.0%';
+            return num.toFixed(1) + '%';
         }
 
         function parseCleanNumber(val) {
@@ -413,15 +436,10 @@
             return isNaN(parsed) ? 0 : parsed;
         }
 
-        /**
-         * [요구사항 1] A열(Reference) 날짜 포맷 정규화 ('2025.2.1', '2025-1', '2024. 12. 25' 등 -> 'YYYY-MM')
-         */
         function normalizeDateToYM(rawDate) {
             if (!rawDate) return "";
             const str = String(rawDate).trim();
             
-            // 숫자로만 구성되어 있거나 시리얼 넘버 형태인 경우 방어
-            // 정규식을 이용해 문자열 내에서 4자리 연도와 월 추출
             const match = str.match(/(\d{4})[^0-9]+(\d{1,2})/);
             if (match) {
                 const year = match[1];
@@ -429,13 +447,11 @@
                 return `${year}-${month}`;
             }
 
-            // 이미 YYYY-MM 형태인 경우
             if (/^\d{4}-\d{1,2}$/.test(str)) {
                 const parts = str.split('-');
                 return `${parts[0]}-${parts[1].padStart(2, '0')}`;
             }
 
-            // 점(.)이나 공백으로 구분된 경우 (예: 2025.2.1 또는 2024. 12. 25)
             const parts = str.split(/[\.\/\s\-]+/);
             if (parts.length >= 2 && parts[0].length === 4) {
                 const year = parts[0];
@@ -446,10 +462,6 @@
             return str;
         }
 
-        /**
-         * [요구사항 2] 미래 대출 데이터 자동 무시 및 '최신 유효 행' 자동 탐지
-         * - 총 자산(L열)의 값이 유효한 숫자(0 초과)이고 #VALUE!나 빈칸이 아닌 행들 중 가장 아래에 있는 행 선택
-         */
         function getLatestValidAccountRow(accountHistory) {
             if (!Array.isArray(accountHistory) || accountHistory.length === 0) return {};
             
@@ -457,9 +469,8 @@
             for (let i = 0; i < accountHistory.length; i++) {
                 const row = accountHistory[i];
                 const totalAssetVal = parseCleanNumber(row['총 자산']);
-                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]); // 첫 번째 열 데이터 대응
+                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]);
 
-                // 총 자산이 0 초과이고 에러가 아닐 때만 유효 행으로 인정하여 갱신
                 if (totalAssetVal > 0 && rawYM) {
                     latestValidRow = {
                         ...row,
@@ -509,7 +520,7 @@
         }
 
         /**
-         * 데이터 가공 메인 프로세서
+         * [요구사항 3 반영] 데이터 가공 프로세서 (배당금 월과 가계부 월 각각 독립 조회)
          */
         function processAllData(dataObj) {
             const accountHistory = Array.isArray(dataObj['계좌내역']) ? dataObj['계좌내역'] : [];
@@ -518,7 +529,7 @@
             const dividendInfoList = Array.isArray(dataObj['분배금정보']) ? dataObj['분배금정보'] : [];
             const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
 
-            // 1. 포트폴리오 탭 데이터 처리 (최신 유효 행 탐지 적용)
+            // 1. 포트폴리오 탭 데이터 처리
             const latestValidAccount = getLatestValidAccountRow(accountHistory);
             
             const totalAsset = parseCleanNumber(latestValidAccount['총 자산']);
@@ -527,7 +538,6 @@
             const totalDebt = mortgageDebt + parentDebt;
             const totalStockAsset = parseCleanNumber(latestValidAccount['총 주식 자산']);
 
-            // 평가금액이 0원(또는 수량이 0)인 종목 제외
             const validStockList = stockList.filter(item => {
                 const evalAmt = parseCleanNumber(item['평가금액']);
                 const qty = parseCleanNumber(item['수량']);
@@ -558,7 +568,6 @@
                 }
             });
 
-            // [요구사항 3] 월별 전체 자산 추이 차트: 총 자산 값이 0 초과인 유효 행들만 필터링
             const trendLabels = [];
             const trendValues = [];
             accountHistory.forEach(row => {
@@ -571,7 +580,7 @@
             });
 
 
-            // 2. 배당금 탭 데이터 처리
+            // 2. 배당금 탭 데이터 처리 (selectedDividendMonth 기준)
             const monthlyDividends = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const isTargetMonth = normMonth === selectedDividendMonth;
@@ -595,7 +604,6 @@
             });
             const sideIncomeSum = sideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
-            // 주담대 상환용 위젯 (토스 & KODEX 200 타겟위클리커버드콜)
             const tossDivItems = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 return normMonth === selectedDividendMonth && 
@@ -636,8 +644,23 @@
             });
 
 
-            // 3. 가계부 탭 데이터 처리
-            const totalIncome = monthlyDividendSum + sideIncomeSum;
+            // 3. 가계부 탭 데이터 처리 ([요구사항 3] 가계부 탭 선택 월인 selectedExpenseMonth를 기준으로 배당금 및 부가수입 독립 조회)
+            const accMonthlyDividends = dividendList.filter(item => {
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
+                const isTargetMonth = normMonth === selectedExpenseMonth;
+                const isLiving = isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
+                return isTargetMonth && isLiving;
+            });
+            const accMonthlyDividendSum = accMonthlyDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+
+            const accSideIncomes = dividendList.filter(item => {
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
+                return normMonth === selectedExpenseMonth && String(item['계좌종류'] || '').trim() === '부가수입';
+            });
+            const accSideIncomeSum = accSideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+
+            // 가계부 탭 당월 총 수입 = 가계부 선택 월의 생활비 배당금 + 가계부 선택 월의 부가수입
+            const totalIncome = accMonthlyDividendSum + accSideIncomeSum;
             
             let reinvestSum = 0;
             let emergencySum = 0;
@@ -663,7 +686,6 @@
                 const source = String(row['출처'] || '').trim();
                 const rawAmount = parseCleanNumber(row['금액']);
 
-                // 지역화폐 90% 할인 적용
                 const isLocalCurrency = source.includes('지역화폐') || source.includes('지역인증');
                 const calculatedAmount = isLocalCurrency ? rawAmount * 0.9 : rawAmount;
 
@@ -792,7 +814,7 @@
                         <td class="p-3 font-bold text-slate-900">${stock['종목'] || stock['이름'] || '-'}</td>
                         <td class="p-3 text-slate-600">${parseCleanNumber(stock['수량']).toLocaleString()}주</td>
                         <td class="p-3 font-bold text-slate-900">${formatKRW(parseCleanNumber(stock['평가금액']))}</td>
-                        <td class="p-3 text-brand-600 font-semibold">${stock['수익률'] || '0%'}</td>
+                        <td class="p-3 text-brand-600 font-semibold">${formatPercent(stock['수익률'])}</td>
                     `;
                     tableBody.appendChild(tr);
                 });
@@ -846,7 +868,6 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }, cutout: '70%' }
             });
 
-            // 월별 전체 자산 추이 (유효한 행만 렌더링)
             chartInstances.totalTrend = new Chart(document.getElementById('totalAssetTrendChart').getContext('2d'), {
                 type: 'line',
                 data: {
@@ -898,12 +919,12 @@
                                     const mKey = annualMonths[mIndex];
                                     const monthData = data.accountbook.annualMap[mKey];
                                     
-                                    let lines = [`총 지출: ₩ ${monthData.total.toLocaleString('ko-KR')}`];
+                                    let lines = [`총 지출: ₩ ${Math.round(monthData.total).toLocaleString('ko-KR')}`];
                                     lines.push(`----------------------------------`);
                                     
                                     for (const [large, smallObj] of Object.entries(monthData.details)) {
                                         for (const [small, amt] of Object.entries(smallObj)) {
-                                            lines.push(`• [${large} > ${small}]: ₩ ${amt.toLocaleString('ko-KR')}`);
+                                            lines.push(`• [${large} > ${small}]: ₩ ${Math.round(amt).toLocaleString('ko-KR')}`);
                                         }
                                     }
                                     return lines;
@@ -916,9 +937,6 @@
             });
         }
 
-        /**
-         * 구글 시트 Web App API Fetch 함수
-         */
         async function fetchSheetData() {
             const overlay = document.getElementById('loading-overlay');
             const statusText = document.getElementById('data-status-text');
@@ -937,13 +955,11 @@
                 if (jsonResult && jsonResult.data) {
                     globalRawData = jsonResult;
 
-                    // 최신 유효 행(현재 달) 감지하여 기본 월 초기화에 활용
                     const accountHistory = Array.isArray(jsonResult.data['계좌내역']) ? jsonResult.data['계좌내역'] : [];
                     const latestValidRow = getLatestValidAccountRow(accountHistory);
                     
                     let targetDefaultMonth = latestValidRow._normalizedYM;
 
-                    // 만약 계좌내역에서 못 찾았으면 분배금 시트나 오늘 날짜 기준으로 설정
                     if (!targetDefaultMonth) {
                         const divList = Array.isArray(jsonResult.data['분배금']) ? jsonResult.data['분배금'] : [];
                         if (divList.length > 0) {
