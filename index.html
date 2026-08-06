@@ -97,28 +97,24 @@
 
         <!-- ================= [탭 1] 포트폴리오 ================= -->
         <section id="tab-portfolio" class="space-y-6">
-            <!-- 상단 요약 카드 (요청사항 반영: 총 주식 자산 -> 총 대출 -> 총 자산 순서 배치) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <!-- 1. 총 주식 자산 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
                     <div class="absolute right-3 top-3 text-blue-500/10 text-5xl font-extrabold pointer-events-none">STOCKS</div>
                     <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 주식 자산</p>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-stock">₩ 0</h3>
                     <span class="text-xs text-toss-blue font-bold mt-3 inline-block">주식 시트 평가금액 총합</span>
                 </div>
-                <!-- 2. 총 대출 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
                     <div class="absolute right-3 top-3 text-red-500/10 text-5xl font-extrabold pointer-events-none">DEBT</div>
                     <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 대출 (주담대 + 부모님)</p>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-toss-red tracking-tight" id="card-total-debt">₩ 0</h3>
                     <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block" id="debt-status-label">현재월(2026-08) 1:1 매칭 연동</span>
                 </div>
-                <!-- 3. 총 자산 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
                     <div class="absolute right-3 top-3 text-emerald-500/10 text-5xl font-extrabold pointer-events-none">ASSET</div>
                     <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 자산</p>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-asset">₩ 0</h3>
-                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 거주아파트</span>
+                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 아파트(4억)</span>
                 </div>
             </div>
 
@@ -139,7 +135,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-living-account">₩ 0</h4>
-                            <p class="text-xs text-emerald-100/80 font-medium mt-1">연금2, ISA, 일반 (제외항목 제외)</p>
+                            <p class="text-xs text-emerald-100/80 font-medium mt-1">연금2, ISA, 일반 (토스/Google 제외)</p>
                         </div>
                     </div>
                     <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
@@ -169,7 +165,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-retirement-account">₩ 0</h4>
-                            <p class="text-xs text-blue-100/80 font-medium mt-1">연금2, IRP 장기 은퇴 자산</p>
+                            <p class="text-xs text-blue-100/80 font-medium mt-1">연금1, IRP 장기 은퇴 자산</p>
                         </div>
                     </div>
                 </div>
@@ -180,20 +176,18 @@
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">보유 종목 전체 비중</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">계좌 무관 동일 종목명 기준 합산 비중</p>
+                        <p class="text-xs text-[#8B95A1] mb-4">주식 시트 전체 종목 합산 비중 (총 주식 자산 일치)</p>
                     </div>
                     <div class="relative h-48 flex items-center justify-center mb-4">
                         <canvas id="allStocksPieChart"></canvas>
                     </div>
-                    <div id="portfolio-legend-container" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs divide-y divide-slate-100">
-                        <!-- 동적 생성 -->
-                    </div>
+                    <div id="portfolio-legend-container" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs divide-y divide-slate-100"></div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 lg:col-span-2 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">월별 전체 자산 추이</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">유효한 자산 데이터가 존재하는 월 자동 필터링 (Y축 억 단위 표기)</p>
+                        <p class="text-xs text-[#8B95A1] mb-4">'계좌내역' 시트 A열(날짜) 및 L열(총 자산) 연동 (Y축 억 단위 표기)</p>
                     </div>
                     <div class="relative h-72">
                         <canvas id="totalAssetTrendChart"></canvas>
@@ -208,9 +202,7 @@
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">보유 종목 상세 현황</h3>
                         <p class="text-xs text-[#8B95A1] mt-0.5">"주식" 시트 기반 실시간 동기화</p>
                     </div>
-                    <div id="account-filter-chips" class="flex flex-wrap items-center gap-2 text-xs">
-                        <!-- 동적 생성됨 -->
-                    </div>
+                    <div id="account-filter-chips" class="flex flex-wrap items-center gap-2 text-xs"></div>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -227,18 +219,14 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="stock-table-tbody"></tbody>
-                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="stock-table-tfoot">
-                            <!-- 동적 생성 -->
-                        </tfoot>
+                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="stock-table-tfoot"></tfoot>
                     </table>
                 </div>
             </div>
         </section>
 
-
         <!-- ================= [탭 2] 배당금 ================= -->
         <section id="tab-dividend" class="space-y-6 hidden">
-            <!-- 월 선택 헤더 -->
             <div class="bg-white p-4.5 rounded-2xl shadow-toss border border-slate-100/80 flex items-center justify-between gap-4">
                 <div class="flex items-center space-x-3">
                     <button onclick="changeDividendMonth(-1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-left text-xs text-[#333D4B]"></i></button>
@@ -248,7 +236,6 @@
                 <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">배당금 실시간 연동</span>
             </div>
 
-            <!-- 배당금 카드 영역 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-[#00C853] text-white p-6 rounded-2xl shadow-md">
                     <p class="text-xs text-emerald-100 font-semibold tracking-wide mb-1.5 uppercase">이번 달 받은 배당금 (생활비 기준)</p>
@@ -270,19 +257,16 @@
                 </div>
             </div>
 
-            <!-- 하단 차트 및 위젯 -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">생활비 계좌 비중</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">연금2, ISA, 일반 (토스 주담대/Google 제외)</p>
+                        <p class="text-xs text-[#8B95A1] mb-4">연금2, ISA, 일반 (토스/Google 제외)</p>
                     </div>
                     <div class="relative h-48 flex items-center justify-center mb-4">
                         <canvas id="livingAccountChart"></canvas>
                     </div>
-                    <div id="living-legend-container" class="space-y-2 max-h-44 overflow-y-auto pr-1 text-xs divide-y divide-slate-100">
-                        <!-- 동적 생성 -->
-                    </div>
+                    <div id="living-legend-container" class="space-y-2 max-h-44 overflow-y-auto pr-1 text-xs divide-y divide-slate-100"></div>
                 </div>
 
                 <div class="bg-gradient-to-br from-[#191F28] to-[#333D4B] text-white p-5 md:p-6 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between relative overflow-hidden h-auto">
@@ -332,7 +316,6 @@
                 </div>
             </div>
 
-            <!-- 이번 달 종목별 상세 분배금 현황 테이블 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
@@ -347,18 +330,13 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#F7F8FA] text-[#8B95A1] uppercase text-[11px] font-bold tracking-wider select-none" id="dividend-table-thead">
-                            <!-- 동적 생성 -->
-                        </thead>
+                        <thead class="bg-[#F7F8FA] text-[#8B95A1] uppercase text-[11px] font-bold tracking-wider select-none" id="dividend-table-thead"></thead>
                         <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="dividend-detail-tbody"></tbody>
-                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="dividend-detail-tfoot">
-                            <!-- 동적 생성 -->
-                        </tfoot>
+                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="dividend-detail-tfoot"></tfoot>
                     </table>
                 </div>
             </div>
 
-            <!-- 연간 배당금 성장 추이 차트 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                 <div>
                     <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 배당금 성장 추이 (1월 ~ 12월)</h3>
@@ -370,10 +348,8 @@
             </div>
         </section>
 
-
         <!-- ================= [탭 3] 가계부 ================= -->
         <section id="tab-accountbook" class="space-y-6 hidden">
-            <!-- 월 선택 헤더 (기본값: 전월 자동 세팅) -->
             <div class="bg-white p-4.5 rounded-2xl shadow-toss border border-slate-100/80 flex items-center justify-between gap-4">
                 <div class="flex items-center space-x-3">
                     <button onclick="changeAccountMonth(-1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-left text-xs text-[#333D4B]"></i></button>
@@ -434,7 +410,6 @@
                 </div>
             </div>
 
-            <!-- 연간 월별 지출 비교 차트 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
                 <div class="mb-4">
                     <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 지출 비교 현황</h3>
@@ -445,16 +420,13 @@
                 </div>
             </div>
 
-            <!-- 선택 월 전체 소분류 지출 분석 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-6">
                 <div>
                     <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">선택 월 전체 소분류 지출 분석</h3>
                     <p class="text-xs text-[#8B95A1] mt-0.5">이번 달 발생한 모든 지출 소분류 항목의 금액순 정렬 및 비중 분석</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="top3-subcat-container">
-                    <!-- 동적 생성 -->
-                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="top3-subcat-container"></div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
@@ -507,8 +479,7 @@
         let currentSortDirection = 'asc';
 
         function switchTab(tabName) {
-            const tabs = ['portfolio', 'dividend', 'accountbook'];
-            tabs.forEach(t => {
+            ['portfolio', 'dividend', 'accountbook'].forEach(t => {
                 const section = document.getElementById(`tab-${t}`);
                 const navPc = document.getElementById(`nav-pc-${t}`);
                 const navMob = document.getElementById(`nav-mob-${t}`);
@@ -528,111 +499,74 @@
             window.scrollTo(0, 0);
         }
 
-        function formatKRW(num) {
-            const val = Number(num);
-            if (isNaN(val)) return '₩ 0';
-            const rounded = Math.trunc(val);
-            return '₩ ' + rounded.toLocaleString('ko-KR');
-        }
+        const formatKRW = num => '₩ ' + Math.trunc(Number(num) || 0).toLocaleString('ko-KR');
 
-        function formatPercent(val) {
+        const formatPercent = val => {
             if (val === null || val === undefined || val === '') return '0.0%';
-            let num = 0;
             const str = String(val).trim();
-            if (str.endsWith('%')) {
-                num = parseFloat(str.replace('%', ''));
-            } else {
-                num = parseFloat(str);
-                if (!isNaN(num)) num = num * 100;
-            }
-            if (isNaN(num)) return '0.0%';
-            return num.toFixed(1) + '%';
-        }
+            let num = str.endsWith('%') ? parseFloat(str.replace('%', '')) : parseFloat(str) * 100;
+            return isNaN(num) ? '0.0%' : num.toFixed(1) + '%';
+        };
 
-        function parseCleanNumber(val) {
+        const parseCleanNumber = val => {
             if (val === null || val === undefined) return 0;
             if (typeof val === 'number') return isNaN(val) ? 0 : val;
             const strVal = String(val).trim();
-            if (strVal === '' || strVal.toUpperCase() === '#VALUE!' || strVal.toUpperCase() === 'NaN') return 0;
-            const cleaned = strVal.replace(/[^0-9.\-]/g, '');
-            const parsed = parseFloat(cleaned);
+            if (!strVal || ['#VALUE!', 'NAN'].includes(strVal.toUpperCase())) return 0;
+            const parsed = parseFloat(strVal.replace(/[^0-9.\-]/g, ''));
             return isNaN(parsed) ? 0 : parsed;
-        }
+        };
 
-        function normalizeDateToYM(rawDate) {
+        // [수정] A열 날짜 형태("2024. 12. 25." 혹은 "2025-1" 등)를 "YYYY-MM" 형태로 견고하게 변환하는 함수
+        const normalizeDateToYM = rawDate => {
             if (!rawDate) return "";
             const str = String(rawDate).trim();
-            const match = str.match(/(\d{4})[^0-9]+(\d{1,2})/);
-            if (match) return `${match[1]}-${match[2].padStart(2, '0')}`;
+            
+            // "2024. 12. 25." 또는 "2024.12" 형태 매칭
+            const dotMatch = str.match(/(\d{4})\D+(\d{1,2})/);
+            if (dotMatch) {
+                return `${dotMatch[1]}-${dotMatch[2].padStart(2, '0')}`;
+            }
+
             if (/^\d{4}-\d{1,2}$/.test(str)) {
                 const parts = str.split('-');
                 return `${parts[0]}-${parts[1].padStart(2, '0')}`;
             }
-            const parts = str.split(/[\.\/\s\-]+/);
-            if (parts.length >= 2 && parts[0].length === 4) {
-                return `${parts[0]}-${parts[1].padStart(2, '0')}`;
-            }
+
             return str;
-        }
+        };
 
-        function normalizeMonth(m) {
-            if (!m) return '';
-            return String(m).replace(/[^0-9]/g, '').slice(0, 6);
-        }
+        const normalizeMonth = m => m ? String(m).replace(/[^0-9]/g, '').slice(0, 6) : '';
+        const normalizeText = t => t ? String(t).replace(/\s+/g, '').toUpperCase() : '';
 
-        function normalizeText(t) {
-            if (!t) return '';
-            return String(t).replace(/\s+/g, '').toUpperCase();
-        }
-
-        function getCurrentSystemYM() {
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            return `${y}-${m}`;
-        }
-
-        function getLatestValidAccountRow(accountHistory) {
+        function getTargetAccountRow(accountHistory, targetYM = "2026-08") {
             if (!Array.isArray(accountHistory) || accountHistory.length === 0) return {};
-            let latestValidRow = {};
-            for (let i = 0; i < accountHistory.length; i++) {
-                const row = accountHistory[i];
-                const totalAssetVal = parseCleanNumber(row['총 자산']);
-                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]);
-                if (totalAssetVal > 0 && rawYM) {
-                    latestValidRow = { ...row, '_normalizedYM': rawYM, '_parsedTotalAsset': totalAssetVal };
-                }
-            }
-            return latestValidRow;
-        }
-
-        function getTargetAccountRow(accountHistory, targetYM) {
-            if (!Array.isArray(accountHistory) || accountHistory.length === 0) return {};
-            for (let i = 0; i < accountHistory.length; i++) {
-                const row = accountHistory[i];
-                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]);
+            for (let row of accountHistory) {
+                const rowVals = Object.values(row);
+                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || rowVals[0]);
                 if (rawYM === targetYM) return { ...row, '_normalizedYM': rawYM };
             }
-            return getLatestValidAccountRow(accountHistory);
+            for (let i = accountHistory.length - 1; i >= 0; i--) {
+                const row = accountHistory[i];
+                const rowVals = Object.values(row);
+                const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || rowVals[0]);
+                const assetVal = parseCleanNumber(row['총 자산'] || row['자산총액'] || rowVals[11] || rowVals[3] || rowVals[4]);
+                if (assetVal > 0) {
+                    return { ...row, '_normalizedYM': rawYM };
+                }
+            }
+            return {};
         }
 
-        function isExcludedFromPortfolioChart(stockName) {
-            const stg = String(stockName || '').trim();
-            if (stg.includes('KODEX 200 타겟위클리커버드콜')) return true;
-            if (stg.toLowerCase() === 'google') return true;
-            return false;
-        }
-
-        function isLivingAccountItem(accType, broker, stockName) {
+        const isLivingAccountItem = (accType, broker, stockName) => {
             const acc = String(accType || '').trim();
             const brk = String(broker || '').trim();
             const stg = normalizeText(stockName);
-            const isTargetAcc = ['연금2', 'ISA', '일반'].includes(acc);
-            if (!isTargetAcc) return false;
-            if (acc === '일반' && brk.includes('토ส') && stg.includes('KODEX200타겟위클리커버드콜')) return false;
-            if (stg === 'GOOGLE') return false;
+            if (!['연금2', 'ISA', '일반'].includes(acc)) return false;
+            if (brk.includes('토스') || brk.toLowerCase().includes('toss')) return false;
+            if (stg === 'GOOGLE' || stg.includes('GOOGLE')) return false;
             return true;
-        }
+        };
 
         function shiftMonth(ymString, direction) {
             let [year, month] = (ymString || '2026-07').split('-').map(Number);
@@ -655,8 +589,7 @@
         }
 
         function toggleAccountGrouping() {
-            const checkbox = document.getElementById('toggle-account-group');
-            isAccountGrouped = checkbox ? checkbox.checked : false;
+            isAccountGrouped = document.getElementById('toggle-account-group')?.checked || false;
             currentSortColumn = null;
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
@@ -672,91 +605,121 @@
         }
 
 
-        // ================= 1. 포트폴리오 데이터 프로세싱 (요청사항 로직 반영) =================
-        function processPortfolioData(dataObj, selectedYM) {
+        // ================= Chart.js 커스텀 플러그인 (도넛 차트 중앙 총합 표시 - 소수점 둘째 자리 적용) =================
+        const centerTextPlugin = {
+            id: 'centerTextPlugin',
+            afterDraw(chart) {
+                if (chart.config.type !== 'doughnut') return;
+                const { ctx, width, height } = chart;
+                ctx.save();
+                
+                const dataset = chart.data.datasets[0];
+                const total = dataset.data.reduce((acc, val) => acc + (Number(val) || 0), 0);
+                
+                let displayStr = '';
+                if (total >= 100000000) {
+                    displayStr = (total / 100000000).toFixed(2) + '억';
+                } else if (total >= 10000) {
+                    displayStr = (total / 10000).toFixed(1) + '만';
+                } else {
+                    displayStr = total.toLocaleString() + '원';
+                }
+
+                ctx.font = 'bold 12px Pretendard, sans-serif';
+                ctx.fillStyle = '#8B95A1';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText('총 합계', width / 2, height / 2 - 2);
+
+                ctx.font = 'extrabold 15px Pretendard, sans-serif';
+                ctx.fillStyle = '#191F28';
+                ctx.textBaseline = 'top';
+                ctx.fillText(displayStr, width / 2, height / 2 + 2);
+                
+                ctx.restore();
+            }
+        };
+        Chart.register(centerTextPlugin);
+
+
+        // ================= 1. 포트폴리오 데이터 프로세싱 =================
+        function processPortfolioData(dataObj) {
             const accountHistory = Array.isArray(dataObj['계좌내역']) ? dataObj['계좌내역'] : [];
             const stockList = Array.isArray(dataObj['주식']) ? dataObj['주식'] : [];
 
-            // 1. 총 주식 자산: "주식" 시트의 평가금액 총합
-            const totalStockAsset = parseCleanNumber(stockList.reduce((sum, s) => sum + parseCleanNumber(s['평가금액']), 0));
+            const validStockList = stockList.filter(item => {
+                const evalAmt = parseCleanNumber(item['평가금액']);
+                const principalAmt = parseCleanNumber(item['원금']);
+                const qty = parseCleanNumber(item['수량']);
+                return (evalAmt > 0 || principalAmt > 0) && qty > 0;
+            }).map(item => {
+                const evalAmt = parseCleanNumber(item['평가금액']);
+                const principalAmt = parseCleanNumber(item['원금']);
+                const finalEvalAmount = evalAmt > 0 ? evalAmt : principalAmt;
 
-            // 2. 총 대출: "계좌내역" 시트에서 현재월(2026-08) 기준 I열(주택담보대출) + J열(부모님 대출) 합산
-            const targetAccountRow = getTargetAccountRow(accountHistory, selectedYM);
+                return {
+                    ...item,
+                    '_owner': String(item['이름'] || item['사용자'] || '공동').trim(),
+                    '_broker': String(item['증권사'] || '').trim(),
+                    '_accType': String(item['계좌종류'] || '').trim(),
+                    '_stockName': String(item['종목'] || item['종목명'] || '').trim(),
+                    '_evalAmount': finalEvalAmount,
+                    '_qty': parseCleanNumber(item['수량']),
+                    '_profitAmt': parseCleanNumber(item['현재수익금'] || item['수익금'] || item['현재 수익금'] || 0)
+                };
+            });
+
+            const totalStockAsset = parseCleanNumber(validStockList.reduce((sum, s) => sum + s._evalAmount, 0));
+
+            const targetAccountRow = getTargetAccountRow(accountHistory, "2026-08");
             const rowValues = Object.values(targetAccountRow);
             const mortgageDebt = parseCleanNumber(targetAccountRow['주택담보대출'] || targetAccountRow['주담대'] || rowValues[8] || 0);
             const parentDebt = parseCleanNumber(targetAccountRow['부모님대출'] || targetAccountRow['부모님 대출'] || rowValues[9] || 0);
             const totalDebt = mortgageDebt + parentDebt;
 
-            // 3. 총 자산: 총 주식 자산 + 총 대출 + 현재 거주 아파트
             const apartmentValue = 400000000; // 4억 원
             const calculatedTotalAsset = totalStockAsset + totalDebt + apartmentValue;
 
-            const validStockList = stockList.filter(item => {
-                const evalAmt = parseCleanNumber(item['평가금액']);
-                const qty = parseCleanNumber(item['수량']);
-                return evalAmt > 0 && qty > 0;
-            }).map(item => {
-                const owner = String(item['이름'] || item['사용자'] || '공동').trim();
-                const stockName = String(item['종목'] || item['종목명'] || '').trim();
-                const broker = String(item['증권사'] || '').trim();
-                const evalAmount = parseCleanNumber(item['평가금액']);
-                const qty = parseCleanNumber(item['수량']);
-                const profitAmt = parseCleanNumber(item['현재수익금'] || item['수익금'] || item['현재 수익금'] || 0);
-
-                return {
-                    ...item,
-                    '_owner': owner,
-                    '_broker': broker,
-                    '_stockName': stockName,
-                    '_evalAmount': evalAmount,
-                    '_qty': qty,
-                    '_profitAmt': profitAmt
-                };
-            });
-
-            let livingAccountSum = 0;
-            let retirementAccountSum = 0;
-            let carAccountSum = 0;
-            let mortgageStockAccountSum = 0;
+            let livingAccountSum = 0, retirementAccountSum = 0, carAccountSum = 0, mortgageStockAccountSum = 0;
 
             validStockList.forEach(item => {
-                const accType = item['_accType'] || String(item['계좌종류'] || '').trim();
-                const stockName = item['_stockName'];
-                const broker = item['_broker'];
-                const evalAmount = item['_evalAmount'];
+                const accType = item._accType;
+                const stockName = item._stockName;
+                const broker = item._broker;
+                const evalAmount = item._evalAmount;
 
-                if (['연금2', 'ISA', '일반'].includes(accType) && !isExcludedFromPortfolioChart(stockName)) {
-                    livingAccountSum += evalAmount;
-                }
-                if (['연금2', 'IRP'].includes(accType)) {
-                    retirementAccountSum += evalAmount;
-                }
-                if (accType === '일반' && stockName.toLowerCase() === 'google') {
-                    carAccountSum += evalAmount;
-                }
-                if (broker === '토스' && stockName.includes('KODEX 200 타겟위클리커버드콜')) {
-                    mortgageStockAccountSum += evalAmount;
-                }
+                if (isLivingAccountItem(accType, broker, stockName)) livingAccountSum += evalAmount;
+                if (['연금1', 'IRP'].includes(accType)) retirementAccountSum += evalAmount;
+                if (accType === '일반' && stockName.toLowerCase() === 'google') carAccountSum += evalAmount;
+                if (broker.includes('토스') && stockName.includes('KODEX 200 타겟위클리커버드콜')) mortgageStockAccountSum += evalAmount;
             });
 
-            const trendLabels = [];
-            const trendValues = [];
+            // [수정됨] '계좌내역' 시트 A열(날짜: index 0)과 L열(총 자산: index 11) 확실한 매핑
+            const trendLabels = [], trendValues = [];
             accountHistory.forEach(row => {
-                const assetVal = parseCleanNumber(row['총 자산']);
-                const normYM = normalizeDateToYM(row['연-월'] || row['날짜'] || Object.values(row)[0]);
+                const rowVals = Object.values(row);
+                // A열 데이터 (날짜)
+                const rawDate = row['날짜'] || row['연-월'] || rowVals[0];
+                // L열 데이터 (총 자산 - 함수 결과값 포함 완벽 파싱)
+                const rawAsset = row['총 자산'] || row['자산총액'] || rowVals[11];
+                
+                const assetVal = parseCleanNumber(rawAsset);
+                const normYM = normalizeDateToYM(rawDate);
+
                 if (normYM && assetVal > 0) {
                     trendLabels.push(normYM);
                     trendValues.push(assetVal);
                 }
             });
 
+            // 포트폴리오 원형 차트 데이터 매핑
             const aggregatedStockMap = {};
             validStockList.forEach(item => {
-                const name = item['_stockName'];
-                if (isExcludedFromPortfolioChart(name)) return;
+                const name = item._stockName;
                 if (!aggregatedStockMap[name]) aggregatedStockMap[name] = 0;
-                aggregatedStockMap[name] += item['_evalAmount'];
+                aggregatedStockMap[name] += item._evalAmount;
             });
+
             const sortedAggregatedStocks = Object.entries(aggregatedStockMap)
                 .map(([name, amount]) => ({ name, amount }))
                 .sort((a, b) => b.amount - a.amount);
@@ -772,7 +735,7 @@
                 allStocks: validStockList,
                 aggregatedStocks: sortedAggregatedStocks,
                 trend: { labels: trendLabels, values: trendValues },
-                matchedYM: targetAccountRow._normalizedYM || selectedYM
+                matchedYM: targetAccountRow._normalizedYM || "2026-08"
             };
         }
 
@@ -783,9 +746,6 @@
             
             const debtLabel = document.getElementById('debt-status-label');
             if (debtLabel) debtLabel.innerText = `현재월(${data.matchedYM}) 기준 1:1 매칭`;
-
-            const assetDateLabel = document.getElementById('asset-date-label');
-            if (assetDateLabel) assetDateLabel.innerText = `주식자산 + 총대출 + 거주아파트`;
 
             document.getElementById('card-living-account').innerText = formatKRW(data.livingAccountSum);
             document.getElementById('card-mortgage-stock-account').innerText = formatKRW(data.mortgageStockAccountSum);
@@ -802,9 +762,7 @@
             const tableFoot = document.getElementById('stock-table-tfoot');
 
             const uniqueAccounts = Array.from(new Set(allStocks.map(s => String(s['계좌종류'] || '기타').trim())));
-            if (activeAccountFilters.size === 0) {
-                uniqueAccounts.forEach(acc => activeAccountFilters.add(acc));
-            }
+            if (activeAccountFilters.size === 0) uniqueAccounts.forEach(acc => activeAccountFilters.add(acc));
 
             let chipsHTML = `
                 <button onclick="toggleAllAccountFilters('${uniqueAccounts.join(',')}')" class="px-3.5 py-1.5 rounded-full font-bold border transition ${activeAccountFilters.size === uniqueAccounts.length ? 'bg-toss-blue text-white border-toss-blue shadow-sm' : 'bg-slate-100 text-[#6B7684] border-slate-200'}">
@@ -821,10 +779,7 @@
             });
             if (chipsContainer) chipsContainer.innerHTML = chipsHTML;
 
-            let filteredStocks = allStocks.filter(stock => {
-                const acc = String(stock['계좌종류'] || '기타').trim();
-                return activeAccountFilters.has(acc);
-            });
+            let filteredStocks = allStocks.filter(stock => activeAccountFilters.has(String(stock['계좌종류'] || '기타').trim()));
 
             if (currentSortColumn) {
                 filteredStocks.sort((a, b) => {
@@ -837,38 +792,30 @@
                         valB = parseFloat(String(b['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
                     } else {
                         const keyMap = { '소유자': '_owner', '계좌종류': '계좌종류', '증권사': '_broker', '종목명': '_stockName' };
-                        const targetKey = keyMap[currentSortColumn] || currentSortColumn;
-                        valA = String(a[targetKey] || '').trim();
-                        valB = String(b[targetKey] || '').trim();
+                        valA = String(a[keyMap[currentSortColumn] || currentSortColumn] || '').trim();
+                        valB = String(b[keyMap[currentSortColumn] || currentSortColumn] || '').trim();
                     }
-                    if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
-                    if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
-                    return 0;
+                    return valA < valB ? (currentSortDirection === 'asc' ? -1 : 1) : valA > valB ? (currentSortDirection === 'asc' ? 1 : -1) : 0;
                 });
             }
 
             tableBody.innerHTML = '';
-            let totalFilteredEval = 0;
-            let totalFilteredProfit = 0;
+            let totalFilteredEval = 0, totalFilteredProfit = 0;
 
             filteredStocks.forEach(stock => {
-                const evalAmt = stock._evalAmount;
-                const profitAmt = stock._profitAmt;
-                totalFilteredEval += evalAmt;
-                totalFilteredProfit += profitAmt;
-
-                const owner = stock._owner;
-                const ownerBadgeClass = owner.includes('남편') ? 'bg-blue-50 text-toss-blue' : 'bg-purple-50 text-purple-700';
+                totalFilteredEval += stock._evalAmount;
+                totalFilteredProfit += stock._profitAmt;
+                const ownerBadgeClass = stock._owner.includes('남편') ? 'bg-blue-50 text-toss-blue' : 'bg-purple-50 text-purple-700';
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50/80 transition";
                 tr.innerHTML = `
-                    <td class="p-3.5"><span class="text-xs ${ownerBadgeClass} px-2.5 py-1 rounded-lg font-bold">${owner}</span></td>
+                    <td class="p-3.5"><span class="text-xs ${ownerBadgeClass} px-2.5 py-1 rounded-lg font-bold">${stock._owner}</span></td>
                     <td class="p-3.5"><span class="text-xs bg-slate-100 text-[#333D4B] px-2.5 py-1 rounded-lg font-semibold">${stock['계좌종류'] || '-'}</span></td>
                     <td class="p-3.5 text-[#6B7684]">${stock._broker || '-'}</td>
                     <td class="p-3.5 font-bold text-[#191F28]">${stock._stockName}</td>
                     <td class="p-3.5 text-[#333D4B] text-right">${stock._qty.toLocaleString()}주</td>
-                    <td class="p-3.5 font-bold text-[#191F28] text-right">${formatKRW(evalAmt)}</td>
+                    <td class="p-3.5 font-bold text-[#191F28] text-right">${formatKRW(stock._evalAmount)}</td>
                     <td class="p-3.5 text-toss-green font-bold text-right">${formatPercent(stock['수익률'])}</td>
                 `;
                 tableBody.appendChild(tr);
@@ -892,10 +839,7 @@
             } else {
                 activeAccountFilters.add(accName);
             }
-            if (globalRawData.data) {
-                const currentYM = getCurrentSystemYM();
-                renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data, currentYM).allStocks);
-            }
+            if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks);
         }
 
         function toggleAllAccountFilters(allAccStr) {
@@ -906,53 +850,44 @@
             } else {
                 allAccs.forEach(acc => activeAccountFilters.add(acc));
             }
-            if (globalRawData.data) {
-                const currentYM = getCurrentSystemYM();
-                renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data, currentYM).allStocks);
-            }
+            if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks);
         }
 
         function renderPortfolioCharts(data) {
             if (chartInstances.allStocksPie) chartInstances.allStocksPie.destroy();
             if (chartInstances.totalTrend) chartInstances.totalTrend.destroy();
 
-            const aggStocks = data.aggregatedStocks;
-            const totalAggAmount = aggStocks.reduce((sum, item) => sum + item.amount, 0);
             const colorPalette = ['#3182F6', '#00C853', '#9333EA', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#EC4899', '#64748B', '#10B981'];
 
             chartInstances.allStocksPie = new Chart(document.getElementById('allStocksPieChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: aggStocks.map(s => s.name),
-                    datasets: [{ data: aggStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, aggStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
+                    labels: data.aggregatedStocks.map(s => s.name),
+                    datasets: [{ data: data.aggregatedStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, data.aggregatedStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '65%' }
             });
 
             const legendContainer = document.getElementById('portfolio-legend-container');
             if (legendContainer) {
-                legendContainer.innerHTML = '';
-                if (aggStocks.length === 0) {
-                    legendContainer.innerHTML = `<p class="text-xs text-[#8B95A1] text-center py-2">보유 종목 데이터가 없습니다.</p>`;
-                } else {
-                    aggStocks.forEach((item, index) => {
-                        const percentage = totalAggAmount > 0 ? ((item.amount / totalAggAmount) * 100).toFixed(1) : '0.0';
-                        const colorHex = colorPalette[index % colorPalette.length];
-                        const rowDiv = document.createElement('div');
-                        rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
-                        rowDiv.innerHTML = `
-                            <div class="flex items-center space-x-2 truncate pr-2">
-                                <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorHex};"></span>
-                                <span class="font-bold text-[#191F28] truncate">${item.name}</span>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
-                                <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
-                            </div>
-                        `;
-                        legendContainer.appendChild(rowDiv);
-                    });
-                }
+                legendContainer.innerHTML = data.aggregatedStocks.length === 0 ? `<p class="text-xs text-[#8B95A1] text-center py-2">보유 종목 데이터가 없습니다.</p>` : '';
+                const totalAggAmount = data.aggregatedStocks.reduce((sum, item) => sum + item.amount, 0);
+                data.aggregatedStocks.forEach((item, index) => {
+                    const percentage = totalAggAmount > 0 ? ((item.amount / totalAggAmount) * 100).toFixed(1) : '0.0';
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
+                    rowDiv.innerHTML = `
+                        <div class="flex items-center space-x-2 truncate pr-2">
+                            <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorPalette[index % colorPalette.length]};"></span>
+                            <span class="font-bold text-[#191F28] truncate">${item.name}</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
+                            <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
+                        </div>
+                    `;
+                    legendContainer.appendChild(rowDiv);
+                });
             }
 
             chartInstances.totalTrend = new Chart(document.getElementById('totalAssetTrendChart').getContext('2d'), {
@@ -969,7 +904,7 @@
                         y: {
                             ticks: {
                                 font: { family: 'Pretendard', size: 11 },
-                                callback: function(value) {
+                                callback: value => {
                                     if (value >= 100000000) return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
                                     if (value >= 10000) return (value / 10000).toLocaleString() + '만';
                                     return value.toLocaleString();
@@ -988,33 +923,34 @@
         function processDividendData(dataObj) {
             const stockList = Array.isArray(dataObj['주식']) ? dataObj['주식'] : [];
             const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
-            const dividendInfoList = Array.isArray(dataObj['분배금정보']) ? dataObj['분배금정보'] : 
-                                     (Array.isArray(dataObj['분배금 정보']) ? dataObj['분배금 정보'] : 
-                                     (Array.isArray(dataObj.dividendInfo) ? dataObj.dividendInfo : []));
+            const dividendInfoList = Array.isArray(dataObj['분배금정보']) ? dataObj['분배금정보'] : (Array.isArray(dataObj['분배금 정보']) ? dataObj['분배금 정보'] : []);
 
             const validStockList = stockList.filter(item => {
                 const evalAmt = parseCleanNumber(item['평가금액']);
+                const principalAmt = parseCleanNumber(item['원금']);
                 const qty = parseCleanNumber(item['수량']);
-                return evalAmt > 0 && qty > 0;
-            }).map(item => ({
-                ...item,
-                '_owner': String(item['이름'] || item['사용자'] || '').trim(),
-                '_accType': String(item['계좌종류'] || '').trim(),
-                '_broker': String(item['증권사'] || '').trim(),
-                '_stockName': String(item['종목'] || item['종목명'] || '').trim(),
-                '_evalAmount': parseCleanNumber(item['평가금액']),
-                '_qty': parseCleanNumber(item['수량'])
-            }));
+                return (evalAmt > 0 || principalAmt > 0) && qty > 0;
+            }).map(item => {
+                const evalAmt = parseCleanNumber(item['평가금액']);
+                const principalAmt = parseCleanNumber(item['원금']);
+                return {
+                    ...item,
+                    '_owner': String(item['이름'] || item['사용자'] || '').trim(),
+                    '_accType': String(item['계좌종류'] || '').trim(),
+                    '_broker': String(item['증권사'] || '').trim(),
+                    '_stockName': String(item['종목'] || item['종목명'] || '').trim(),
+                    '_evalAmount': evalAmt > 0 ? evalAmt : principalAmt,
+                    '_qty': parseCleanNumber(item['수량'])
+                };
+            });
 
             const livingStocks = validStockList.filter(item => isLivingAccountItem(item._accType, item._broker, item._stockName));
 
             const monthlyDividends = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const afterTax = parseCleanNumber(item['세후분배금']);
-                const stockName = String(item['종목'] || item['종목명'] || '');
                 const broker = String(item['증권사'] || '');
-                if (afterTax <= 0) return false;
-                if (broker.includes('토스') && normalizeText(stockName).includes('KODEX200타겟위클리커버드콜')) return false;
+                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
                 return normMonth === selectedDividendMonth && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
             });
             const monthlyDividendSum = monthlyDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
@@ -1023,41 +959,38 @@
             const annualDividends = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const afterTax = parseCleanNumber(item['세후분배금']);
-                const stockName = String(item['종목'] || item['종목명'] || '');
                 const broker = String(item['증권사'] || '');
-                if (afterTax <= 0) return false;
-                if (broker.includes('토스') && normalizeText(stockName).includes('KODEX200타겟위클리커버드콜')) return false;
+                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
                 return normMonth.startsWith(targetYear) && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
             });
             const annualDividendSum = annualDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
-            const sideIncomes = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                return normMonth === selectedDividendMonth && String(item['계좌종류'] || '').trim() === '부가수입';
-            });
+            const sideIncomes = dividendList.filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedDividendMonth && String(item['계좌종류'] || '').trim() === '부가수입');
             const sideIncomeSum = sideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
             let tossStockQty = 0;
             validStockList.forEach(item => {
-                if (item._broker.includes('토스') && normalizeText(item._stockName).includes('KODEX200타겟위클리커버드콜')) {
+                const brk = normalizeText(item._broker);
+                const stgNorm = normalizeText(item._stockName);
+                if (brk.includes('토스') && stgNorm.includes('KODEX200타겟위클리커버드콜')) {
                     tossStockQty += item._qty;
                 }
             });
 
             const tossDivItems = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const stg = normalizeText(item['종목'] || item['종목명']);
-                return normMonth === selectedDividendMonth && String(item['증권사'] || '').trim().includes('토스') && stg.includes('KODEX200타겟위클리커버드콜');
+                const brk = normalizeText(item['증권사'] || item['브로커'] || '');
+                const stgNorm = normalizeText(item['종목'] || item['종목명']);
+                return normMonth === selectedDividendMonth && brk.includes('토스') && stgNorm.includes('KODEX200타겟위클리커버드콜');
             });
             const tossMonthlyDivSum = tossDivItems.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
             let dpsValue = 0;
             const targetNormMonth = normalizeMonth(selectedDividendMonth);
-            const targetStockKey = normalizeText('KODEX 200 타겟위클리커버드콜');
             const targetInfo = dividendInfoList.find(info => {
                 const infoMonthNorm = normalizeMonth(info['월'] || info['지급일'] || Object.values(info)[1] || Object.values(info)[0]);
                 const infoStockNorm = normalizeText(info['종목'] || info['종목명'] || Object.values(info)[0] || Object.values(info)[1]);
-                return infoMonthNorm === targetNormMonth && infoStockNorm.includes(targetStockKey);
+                return infoMonthNorm === targetNormMonth && infoStockNorm.includes('KODEX200타겟위클리커버드콜');
             });
             if (targetInfo) {
                 dpsValue = parseCleanNumber(targetInfo['주당분배금'] || targetInfo['분배금'] || targetInfo['Dps'] || Object.values(targetInfo)[4]);
@@ -1067,9 +1000,8 @@
             dividendList.forEach(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const afterTax = parseCleanNumber(item['세후분배금']);
-                const stockName = String(item['종목'] || item['종목명'] || '');
                 const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(stockName).includes('KODEX200타겟위클리커버드콜'))) return;
+                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return;
                 if (normMonth.startsWith(targetYear)) {
                     let mNum = parseInt(normMonth.split('-')[1], 10);
                     if (mNum >= 1 && mNum <= 12 && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목'])) {
@@ -1080,24 +1012,19 @@
 
             const livingStockAggMap = {};
             livingStocks.forEach(item => {
-                const name = item._stockName;
-                if (!livingStockAggMap[name]) livingStockAggMap[name] = 0;
-                livingStockAggMap[name] += item._evalAmount;
+                livingStockAggMap[item._stockName] = (livingStockAggMap[item._stockName] || 0) + item._evalAmount;
             });
-            const sortedLivingStocks = Object.entries(livingStockAggMap)
-                .map(([name, amount]) => ({ name, amount }))
-                .sort((a, b) => b.amount - a.amount);
+            const sortedLivingStocks = Object.entries(livingStockAggMap).map(([name, amount]) => ({ name, amount })).sort((a, b) => b.amount - a.amount);
 
             const currentMonthDividends = dividendList.filter(item => {
                 const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
                 const afterTax = parseCleanNumber(item['세후분배금']);
-                const stockName = String(item['종목'] || item['종목명'] || '');
                 const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(stockName).includes('KODEX200타겟위클리커버드콜'))) return false;
+                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
                 return normMonth === selectedDividendMonth;
             });
 
-            const detailRows = currentMonthDividends.map(divItem => {
+            let detailRows = currentMonthDividends.map(divItem => {
                 const owner = String(divItem['이름'] || divItem['사용자'] || '').trim();
                 const accType = String(divItem['계좌종류'] || '').trim();
                 const stockName = String(divItem['종목'] || divItem['종목명'] || '').trim();
@@ -1106,16 +1033,9 @@
 
                 let totalQty = 0;
                 if (isAccountGrouped) {
-                    const matchedStock = validStockList.filter(s => {
-                        const matchOwner = !owner || s._owner === owner || s._owner === '';
-                        const matchAcc = s._accType === accType;
-                        const matchName = normalizeText(s._stockName) === cleanStockNameNorm;
-                        return matchOwner && matchAcc && matchName;
-                    });
-                    totalQty = matchedStock.reduce((sum, s) => sum + s._qty, 0);
+                    totalQty = validStockList.filter(s => (!owner || s._owner === owner) && s._accType === accType && normalizeText(s._stockName) === cleanStockNameNorm).reduce((sum, s) => sum + s._qty, 0);
                 } else {
-                    const matchedStock = validStockList.filter(s => normalizeText(s._stockName) === cleanStockNameNorm);
-                    totalQty = matchedStock.reduce((sum, s) => sum + s._qty, 0);
+                    totalQty = validStockList.filter(s => normalizeText(s._stockName) === cleanStockNameNorm).reduce((sum, s) => sum + s._qty, 0);
                 }
 
                 const infoMatch = dividendInfoList.find(info => {
@@ -1124,42 +1044,30 @@
                     return infoMonthNorm === targetNormMonth && infoStockNorm.includes(cleanStockNameNorm);
                 });
 
-                let stockDps = 0;
-                let stockDpsDollar = 0;
-                if (infoMatch) {
-                    stockDps = parseCleanNumber(infoMatch['주당분배금'] || infoMatch['분배금'] || infoMatch['Dps'] || Object.values(infoMatch)[4]);
-                    stockDpsDollar = parseCleanNumber(infoMatch['분배금액(달러)'] || infoMatch['달러분배금'] || Object.values(infoMatch)[6] || 0);
-                }
-
                 return {
                     owner: owner || '-',
                     accType: accType || '-',
                     stockName: stockName || '-',
                     qty: totalQty,
-                    dps: stockDps,
-                    dpsDollar: stockDpsDollar,
+                    dps: infoMatch ? parseCleanNumber(infoMatch['주당분배금'] || infoMatch['분배금'] || infoMatch['Dps'] || Object.values(infoMatch)[4]) : 0,
+                    dpsDollar: infoMatch ? parseCleanNumber(infoMatch['분배금액(달러)'] || infoMatch['달러분배금'] || Object.values(infoMatch)[6] || 0) : 0,
                     afterTax: afterTaxDiv
                 };
             });
 
-            let processedDetailRows = detailRows;
             if (!isAccountGrouped) {
                 const groupedMap = {};
                 detailRows.forEach(row => {
-                    const key = row.stockName;
-                    if (!groupedMap[key]) {
-                        groupedMap[key] = { owner: '통합', accType: '전체', stockName: row.stockName, qty: row.qty, dps: row.dps, dpsDollar: row.dpsDollar, afterTax: 0 };
+                    if (!groupedMap[row.stockName]) {
+                        groupedMap[row.stockName] = { owner: '통합', accType: '전체', stockName: row.stockName, qty: row.qty, dps: row.dps, dpsDollar: row.dpsDollar, afterTax: 0 };
                     }
-                    groupedMap[key].afterTax += row.afterTax;
+                    groupedMap[row.stockName].afterTax += row.afterTax;
                 });
-                processedDetailRows = Object.values(groupedMap);
+                detailRows = Object.values(groupedMap);
             }
 
-            const totalGroupAfterTax = processedDetailRows.reduce((sum, r) => sum + r.afterTax, 0);
-            processedDetailRows = processedDetailRows.map(row => ({
-                ...row,
-                ratio: totalGroupAfterTax > 0 ? (row.afterTax / totalGroupAfterTax) * 100 : 0
-            }));
+            const totalGroupAfterTax = detailRows.reduce((sum, r) => sum + r.afterTax, 0);
+            detailRows = detailRows.map(row => ({ ...row, ratio: totalGroupAfterTax > 0 ? (row.afterTax / totalGroupAfterTax) * 100 : 0 }));
 
             return {
                 monthlySum: monthlyDividendSum,
@@ -1170,7 +1078,7 @@
                 dps: dpsValue,
                 trendArr: monthlyTrendArr,
                 livingStocks: sortedLivingStocks,
-                detailRows: processedDetailRows
+                detailRows
             };
         }
 
@@ -1205,36 +1113,21 @@
                     <th onclick="sortTable('qty')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">보유 수량 <i id="sort-icon-qty" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
                     <th onclick="sortTable('dps')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">주당 분배금 <i id="sort-icon-dps" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
             `;
-            if (!isAccountGrouped) {
-                theadHTML += `<th onclick="sortTable('ratio')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">비중 <i id="sort-icon-ratio" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>`;
-            }
+            if (!isAccountGrouped) theadHTML += `<th onclick="sortTable('ratio')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">비중 <i id="sort-icon-ratio" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>`;
             theadHTML += `<th onclick="sortTable('afterTax')" class="p-3.5 rounded-r-xl cursor-pointer hover:text-[#191F28] transition text-right">세후 분배금 <i id="sort-icon-afterTax" class="fa-solid fa-sort text-slate-300 ml-1"></i></th></tr>`;
             theadEl.innerHTML = theadHTML;
 
-            ['owner', 'accType', 'stockName', 'qty', 'dps', 'ratio', 'afterTax'].forEach(col => {
-                const icon = document.getElementById(`sort-icon-${col}`);
-                if (icon) {
-                    if (currentSortColumn === col) {
-                        icon.className = `fa-solid fa-sort-${currentSortDirection === 'asc' ? 'up' : 'down'} text-toss-blue ml-1`;
-                    } else {
-                        icon.className = `fa-solid fa-sort text-slate-300 ml-1`;
-                    }
-                }
-            });
-
             detailTbody.innerHTML = '';
             let totalDetailAfterTax = 0;
-            let totalColSpan = isAccountGrouped ? 5 : 6;
 
             if (data.detailRows.length === 0) {
-                detailTbody.innerHTML = `<tr><td colspan="${totalColSpan + 1}" class="p-6 text-center text-[#8B95A1]">선택된 월의 배당 내역이 없습니다.</td></tr>`;
+                detailTbody.innerHTML = `<tr><td colspan="${isAccountGrouped ? 6 : 7}" class="p-6 text-center text-[#8B95A1]">선택된 월의 배당 내역이 없습니다.</td></tr>`;
                 detailTfoot.innerHTML = '';
             } else {
                 data.detailRows.forEach(row => {
                     totalDetailAfterTax += row.afterTax;
                     let dpsStr = formatKRW(row.dps);
                     if (row.dpsDollar > 0) dpsStr += ` ($ ${row.dpsDollar.toFixed(2)})`;
-                    let afterTaxStr = formatKRW(row.afterTax);
 
                     let rowHTML = `
                         <td class="p-3.5"><span class="text-xs bg-slate-100 text-[#333D4B] px-2.5 py-1 rounded-lg font-bold">${row.owner}</span></td>
@@ -1254,7 +1147,7 @@
                             </td>
                         `;
                     }
-                    rowHTML += `<td class="p-3.5 text-toss-green font-bold text-right">${afterTaxStr}</td>`;
+                    rowHTML += `<td class="p-3.5 text-toss-green font-bold text-right">${formatKRW(row.afterTax)}</td>`;
 
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50/80 transition";
@@ -1264,7 +1157,7 @@
 
                 detailTfoot.innerHTML = `
                     <tr>
-                        <td colspan="${totalColSpan}" class="p-4 text-left font-extrabold text-[#191F28]">합계 총 세후 분배금</td>
+                        <td colspan="${isAccountGrouped ? 5 : 6}" class="p-4 text-left font-extrabold text-[#191F28]">합계 총 세후 분배금</td>
                         <td class="p-4 text-right font-extrabold text-toss-green">${formatKRW(totalDetailAfterTax)}</td>
                     </tr>
                 `;
@@ -1278,43 +1171,36 @@
             if (chartInstances.divBar) chartInstances.divBar.destroy();
 
             const colorPalette = ['#3182F6', '#00C853', '#9333EA', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#EC4899', '#64748B', '#10B981'];
-            
-            const livingStocks = data.livingStocks;
-            const totalLivingAmt = livingStocks.reduce((sum, s) => sum + s.amount, 0);
+            const totalLivingAmt = data.livingStocks.reduce((sum, s) => sum + s.amount, 0);
 
             chartInstances.livingDonut = new Chart(document.getElementById('livingAccountChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: livingStocks.map(s => s.name),
-                    datasets: [{ data: livingStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, livingStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
+                    labels: data.livingStocks.map(s => s.name),
+                    datasets: [{ data: data.livingStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, data.livingStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '72%' }
             });
 
             const livingLegendContainer = document.getElementById('living-legend-container');
             if (livingLegendContainer) {
-                livingLegendContainer.innerHTML = '';
-                if (livingStocks.length === 0) {
-                    livingLegendContainer.innerHTML = `<p class="text-xs text-[#8B95A1] text-center py-2">생활비 계좌 종목 데이터가 없습니다.</p>`;
-                } else {
-                    livingStocks.forEach((item, index) => {
-                        const percentage = totalLivingAmt > 0 ? ((item.amount / totalLivingAmt) * 100).toFixed(1) : '0.0';
-                        const colorHex = colorPalette[index % colorPalette.length];
-                        const rowDiv = document.createElement('div');
-                        rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
-                        rowDiv.innerHTML = `
-                            <div class="flex items-center space-x-2 truncate pr-2">
-                                <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorHex};"></span>
-                                <span class="font-bold text-[#191F28] truncate">${item.name}</span>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
-                                <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
-                            </div>
-                        `;
-                        livingLegendContainer.appendChild(rowDiv);
-                    });
-                }
+                livingLegendContainer.innerHTML = data.livingStocks.length === 0 ? `<p class="text-xs text-[#8B95A1] text-center py-2">생활비 계좌 종목 데이터가 없습니다.</p>` : '';
+                data.livingStocks.forEach((item, index) => {
+                    const percentage = totalLivingAmt > 0 ? ((item.amount / totalLivingAmt) * 100).toFixed(1) : '0.0';
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
+                    rowDiv.innerHTML = `
+                        <div class="flex items-center space-x-2 truncate pr-2">
+                            <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorPalette[index % colorPalette.length]};"></span>
+                            <span class="font-bold text-[#191F28] truncate">${item.name}</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
+                            <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
+                        </div>
+                    `;
+                    livingLegendContainer.appendChild(rowDiv);
+                });
             }
 
             chartInstances.divBar = new Chart(document.getElementById('monthlyDividendChart').getContext('2d'), {
@@ -1331,11 +1217,7 @@
                         y: {
                             ticks: {
                                 font: { family: 'Pretendard', size: 11 },
-                                callback: function(value) {
-                                    if (value >= 100000000) return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
-                                    if (value >= 10000) return (value / 10000).toLocaleString() + '만';
-                                    return value.toLocaleString();
-                                }
+                                callback: value => value >= 100000000 ? (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억' : value.toLocaleString()
                             },
                             grid: { color: 'rgba(0,0,0,0.03)' }
                         },
@@ -1351,59 +1233,37 @@
             const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
             const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
 
-            const accMonthlyDividends = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                return normMonth === selectedExpenseMonth && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
-            });
-            const accMonthlyDividendSum = accMonthlyDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            const accMonthlyDividendSum = dividendList
+                .filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedExpenseMonth && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']))
+                .reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
-            const accSideIncomes = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                return normMonth === selectedExpenseMonth && String(item['계좌종류'] || '').trim() === '부가수입';
-            });
-            const accSideIncomeSum = accSideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            const accSideIncomeSum = dividendList
+                .filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedExpenseMonth && String(item['계좌종류'] || '').trim() === '부가수입')
+                .reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
             const totalIncome = accMonthlyDividendSum + accSideIncomeSum;
             
-            let reinvestSum = 0;
-            let emergencySum = 0;
-            let travelSum = 0;
-            let totalExpenseSum = 0;
-
+            let reinvestSum = 0, emergencySum = 0, travelSum = 0, totalExpenseSum = 0;
             const annualExpenseMap = {};
-            for (let i = 1; i <= 12; i++) {
-                const mKey = String(i).padStart(2, '0');
-                annualExpenseMap[mKey] = { total: 0, details: {}, largeCategories: {} };
-            }
+            for (let i = 1; i <= 12; i++) annualExpenseMap[String(i).padStart(2, '0')] = { total: 0, details: {}, largeCategories: {} };
 
             const currentMonthSubCategories = {};
 
             expenseList.forEach(row => {
                 const normRowMonth = normalizeDateToYM(row['월']);
                 if (!normRowMonth || !normRowMonth.includes('-')) return;
-                const parts = normRowMonth.split('-');
-                const mKey = parts[1];
-                const mNum = parseInt(mKey, 10);
-                if (isNaN(mNum) || mNum < 1 || mNum > 12) return;
+                const mKey = normRowMonth.split('-')[1];
+                if (!annualExpenseMap[mKey]) return;
 
                 const largeCat = String(row['대분류'] || '').trim();
                 const smallCat = String(row['소분류'] || '').trim();
                 const source = String(row['출처'] || '').trim();
-                const rawAmount = parseCleanNumber(row['금액']);
-
-                const isLocalCurrency = source.includes('지역화폐') || source.includes('지역인증');
-                const calculatedAmount = isLocalCurrency ? rawAmount * 0.9 : rawAmount;
+                const calculatedAmount = parseCleanNumber(row['금액']) * (source.includes('지역화폐') || source.includes('지역인증') ? 0.9 : 1);
 
                 annualExpenseMap[mKey].total += calculatedAmount;
-                if (!annualExpenseMap[mKey].details[largeCat]) {
-                    annualExpenseMap[mKey].details[largeCat] = {};
-                }
+                if (!annualExpenseMap[mKey].details[largeCat]) annualExpenseMap[mKey].details[largeCat] = {};
                 annualExpenseMap[mKey].details[largeCat][smallCat] = (annualExpenseMap[mKey].details[largeCat][smallCat] || 0) + calculatedAmount;
-
-                if (!annualExpenseMap[mKey].largeCategories[largeCat]) {
-                    annualExpenseMap[mKey].largeCategories[largeCat] = 0;
-                }
-                annualExpenseMap[mKey].largeCategories[largeCat] += calculatedAmount;
+                annualExpenseMap[mKey].largeCategories[largeCat] = (annualExpenseMap[mKey].largeCategories[largeCat] || 0) + calculatedAmount;
 
                 if (normRowMonth === selectedExpenseMonth) {
                     totalExpenseSum += calculatedAmount;
@@ -1412,27 +1272,21 @@
                         if (smallCat === '비상금') emergencySum += calculatedAmount;
                         if (smallCat === '여행용적금') travelSum += calculatedAmount;
                     }
-
                     const subKey = `${largeCat} > ${smallCat}`;
-                    if (!currentMonthSubCategories[subKey]) {
-                        currentMonthSubCategories[subKey] = { large: largeCat, small: smallCat, amount: 0 };
-                    }
+                    if (!currentMonthSubCategories[subKey]) currentMonthSubCategories[subKey] = { large: largeCat, small: smallCat, amount: 0 };
                     currentMonthSubCategories[subKey].amount += calculatedAmount;
                 }
             });
 
-            const surplus = totalIncome - totalExpenseSum;
-            const sortedSubCategories = Object.values(currentMonthSubCategories).sort((a, b) => b.amount - a.amount);
-
             return {
                 totalIncome,
                 totalExpense: totalExpenseSum,
-                surplus,
+                surplus: totalIncome - totalExpenseSum,
                 reinvest: reinvestSum,
                 emergency: emergencySum,
                 travel: travelSum,
                 annualMap: annualExpenseMap,
-                sortedSubCategories: sortedSubCategories
+                sortedSubCategories: Object.values(currentMonthSubCategories).sort((a, b) => b.amount - a.amount)
             };
         }
 
@@ -1452,41 +1306,29 @@
         function renderSubCategoryAnalysis(accData) {
             const top3Container = document.getElementById('top3-subcat-container');
             const tbodyEl = document.getElementById('subcat-table-tbody');
-            
             const subList = accData.sortedSubCategories;
             const totalExp = accData.totalExpense;
 
-            top3Container.innerHTML = '';
-            const top3 = subList.slice(0, 3);
-            const rankBadges = [
-                { bg: 'bg-amber-500', text: '1위' },
-                { bg: 'bg-slate-400', text: '2위' },
-                { bg: 'bg-amber-700', text: '3위' }
-            ];
+            top3Container.innerHTML = subList.length === 0 ? `<div class="col-span-3 text-center text-xs text-[#8B95A1] py-4">지출 데이터가 없습니다.</div>` : '';
+            subList.slice(0, 3).forEach((item, idx) => {
+                const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
+                const badges = [{ bg: 'bg-amber-500', text: '1위' }, { bg: 'bg-slate-400', text: '2위' }, { bg: 'bg-amber-700', text: '3위' }];
 
-            if (top3.length === 0) {
-                top3Container.innerHTML = `<div class="col-span-3 text-center text-xs text-[#8B95A1] py-4">지출 데이터가 없습니다.</div>`;
-            } else {
-                top3.forEach((item, idx) => {
-                    const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
-                    const badge = rankBadges[idx];
-
-                    const card = document.createElement('div');
-                    card.className = "bg-[#F7F8FA] border border-slate-200/60 p-4.5 rounded-2xl flex flex-col justify-between";
-                    card.innerHTML = `
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-white ${badge.bg} px-2.5 py-0.5 rounded-full shadow-sm">${badge.text}</span>
-                            <span class="text-xs font-bold text-toss-blue">${ratio.toFixed(1)}% 비중</span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-extrabold text-[#191F28] truncate">${item.small}</p>
-                            <p class="text-xs text-[#8B95A1] mt-0.5">${item.large}</p>
-                        </div>
-                        <p class="text-lg font-extrabold text-[#191F28] mt-3 tracking-tight">${formatKRW(item.amount)}</p>
-                    `;
-                    top3Container.appendChild(card);
-                });
-            }
+                const card = document.createElement('div');
+                card.className = "bg-[#F7F8FA] border border-slate-200/60 p-4.5 rounded-2xl flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-white ${badges[idx].bg} px-2.5 py-0.5 rounded-full shadow-sm">${badges[idx].text}</span>
+                        <span class="text-xs font-bold text-toss-blue">${ratio.toFixed(1)}% 비중</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-extrabold text-[#191F28] truncate">${item.small}</p>
+                        <p class="text-xs text-[#8B95A1] mt-0.5">${item.large}</p>
+                    </div>
+                    <p class="text-lg font-extrabold text-[#191F28] mt-3 tracking-tight">${formatKRW(item.amount)}</p>
+                `;
+                top3Container.appendChild(card);
+            });
 
             tbodyEl.innerHTML = '';
             if (subList.length === 0) {
@@ -1494,8 +1336,6 @@
             } else {
                 subList.forEach((item, index) => {
                     const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
-                    const ratioWidth = Math.min(Math.max(ratio, 0), 100);
-
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50/80 transition";
                     tr.innerHTML = `
@@ -1506,7 +1346,7 @@
                         <td class="p-3.5">
                             <div class="flex items-center space-x-2">
                                 <div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-toss-blue h-full rounded-full transition-all duration-300" style="width: ${ratioWidth}%;"></div>
+                                    <div class="bg-toss-blue h-full rounded-full transition-all duration-300" style="width: ${Math.min(Math.max(ratio, 0), 100)}%;"></div>
                                 </div>
                             </div>
                         </td>
@@ -1520,13 +1360,11 @@
             if (chartInstances.annualCat) chartInstances.annualCat.destroy();
 
             const annualMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-            const annualTotals = annualMonths.map(m => accData.annualMap[m].total);
-
             chartInstances.annualCat = new Chart(document.getElementById('annualCategoryBarChart').getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    datasets: [{ label: '월 총 지출', data: annualTotals, backgroundColor: '#3182F6', borderRadius: 8 }]
+                    datasets: [{ label: '월 총 지출', data: annualMonths.map(m => accData.annualMap[m].total), backgroundColor: '#3182F6', borderRadius: 8 }]
                 },
                 options: {
                     responsive: true,
@@ -1535,17 +1373,11 @@
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                title: function(context) { return `${context[0].label} 지출 요약 (지역화폐 90% 반영)`; },
-                                label: function(context) {
-                                    const mIndex = context.dataIndex;
-                                    const mKey = annualMonths[mIndex];
-                                    const monthData = accData.annualMap[mKey];
-                                    
-                                    let lines = [`총 지출: ₩ ${Math.round(monthData.total).toLocaleString('ko-KR')}`];
-                                    lines.push(`----------------------------------`);
-                                    
-                                    const sortedLarge = Object.entries(monthData.largeCategories).sort((a, b) => b[1] - a[1]).slice(0, 3);
-                                    sortedLarge.forEach(([largeName, amt], idx) => {
+                                title: context => `${context[0].label} 지출 요약 (지역화폐 90% 반영)`,
+                                label: context => {
+                                    const monthData = accData.annualMap[annualMonths[context.dataIndex]];
+                                    let lines = [`총 지출: ₩ ${Math.round(monthData.total).toLocaleString('ko-KR')}`, `----------------------------------`];
+                                    Object.entries(monthData.largeCategories).sort((a, b) => b[1] - a[1]).slice(0, 3).forEach(([largeName, amt], idx) => {
                                         lines.push(`${idx + 1}. [${largeName}]: ₩ ${Math.round(amt).toLocaleString('ko-KR')}`);
                                     });
                                     return lines;
@@ -1558,11 +1390,7 @@
                             beginAtZero: true,
                             ticks: {
                                 font: { family: 'Pretendard', size: 11 },
-                                callback: function(value) {
-                                    if (value >= 100000000) return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
-                                    if (value >= 10000) return (value / 10000).toLocaleString() + '만';
-                                    return value.toLocaleString();
-                                }
+                                callback: value => value >= 100000000 ? (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억' : value.toLocaleString()
                             },
                             grid: { color: 'rgba(0,0,0,0.03)' }
                         },
@@ -1598,14 +1426,8 @@
 
                     if (!selectedDividendMonth || !selectedExpenseMonth) {
                         const now = new Date();
-                        let curYear = now.getFullYear();
-                        let curMonth = now.getMonth();
-                        
-                        curMonth -= 1;
-                        if (curMonth < 0) {
-                            curMonth = 11;
-                            curYear -= 1;
-                        }
+                        let curYear = now.getFullYear(), curMonth = now.getMonth() - 1;
+                        if (curMonth < 0) { curMonth = 11; curYear -= 1; }
                         const prevMonthStr = `${curYear}-${String(curMonth + 1).padStart(2, '0')}`;
                         
                         if (!selectedDividendMonth) selectedDividendMonth = prevMonthStr;
@@ -1615,9 +1437,7 @@
                     document.getElementById('current-dividend-month-label').innerText = `${selectedDividendMonth} 배당금 분석`;
                     document.getElementById('current-account-month-label').innerText = `${selectedExpenseMonth} 가계부 분석`;
 
-                    const currentSystemYM = getCurrentSystemYM();
-
-                    updatePortfolioUI(processPortfolioData(jsonResult.data, currentSystemYM));
+                    updatePortfolioUI(processPortfolioData(jsonResult.data));
                     updateDividendUI(processDividendData(jsonResult.data));
                     updateAccountbookUI(processAccountbookData(jsonResult.data));
                     
@@ -1643,9 +1463,7 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchSheetData();
-        });
+        window.addEventListener('DOMContentLoaded', () => { fetchSheetData(); });
     </script>
 </body>
 </html>
