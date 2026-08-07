@@ -20,76 +20,92 @@
                     colors: {
                         toss: {
                             blue: '#3182F6',
-                            blueDark: '#1B64DA',
-                            bg: '#F7F8FA',
+                            blueHover: '#1B64DA',
+                            bg: '#F2F4F6', // 지정해주신 고급스러운 라이트 모드 배경
                             card: '#FFFFFF',
                             text: '#191F28',
                             subText: '#8B95A1',
-                            green: '#00C853',
-                            red: '#FF5252'
+                            green: '#04C755',
+                            red: '#F04452',
+                            border: '#E5E8EB'
                         }
                     },
                     boxShadow: {
-                        toss: '0 2px 12px rgba(0, 0, 0, 0.04)',
-                        tossHover: '0 6px 20px rgba(0, 0, 0, 0.08)',
+                        toss: '0 4px 16px rgba(0, 0, 0, 0.04)',
+                        tossHover: '0 12px 24px rgba(0, 0, 0, 0.08)',
                     }
                 }
             }
         }
     </script>
+    <style>
+        /* 부드러운 트랜지션 클래스 */
+        .card-interactive {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card-interactive:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+        /* 스크롤바 미화 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D1D6DB; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8B95A1; }
+    </style>
 </head>
-<body class="bg-[#F7F8FA] text-[#191F28] font-sans antialiased pb-24 md:pb-0 md:pl-64 selection:bg-blue-100 selection:text-blue-900">
+<body class="bg-toss-bg text-toss-text font-sans antialiased pb-24 md:pb-0 md:pl-64 selection:bg-blue-100 selection:text-toss-blue">
 
     <!-- 로딩 스피너 오버레이 -->
-    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white transition-opacity duration-300">
-        <div class="w-12 h-12 border-4 border-toss-blue border-white/20 rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-lg tracking-tight">구글 시트 금융 데이터를 동기화하는 중...</p>
-        <p class="text-xs text-slate-300 mt-1">잠시만 기다려 주세요.</p>
+    <div id="loading-overlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="w-12 h-12 border-4 border-toss-border border-t-toss-blue rounded-full animate-spin mb-4"></div>
+        <p class="font-bold text-lg tracking-tight text-toss-text">데이터를 동기화하고 있어요</p>
+        <p class="text-sm text-toss-subText mt-1">잠시만 기다려 주세요.</p>
     </div>
 
     <!-- [PC 전용] 사이드바 내비게이션 -->
-    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-slate-100 fixed inset-y-0 left-0 z-30 shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
-        <div class="p-6 border-b border-slate-100 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-2xl bg-toss-blue flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-toss-blue/20">
+    <aside class="hidden md:flex flex-col w-64 bg-toss-card border-r border-toss-border fixed inset-y-0 left-0 z-30 shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
+        <div class="p-6 border-b border-toss-border flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-[14px] bg-toss-blue flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-toss-blue/20">
                 F
             </div>
             <div>
-                <h1 class="font-extrabold text-[#191F28] text-base tracking-tight">FIRE Life</h1>
-                <p class="text-xs text-[#8B95A1] font-medium">프로 부부 자산 관리</p>
+                <h1 class="font-extrabold text-toss-text text-base tracking-tight">FIRE Life</h1>
+                <p class="text-xs text-toss-subText font-medium mt-0.5">프로 부부 자산 관리</p>
             </div>
         </div>
         <nav class="flex-1 p-4 space-y-2">
-            <button onclick="switchTab('portfolio')" id="nav-pc-portfolio" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-semibold text-sm transition-all bg-blue-50 text-toss-blue">
-                <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+            <button onclick="switchTab('portfolio')" id="nav-pc-portfolio" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 bg-blue-50 text-toss-blue">
+                <i class="fa-solid fa-chart-pie w-5 text-center text-lg"></i>
                 <span>포트폴리오</span>
             </button>
-            <button onclick="switchTab('dividend')" id="nav-pc-dividend" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium text-sm transition-all text-[#6B7684] hover:bg-slate-50 hover:text-[#191F28]">
-                <i class="fa-solid fa-coins w-5 text-center"></i>
+            <button onclick="switchTab('dividend')" id="nav-pc-dividend" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all active:scale-95 text-toss-subText hover:bg-slate-50 hover:text-toss-text">
+                <i class="fa-solid fa-coins w-5 text-center text-lg"></i>
                 <span>배당금</span>
             </button>
-            <button onclick="switchTab('accountbook')" id="nav-pc-accountbook" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium text-sm transition-all text-[#6B7684] hover:bg-slate-50 hover:text-[#191F28]">
-                <i class="fa-solid fa-wallet w-5 text-center"></i>
+            <button onclick="switchTab('accountbook')" id="nav-pc-accountbook" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all active:scale-95 text-toss-subText hover:bg-slate-50 hover:text-toss-text">
+                <i class="fa-solid fa-wallet w-5 text-center text-lg"></i>
                 <span>가계부</span>
             </button>
         </nav>
-        <div class="p-4 border-t border-slate-100">
-            <div class="bg-[#F7F8FA] p-3.5 rounded-2xl text-xs text-[#6B7684] space-y-1.5">
-                <p class="font-bold text-[#333D4B]">API 연결 상태</p>
-                <p id="data-status-text" class="text-amber-500 font-semibold">● 대기중...</p>
-                <button onclick="fetchSheetData()" class="mt-1 w-full py-2 bg-white border border-slate-200 text-[#333D4B] rounded-xl font-bold shadow-sm hover:bg-slate-50 transition">새로고침</button>
+        <div class="p-4 border-t border-toss-border">
+            <div class="bg-toss-bg p-4 rounded-2xl text-xs text-toss-subText flex flex-col items-center border border-toss-border/50">
+                <p class="font-bold text-[#333D4B] mb-1">API 연결 상태</p>
+                <p id="data-status-text" class="text-amber-500 font-bold mb-3">● 대기중...</p>
+                <button onclick="fetchSheetData()" class="w-full py-2.5 bg-white border border-toss-border text-[#333D4B] rounded-xl font-bold shadow-sm hover:bg-slate-50 active:scale-95 transition-all">새로고침</button>
             </div>
         </div>
     </aside>
 
     <!-- [모바일 전용] 상단 헤더 -->
-    <header class="md:hidden bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-30 px-5 py-3.5 flex items-center justify-between">
+    <header class="md:hidden bg-toss-card/90 backdrop-blur-md border-b border-toss-border sticky top-0 z-30 px-5 py-4 flex items-center justify-between">
         <div class="flex items-center space-x-2.5">
-            <div class="w-8 h-8 rounded-xl bg-toss-blue flex items-center justify-center text-white font-extrabold text-sm shadow-sm shadow-toss-blue/20">
+            <div class="w-8 h-8 rounded-[12px] bg-toss-blue flex items-center justify-center text-white font-extrabold text-sm shadow-sm shadow-toss-blue/20">
                 F
             </div>
-            <span id="mobile-header-title" class="font-bold text-[#191F28] text-base">포트폴리오</span>
+            <span id="mobile-header-title" class="font-bold text-toss-text text-lg tracking-tight">포트폴리오</span>
         </div>
-        <button onclick="fetchSheetData()" class="text-xs bg-slate-100 text-[#333D4B] px-3 py-1.5 rounded-full font-semibold active:scale-95 transition"><i class="fa-solid fa-rotate mr-1"></i> 새로고침</button>
+        <button onclick="fetchSheetData()" class="text-xs bg-toss-bg text-[#333D4B] px-3.5 py-2 rounded-full font-bold active:scale-90 transition-transform"><i class="fa-solid fa-rotate mr-1"></i> 새로고침</button>
     </header>
 
     <!-- 메인 콘텐츠 영역 -->
@@ -97,97 +113,95 @@
 
         <!-- ================= [탭 1] 포트폴리오 ================= -->
         <section id="tab-portfolio" class="space-y-6">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
-                    <div class="absolute right-3 top-3 text-blue-500/10 text-5xl font-extrabold pointer-events-none">STOCKS</div>
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 주식 자산</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-stock">₩ 0</h3>
-                    <span class="text-xs text-toss-blue font-bold mt-3 inline-block">주식 시트 평가금액 총합</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive relative overflow-hidden">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">총 주식 자산</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="card-total-stock">₩ 0</h3>
+                    <div class="mt-4 flex items-center space-x-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-toss-blue"></span>
+                        <span class="text-[11px] text-toss-subText font-semibold">주식 시트 평가금액 총합</span>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
-                    <div class="absolute right-3 top-3 text-red-500/10 text-5xl font-extrabold pointer-events-none">DEBT</div>
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 대출 (주담대 + 부모님)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-toss-red tracking-tight" id="card-total-debt">₩ 0</h3>
-                    <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block" id="debt-status-label">현재월(2026-08) 1:1 매칭 연동</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive relative overflow-hidden">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">총 대출 (주담대+부모님)</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-red tracking-tight mt-1" id="card-total-debt">₩ 0</h3>
+                    <span class="text-[11px] text-toss-subText font-semibold mt-4 block" id="debt-status-label">현재월(2026-08) 1:1 매칭 연동</span>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 transition hover:shadow-tossHover relative overflow-hidden">
-                    <div class="absolute right-3 top-3 text-emerald-500/10 text-5xl font-extrabold pointer-events-none">ASSET</div>
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 자산</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-asset">₩ 0</h3>
-                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 아파트(4억)</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive relative overflow-hidden">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">총 자산 (Net Worth)</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="card-total-asset">₩ 0</h3>
+                    <span class="text-[11px] text-toss-green font-bold mt-4 block bg-green-50 w-fit px-2 py-0.5 rounded-md" id="asset-date-label">주식자산 + 총대출 + 부동산(4억)</span>
                 </div>
             </div>
 
             <!-- 계좌별 분류 카드 -->
-            <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 md:p-6 space-y-4 shadow-sm">
-                <div class="flex items-center justify-between">
+            <div class="bg-white rounded-[20px] p-6 shadow-toss border border-toss-border space-y-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
                     <div class="flex items-center space-x-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-toss-blue animate-pulse"></span>
-                        <h4 class="text-sm font-extrabold text-[#191F28] tracking-tight">총 주식 자산 세부 구성 계좌</h4>
+                        <h4 class="text-base font-bold text-toss-text tracking-tight">자산 세부 구성</h4>
                     </div>
-                    <span class="text-[11px] text-[#8B95A1] font-medium">생활비 + 주담대상환용 + 자동차 + 노후 계좌 합산</span>
+                    <span class="text-[12px] text-toss-subText font-medium bg-toss-bg px-2.5 py-1 rounded-md">생활비 + 주담대 + 자동차 + 노후</span>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-gradient-to-br from-[#10B981] to-[#047857] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-[10px] bg-white/25 px-2.5 py-1 rounded-full font-semibold text-white">생활비 계좌</span>
-                            <i class="fa-solid fa-wallet text-emerald-200 text-sm"></i>
+                
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-2xl card-interactive flex flex-col justify-between">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <i class="fa-solid fa-wallet text-toss-green text-sm"></i>
+                            <span class="text-[12px] font-bold text-[#333D4B]">생활비</span>
                         </div>
                         <div>
-                            <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-living-account">₩ 0</h4>
-                            <p class="text-xs text-emerald-100/80 font-medium mt-1">연금2, ISA, 일반 (토스/Google 제외)</p>
+                            <h4 class="text-xl md:text-2xl font-extrabold text-toss-text tracking-tight" id="card-living-account">₩ 0</h4>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-[10px] bg-white/25 px-2.5 py-1 rounded-full font-semibold text-white">주담대 상환용</span>
-                            <i class="fa-solid fa-house-chimney text-purple-200 text-sm"></i>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-2xl card-interactive flex flex-col justify-between">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <i class="fa-solid fa-house-chimney text-purple-500 text-sm"></i>
+                            <span class="text-[12px] font-bold text-[#333D4B]">주담대 상환용</span>
                         </div>
                         <div>
-                            <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-mortgage-stock-account">₩ 0</h4>
-                            <p class="text-xs text-purple-100/80 font-medium mt-1">토스 / 타겟위클리커버드콜</p>
+                            <h4 class="text-xl md:text-2xl font-extrabold text-toss-text tracking-tight" id="card-mortgage-stock-account">₩ 0</h4>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-[#333D4B] to-[#191F28] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-semibold text-slate-200">자동차 계좌</span>
-                            <i class="fa-solid fa-car text-slate-300 text-sm"></i>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-2xl card-interactive flex flex-col justify-between">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <i class="fa-solid fa-car text-slate-500 text-sm"></i>
+                            <span class="text-[12px] font-bold text-[#333D4B]">자동차</span>
                         </div>
                         <div>
-                            <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-car-account">₩ 0</h4>
-                            <p class="text-xs text-slate-300/80 font-medium mt-1">차량 교체 목적 자금 (Google)</p>
+                            <h4 class="text-xl md:text-2xl font-extrabold text-toss-text tracking-tight" id="card-car-account">₩ 0</h4>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-[#3182F6] to-[#1B64DA] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-[10px] bg-white/25 px-2.5 py-1 rounded-full font-semibold text-white">노후 계좌</span>
-                            <i class="fa-solid fa-shield-heart text-blue-200 text-sm"></i>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-2xl card-interactive flex flex-col justify-between">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <i class="fa-solid fa-shield-heart text-toss-blue text-sm"></i>
+                            <span class="text-[12px] font-bold text-[#333D4B]">노후 연금</span>
                         </div>
                         <div>
-                            <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-retirement-account">₩ 0</h4>
-                            <p class="text-xs text-blue-100/80 font-medium mt-1">연금1, IRP 장기 은퇴 자산</p>
+                            <h4 class="text-xl md:text-2xl font-extrabold text-toss-text tracking-tight" id="card-retirement-account">₩ 0</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 차트 영역 -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border flex flex-col justify-between">
                     <div>
-                        <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">보유 종목 전체 비중</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">주식 시트 전체 종목 합산 비중 (총 주식 자산 일치)</p>
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight mb-1">포트폴리오 비중</h3>
+                        <p class="text-xs text-toss-subText mb-5">보유 종목 전체 자산 분배 현황</p>
                     </div>
-                    <div class="relative h-48 flex items-center justify-center mb-4">
+                    <div class="relative h-52 flex items-center justify-center mb-4">
                         <canvas id="allStocksPieChart"></canvas>
                     </div>
-                    <div id="portfolio-legend-container" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs divide-y divide-slate-100"></div>
+                    <div id="portfolio-legend-container" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs"></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 lg:col-span-2 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">월별 전체 자산 추이</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">'계좌내역' 시트 A열(날짜) 및 L열(총 자산) 연동 (Y축 억 단위 표기)</p>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border lg:col-span-2 flex flex-col justify-between">
+                    <div class="flex justify-between items-end mb-5">
+                        <div>
+                            <h3 class="font-bold text-toss-text text-lg tracking-tight mb-1">월별 전체 자산 추이</h3>
+                            <p class="text-xs text-toss-subText">자산총액 성장 그래프</p>
+                        </div>
                     </div>
                     <div class="relative h-72">
                         <canvas id="totalAssetTrendChart"></canvas>
@@ -196,30 +210,29 @@
             </div>
 
             <!-- 보유 종목 테이블 및 필터 칩 영역 -->
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-5">
+            <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border space-y-5">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">보유 종목 상세 현황</h3>
-                        <p class="text-xs text-[#8B95A1] mt-0.5">"주식" 시트 기반 실시간 동기화</p>
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight">보유 종목 상세</h3>
                     </div>
-                    <div id="account-filter-chips" class="flex flex-wrap items-center gap-2 text-xs"></div>
+                    <div id="account-filter-chips" class="flex flex-wrap items-center gap-2 text-[13px]"></div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#F7F8FA] text-[#8B95A1] uppercase text-[11px] font-bold tracking-wider select-none">
+                        <thead class="bg-toss-bg text-toss-subText text-[12px] font-bold tracking-wide select-none">
                             <tr>
-                                <th onclick="sortTable('소유자')" class="p-3.5 rounded-l-xl cursor-pointer hover:text-[#191F28] transition">소유자 <i id="sort-icon-소유자" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('계좌종류')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">계좌종류 <i id="sort-icon-계좌종류" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('증권사')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">증권사 <i id="sort-icon-증권사" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('종목명')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">종목명 <i id="sort-icon-종목명" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('수량')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">수량 <i id="sort-icon-수량" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('평가금액')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">평가금액 <i id="sort-icon-평가금액" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                                <th onclick="sortTable('수익률')" class="p-3.5 rounded-r-xl cursor-pointer hover:text-[#191F28] transition text-right">수익률 <i id="sort-icon-수익률" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th onclick="sortTable('소유자')" class="p-4 rounded-l-xl cursor-pointer hover:text-toss-text transition">소유자 <i id="sort-icon-소유자" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('계좌종류')" class="p-4 cursor-pointer hover:text-toss-text transition">구분 <i id="sort-icon-계좌종류" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('증권사')" class="p-4 cursor-pointer hover:text-toss-text transition">증권사 <i id="sort-icon-증권사" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('종목명')" class="p-4 cursor-pointer hover:text-toss-text transition">종목명 <i id="sort-icon-종목명" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('수량')" class="p-4 cursor-pointer hover:text-toss-text transition text-right">수량 <i id="sort-icon-수량" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('평가금액')" class="p-4 cursor-pointer hover:text-toss-text transition text-right">평가금액 <i id="sort-icon-평가금액" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                                <th onclick="sortTable('수익률')" class="p-4 rounded-r-xl cursor-pointer hover:text-toss-text transition text-right">수익률 <i id="sort-icon-수익률" class="fa-solid fa-sort ml-1 opacity-50"></i></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="stock-table-tbody"></tbody>
-                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="stock-table-tfoot"></tfoot>
+                        <tbody class="divide-y divide-toss-border/60 font-semibold text-[#333D4B]" id="stock-table-tbody"></tbody>
+                        <tfoot class="bg-toss-bg/50 border-t border-toss-border text-toss-text font-bold" id="stock-table-tfoot"></tfoot>
                     </table>
                 </div>
             </div>
@@ -227,102 +240,110 @@
 
         <!-- ================= [탭 2] 배당금 ================= -->
         <section id="tab-dividend" class="space-y-6 hidden">
-            <div class="bg-white p-4.5 rounded-2xl shadow-toss border border-slate-100/80 flex items-center justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <button onclick="changeDividendMonth(-1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-left text-xs text-[#333D4B]"></i></button>
-                    <span class="font-extrabold text-lg text-[#191F28]" id="current-dividend-month-label">배당금 분석</span>
-                    <button onclick="changeDividendMonth(1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-right text-xs text-[#333D4B]"></i></button>
+            <div class="bg-toss-card p-4 rounded-[20px] shadow-toss border border-toss-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4 bg-toss-bg p-1 rounded-[14px]">
+                    <button onclick="changeDividendMonth(-1)" class="w-10 h-10 rounded-[10px] flex items-center justify-center hover:bg-white hover:shadow-sm active:scale-90 transition-all text-toss-subText"><i class="fa-solid fa-chevron-left text-sm"></i></button>
+                    <span class="font-extrabold text-lg text-toss-text w-24 text-center tabular-nums" id="current-dividend-month-label">2026-08</span>
+                    <button onclick="changeDividendMonth(1)" class="w-10 h-10 rounded-[10px] flex items-center justify-center hover:bg-white hover:shadow-sm active:scale-90 transition-all text-toss-subText"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                 </div>
-                <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">배당금 실시간 연동</span>
+                <span class="text-[12px] bg-blue-50 text-toss-blue px-3.5 py-1.5 rounded-[10px] font-bold border border-blue-100">배당금 실시간 연동</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-[#00C853] text-white p-6 rounded-2xl shadow-md">
-                    <p class="text-xs text-emerald-100 font-semibold tracking-wide mb-1.5 uppercase">이번 달 받은 배당금 (생활비 기준)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="card-monthly-dividend">₩ 0</h3>
-                    <div class="mt-4 pt-3 border-t border-emerald-400/30 text-xs flex justify-between text-emerald-100 font-medium">
-                        <span>선택된 월 기준 세후 합산</span>
-                        <span class="font-bold">안정권</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive relative overflow-hidden">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">당월 생활비 배당금</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1 text-toss-green" id="card-monthly-dividend">₩ 0</h3>
+                    <div class="mt-4 flex justify-between text-[12px] font-semibold text-toss-subText">
+                        <span>세후 실제 수령액</span>
+                        <span class="text-toss-green bg-green-50 px-2 py-0.5 rounded">안정권</span>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">올해 누적 생활비 배당금</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-annual-dividend">₩ 0</h3>
-                    <span class="text-xs text-toss-blue font-bold mt-3 inline-block">당해 연도 누적 합산</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">올해 누적 생활비 배당금</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="card-annual-dividend">₩ 0</h3>
+                    <span class="text-[11px] text-toss-blue font-bold mt-4 inline-block bg-blue-50 px-2 py-0.5 rounded">당해 연도 누적 합산</span>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">부가 수입 (당월)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-side-income">₩ 0</h3>
-                    <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block">계좌종류: 부가수입</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">당월 부가 수입</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="card-side-income">₩ 0</h3>
+                    <span class="text-[11px] text-toss-subText font-semibold mt-4 block">계좌종류: 부가수입</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border flex flex-col justify-between">
                     <div>
-                        <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">생활비 계좌 비중</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">연금2, ISA, 일반 (토스/Google 제외)</p>
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight mb-1">생활비 파이프라인</h3>
+                        <p class="text-xs text-toss-subText mb-4">비중 구성</p>
                     </div>
                     <div class="relative h-48 flex items-center justify-center mb-4">
                         <canvas id="livingAccountChart"></canvas>
                     </div>
-                    <div id="living-legend-container" class="space-y-2 max-h-44 overflow-y-auto pr-1 text-xs divide-y divide-slate-100"></div>
+                    <div id="living-legend-container" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs"></div>
                 </div>
 
-                <div class="bg-gradient-to-br from-[#191F28] to-[#333D4B] text-white p-5 md:p-6 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between relative overflow-hidden h-auto">
-                    <div class="absolute right-0 top-0 translate-x-6 -translate-y-6 w-32 h-32 bg-toss-blue/20 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="space-y-3.5">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <!-- 주담대 위젯 (Toss 스타일 프리미엄) -->
+                <div class="bg-[#191F28] text-white p-6 md:p-7 rounded-[24px] shadow-xl lg:col-span-2 flex flex-col justify-between relative overflow-hidden h-auto">
+                    <!-- 우상단 배경 그라데이션 포인트 -->
+                    <div class="absolute right-0 top-0 translate-x-1/4 -translate-y-1/4 w-48 h-48 bg-purple-500/30 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="space-y-5 relative z-10">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                             <div>
-                                <span class="bg-toss-blue text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">주담대 상환용 전용 위젯</span>
-                                <h3 class="text-base font-extrabold mt-1 tracking-tight">KODEX 200 타겟위클리커버드콜 상환 현황</h3>
+                                <span class="bg-white/10 text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide border border-white/10">타겟 미션</span>
+                                <h3 class="text-lg font-bold mt-2 tracking-tight">KODEX 200 타겟위클리커버드콜 상환</h3>
                             </div>
-                            <div class="bg-white/10 px-3 py-1.5 rounded-xl text-right backdrop-blur-md shrink-0">
-                                <p class="text-[10px] text-slate-300 font-medium">월 고정 주담대 목표</p>
-                                <p class="text-xs font-extrabold text-emerald-400">₩ 1,940,000</p>
+                            <div class="bg-black/40 px-4 py-2 rounded-[14px] text-right backdrop-blur-md border border-white/10 shrink-0">
+                                <p class="text-[11px] text-gray-400 font-semibold mb-0.5">월 고정 주담대 목표</p>
+                                <p class="text-sm font-extrabold text-toss-green">₩ 1,940,000</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-white/5 p-3 rounded-xl backdrop-blur-md border border-white/10">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white/5 p-4 rounded-[16px] backdrop-blur-md border border-white/5">
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">보유 수량 / 주당 분배금</p>
-                                <p class="text-xs font-extrabold mt-0.5"><span id="widget-toss-qty">0</span>주 <span class="text-[11px] text-toss-blue font-semibold">(주당 <span id="widget-dps">₩ 0</span>)</span></p>
+                                <p class="text-[11px] text-gray-400 font-semibold mb-1">보유 수량 / 주당</p>
+                                <p class="text-lg font-extrabold tabular-nums"><span id="widget-toss-qty">0</span><span class="text-sm font-medium ml-0.5">주</span> <span class="text-[11px] text-purple-400 ml-1 font-semibold">(주당 <span id="widget-dps">₩ 0</span>)</span></p>
                             </div>
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">이번 달 세후 분배금</p>
-                                <p class="text-xs font-extrabold mt-0.5 text-emerald-400" id="widget-toss-div">₩ 0</p>
+                                <p class="text-[11px] text-gray-400 font-semibold mb-1">이번 달 세후 분배금</p>
+                                <p class="text-lg font-extrabold text-toss-green tabular-nums" id="widget-toss-div">₩ 0</p>
                             </div>
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">상환 후 잔여 재투자금</p>
-                                <p class="text-xs font-extrabold mt-0.5 text-sky-400" id="widget-remain-reinvest">₩ 0</p>
+                                <p class="text-[11px] text-gray-400 font-semibold mb-1">상환 후 잔여금</p>
+                                <p class="text-lg font-extrabold text-blue-400 tabular-nums" id="widget-remain-reinvest">₩ 0</p>
                             </div>
                         </div>
 
-                        <div class="bg-white/5 p-3 rounded-xl backdrop-blur-md border border-white/10 space-y-1.5">
-                            <div class="flex justify-between items-center text-[11px]">
-                                <span class="text-slate-300 font-medium">주담대 목표 달성률</span>
-                                <span id="widget-progress-text" class="font-bold text-emerald-400">0%</span>
+                        <div class="space-y-2 pt-1">
+                            <div class="flex justify-between items-center text-[12px]">
+                                <span class="text-gray-300 font-semibold">주담대 목표 달성률</span>
+                                <span id="widget-progress-text" class="font-bold text-white tabular-nums">0%</span>
                             </div>
-                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                                <div id="widget-progress-bar" class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                            <div class="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
+                                <div id="widget-progress-bar" class="bg-gradient-to-r from-purple-500 to-toss-blue h-full rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="flex items-center space-x-2 text-[11px] text-slate-300 bg-black/30 p-2.5 rounded-lg mt-3.5">
-                        <i class="fa-solid fa-circle-check text-toss-blue shrink-0"></i>
-                        <span class="truncate">토스증권 주담대 종목 분배금으로 원리금 상환 및 잔여금 재투자 수량 증식 구조 모니터링</span>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-4">
+            <!-- 월별 배당 차트 -->
+            <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border flex flex-col justify-between">
+                <div class="mb-5">
+                    <h3 class="font-bold text-toss-text text-lg tracking-tight mb-1">연간 배당금 성장 차트</h3>
+                    <p class="text-xs text-toss-subText">당해 연도 월별 수령액 흐름</p>
+                </div>
+                <div class="relative h-64">
+                    <canvas id="monthlyDividendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">이번 달 종목별 상세 분배금 현황</h3>
-                        <p class="text-xs text-[#8B95A1] mt-0.5">선택된 월의 배당 내역과 주식 수량, 세후 분배금(원화 단독) 데이터 (열 클릭 정렬 지원)</p>
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight">이번 달 분배금 상세 현황</h3>
                     </div>
-                    <label class="flex items-center space-x-2 text-xs font-bold text-[#333D4B] cursor-pointer select-none bg-slate-100 px-3.5 py-2 rounded-xl hover:bg-slate-200 transition self-start sm:self-auto">
+                    <label class="flex items-center space-x-2 text-[13px] font-bold text-[#333D4B] cursor-pointer select-none bg-toss-bg px-4 py-2 rounded-xl border border-toss-border hover:bg-slate-100 transition-colors">
                         <input type="checkbox" id="toggle-account-group" onchange="toggleAccountGrouping()" class="w-4 h-4 text-toss-blue rounded border-slate-300 focus:ring-toss-blue">
                         <span>계좌별 구분 보기</span>
                     </label>
@@ -330,117 +351,92 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#F7F8FA] text-[#8B95A1] uppercase text-[11px] font-bold tracking-wider select-none" id="dividend-table-thead"></thead>
-                        <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="dividend-detail-tbody"></tbody>
-                        <tfoot class="bg-slate-50/80 border-t border-slate-200 font-extrabold text-[#191F28]" id="dividend-detail-tfoot"></tfoot>
+                        <thead class="bg-toss-bg text-toss-subText text-[12px] font-bold tracking-wide select-none" id="dividend-table-thead"></thead>
+                        <tbody class="divide-y divide-toss-border/60 font-semibold text-[#333D4B]" id="dividend-detail-tbody"></tbody>
+                        <tfoot class="bg-toss-bg/50 border-t border-toss-border text-toss-text font-bold" id="dividend-detail-tfoot"></tfoot>
                     </table>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
-                <div>
-                    <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 배당금 성장 추이 (1월 ~ 12월)</h3>
-                    <p class="text-xs text-[#8B95A1] mb-4">당해 연도 생활비 계좌 기준 월별 세후 분배금 수령액 흐름 (Y축 억/만 원 표기)</p>
-                </div>
-                <div class="relative h-72">
-                    <canvas id="monthlyDividendChart"></canvas>
                 </div>
             </div>
         </section>
 
         <!-- ================= [탭 3] 가계부 ================= -->
         <section id="tab-accountbook" class="space-y-6 hidden">
-            <div class="bg-white p-4.5 rounded-2xl shadow-toss border border-slate-100/80 flex items-center justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <button onclick="changeAccountMonth(-1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-left text-xs text-[#333D4B]"></i></button>
-                    <span class="font-extrabold text-lg text-[#191F28]" id="current-account-month-label">가계부 분석</span>
-                    <button onclick="changeAccountMonth(1)" class="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition active:scale-95"><i class="fa-solid fa-chevron-right text-xs text-[#333D4B]"></i></button>
+            <div class="bg-toss-card p-4 rounded-[20px] shadow-toss border border-toss-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4 bg-toss-bg p-1 rounded-[14px]">
+                    <button onclick="changeAccountMonth(-1)" class="w-10 h-10 rounded-[10px] flex items-center justify-center hover:bg-white hover:shadow-sm active:scale-90 transition-all text-toss-subText"><i class="fa-solid fa-chevron-left text-sm"></i></button>
+                    <span class="font-extrabold text-lg text-toss-text w-24 text-center tabular-nums" id="current-account-month-label">2026-08</span>
+                    <button onclick="changeAccountMonth(1)" class="w-10 h-10 rounded-[10px] flex items-center justify-center hover:bg-white hover:shadow-sm active:scale-90 transition-all text-toss-subText"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                 </div>
-                <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">가계부 독립 상태</span>
+                <span class="text-[12px] bg-blue-50 text-toss-blue px-3.5 py-1.5 rounded-[10px] font-bold border border-blue-100">가계부 독립 분석</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-[#00C853] text-white p-6 rounded-2xl shadow-md">
-                    <p class="text-xs text-emerald-100 font-semibold tracking-wide mb-1.5 uppercase">당월 총 수입 (배당 + 부가수입)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="acc-total-income">₩ 0</h3>
-                    <div class="mt-4 pt-3 border-t border-emerald-400/30 text-xs flex justify-between text-emerald-100 font-medium">
-                        <span>가계부 선택 월 기준 수입 합산</span>
-                        <span class="font-bold">확정</span>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">당월 총 수입 (배당+부가)</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="acc-total-income">₩ 0</h3>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">당월 총 지출 (지역화폐 할인 반영)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="acc-total-expense">₩ 0</h3>
-                    <span class="text-xs text-toss-blue font-bold mt-3 inline-block">월별지출 시트 연동</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive">
+                    <p class="text-[13px] text-toss-subText font-bold mb-1">당월 총 지출</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-text tracking-tight mt-1" id="acc-total-expense">₩ 0</h3>
+                    <span class="text-[11px] text-toss-subText font-semibold mt-4 block">지역화폐 할인 자동 반영</span>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">이달의 잉여 흐름</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-toss-green tracking-tight" id="acc-surplus">₩ 0</h3>
-                    <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block">수입 - 지출</span>
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border card-interactive relative overflow-hidden bg-gradient-to-br from-[#191F28] to-[#333D4B] text-white">
+                    <p class="text-[13px] text-slate-300 font-bold mb-1">이달의 잉여 흐름 (Surplus)</p>
+                    <h3 class="text-3xl md:text-[32px] font-extrabold text-toss-green tracking-tight mt-1" id="acc-surplus">₩ 0</h3>
+                    <span class="text-[11px] text-slate-400 font-semibold mt-4 block">수입 - 지출</span>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-4">이번 달 잉여 배분 현황 (저축 항목)</h3>
+            <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border">
+                <h3 class="font-bold text-toss-text text-lg tracking-tight mb-4">잉여 배분 (저축 항목)</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-[#F7F8FA] border border-slate-200/60 p-5 rounded-2xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-toss-blue bg-blue-50 px-2.5 py-1 rounded-lg">재투자</span>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-[16px] card-interactive">
+                        <div class="flex items-center space-x-2 mb-2">
                             <i class="fa-solid fa-rotate text-toss-blue"></i>
+                            <span class="text-[13px] font-bold text-[#333D4B]">재투자</span>
                         </div>
-                        <p class="text-xl font-extrabold text-[#191F28] tracking-tight" id="alloc-reinvest">₩ 0</p>
-                        <p class="text-xs text-[#8B95A1] mt-1 font-medium">대분류: 저축 / 소분류: 재투자</p>
+                        <p class="text-2xl font-extrabold text-toss-text tracking-tight" id="alloc-reinvest">₩ 0</p>
                     </div>
-                    <div class="bg-[#F7F8FA] border border-slate-200/60 p-5 rounded-2xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">비상금</span>
-                            <i class="fa-solid fa-piggy-bank text-emerald-600"></i>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-[16px] card-interactive">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fa-solid fa-piggy-bank text-toss-green"></i>
+                            <span class="text-[13px] font-bold text-[#333D4B]">비상금</span>
                         </div>
-                        <p class="text-xl font-extrabold text-[#191F28] tracking-tight" id="alloc-emergency">₩ 0</p>
-                        <p class="text-xs text-[#8B95A1] mt-1 font-medium">대분류: 저축 / 소분류: 비상금</p>
+                        <p class="text-2xl font-extrabold text-toss-text tracking-tight" id="alloc-emergency">₩ 0</p>
                     </div>
-                    <div class="bg-[#F7F8FA] border border-slate-200/60 p-5 rounded-2xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg">여행용적금</span>
-                            <i class="fa-solid fa-plane-departure text-purple-600"></i>
+                    <div class="bg-toss-bg border border-toss-border/50 p-5 rounded-[16px] card-interactive">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fa-solid fa-plane-departure text-purple-500"></i>
+                            <span class="text-[13px] font-bold text-[#333D4B]">여행용적금</span>
                         </div>
-                        <p class="text-xl font-extrabold text-[#191F28] tracking-tight" id="alloc-travel">₩ 0</p>
-                        <p class="text-xs text-[#8B95A1] mt-1 font-medium">대분류: 저축 / 소분류: 여행용적금</p>
+                        <p class="text-2xl font-extrabold text-toss-text tracking-tight" id="alloc-travel">₩ 0</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                <div class="mb-4">
-                    <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 지출 비교 현황</h3>
-                    <p class="text-xs text-[#8B95A1]">출처가 '지역화폐'인 경우 90% 할인 금액이 반영되며, 막대에 마우스를 올리면 주요 지출 요약이 표시됩니다.</p>
-                </div>
-                <div class="relative h-80">
-                    <canvas id="annualCategoryBarChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-6">
-                <div>
-                    <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">선택 월 전체 소분류 지출 분석</h3>
-                    <p class="text-xs text-[#8B95A1] mt-0.5">이번 달 발생한 모든 지출 소분류 항목의 금액순 정렬 및 비중 분석</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 연간 차트 -->
+                <div class="bg-toss-card p-6 rounded-[20px] shadow-toss border border-toss-border flex flex-col">
+                    <div class="mb-5">
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight mb-1">연간 지출 비교</h3>
+                        <p class="text-xs text-toss-subText">월별 총 지출 그래프</p>
+                    </div>
+                    <div class="relative flex-1 min-h-[300px]">
+                        <canvas id="annualCategoryBarChart"></canvas>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="top3-subcat-container"></div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#F7F8FA] text-[#8B95A1] uppercase text-[11px] font-bold tracking-wider select-none">
-                            <tr>
-                                <th class="p-3.5 rounded-l-xl">순위</th>
-                                <th class="p-3.5">대분류 > 소분류명</th>
-                                <th class="p-3.5 text-right">지출 금액</th>
-                                <th class="p-3.5 text-right">전체 대비 비중</th>
-                                <th class="p-3.5 rounded-r-xl w-48">지출 비중 바</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="subcat-table-tbody"></tbody>
-                    </table>
+                <!-- 지출 상세 테이블 -->
+                <div class="bg-toss-card rounded-[20px] shadow-toss border border-toss-border flex flex-col overflow-hidden">
+                    <div class="p-6 border-b border-toss-border/60">
+                        <h3 class="font-bold text-toss-text text-lg tracking-tight">이번 달 상세 지출 분석</h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 p-4 bg-toss-bg border-b border-toss-border/60" id="top3-subcat-container"></div>
+                    <div class="overflow-y-auto max-h-[350px] p-2 hide-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <tbody class="divide-y divide-toss-border/40 font-semibold text-[#333D4B]" id="subcat-table-tbody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
@@ -448,19 +444,21 @@
     </main>
 
     <!-- [모바일 전용] 하단 네비게이션 바 -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-30 px-6 py-2.5 flex justify-around items-center shadow-lg">
-        <button onclick="switchTab('portfolio')" id="nav-mob-portfolio" class="flex flex-col items-center space-y-1 text-toss-blue font-bold">
-            <i class="fa-solid fa-chart-pie text-lg"></i>
-            <span class="text-[10px]">포트폴리오</span>
-        </button>
-        <button onclick="switchTab('dividend')" id="nav-mob-dividend" class="flex flex-col items-center space-y-1 text-[#8B95A1] font-semibold">
-            <i class="fa-solid fa-coins text-lg"></i>
-            <span class="text-[10px]">배당금</span>
-        </button>
-        <button onclick="switchTab('accountbook')" id="nav-mob-accountbook" class="flex flex-col items-center space-y-1 text-[#8B95A1] font-semibold">
-            <i class="fa-solid fa-wallet text-lg"></i>
-            <span class="text-[10px]">가계부</span>
-        </button>
+    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-toss-border z-40 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+        <div class="flex justify-around items-center px-4 py-3">
+            <button onclick="switchTab('portfolio')" id="nav-mob-portfolio" class="flex flex-col items-center space-y-1 w-16 text-toss-blue transition-colors active:scale-90">
+                <i class="fa-solid fa-chart-pie text-xl"></i>
+                <span class="text-[10px] font-bold">포트폴리오</span>
+            </button>
+            <button onclick="switchTab('dividend')" id="nav-mob-dividend" class="flex flex-col items-center space-y-1 w-16 text-toss-subText hover:text-toss-text transition-colors active:scale-90">
+                <i class="fa-solid fa-coins text-xl"></i>
+                <span class="text-[10px] font-bold">배당금</span>
+            </button>
+            <button onclick="switchTab('accountbook')" id="nav-mob-accountbook" class="flex flex-col items-center space-y-1 w-16 text-toss-subText hover:text-toss-text transition-colors active:scale-90">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-bold">가계부</span>
+            </button>
+        </div>
     </nav>
 
     <!-- JavaScript 로직 -->
@@ -478,6 +476,36 @@
         let currentSortColumn = null;
         let currentSortDirection = 'asc';
 
+        // ================= 순수 JS CountUp 애니메이션 함수 =================
+        function animateValue(obj, target, formatter, duration = 1200) {
+            if (!obj) return;
+            const targetNum = Number(target) || 0;
+            const startNum = 0; // 항상 0에서 시작
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // ease-out-quart
+                const easeOut = 1 - Math.pow(1 - progress, 4); 
+                const current = startNum + (targetNum - startNum) * easeOut;
+                
+                if (formatter) {
+                    obj.innerText = formatter(current);
+                } else {
+                    obj.innerText = Math.round(current).toLocaleString();
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    if (formatter) obj.innerText = formatter(targetNum);
+                    else obj.innerText = Math.round(targetNum).toLocaleString();
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
         function switchTab(tabName) {
             ['portfolio', 'dividend', 'accountbook'].forEach(t => {
                 const section = document.getElementById(`tab-${t}`);
@@ -485,18 +513,18 @@
                 const navMob = document.getElementById(`nav-mob-${t}`);
                 if (t === tabName) {
                     section.classList.remove('hidden');
-                    if (navPc) navPc.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-semibold text-sm transition-all bg-blue-50 text-toss-blue shadow-sm";
-                    if (navMob) navMob.className = "flex flex-col items-center space-y-1 text-toss-blue font-bold";
+                    if (navPc) navPc.className = "w-full flex items-center space-x-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 bg-blue-50 text-toss-blue";
+                    if (navMob) navMob.className = "flex flex-col items-center space-y-1 w-16 text-toss-blue transition-colors active:scale-90";
                     if (document.getElementById('mobile-header-title') && navPc) {
                         document.getElementById('mobile-header-title').innerText = navPc.innerText.trim();
                     }
                 } else {
                     section.classList.add('hidden');
-                    if (navPc) navPc.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium text-sm transition-all text-[#6B7684] hover:bg-slate-50 hover:text-[#191F28]";
-                    if (navMob) navMob.className = "flex flex-col items-center space-y-1 text-[#8B95A1] font-semibold";
+                    if (navPc) navPc.className = "w-full flex items-center space-x-3 px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all active:scale-95 text-[#8B95A1] hover:bg-slate-50 hover:text-[#191F28]";
+                    if (navMob) navMob.className = "flex flex-col items-center space-y-1 w-16 text-[#8B95A1] hover:text-[#191F28] transition-colors active:scale-90";
                 }
             });
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         const formatKRW = num => '₩ ' + Math.trunc(Number(num) || 0).toLocaleString('ko-KR');
@@ -517,22 +545,15 @@
             return isNaN(parsed) ? 0 : parsed;
         };
 
-        // [수정] A열 날짜 형태("2024. 12. 25." 혹은 "2025-1" 등)를 "YYYY-MM" 형태로 견고하게 변환하는 함수
         const normalizeDateToYM = rawDate => {
             if (!rawDate) return "";
             const str = String(rawDate).trim();
-            
-            // "2024. 12. 25." 또는 "2024.12" 형태 매칭
             const dotMatch = str.match(/(\d{4})\D+(\d{1,2})/);
-            if (dotMatch) {
-                return `${dotMatch[1]}-${dotMatch[2].padStart(2, '0')}`;
-            }
-
+            if (dotMatch) return `${dotMatch[1]}-${dotMatch[2].padStart(2, '0')}`;
             if (/^\d{4}-\d{1,2}$/.test(str)) {
                 const parts = str.split('-');
                 return `${parts[0]}-${parts[1].padStart(2, '0')}`;
             }
-
             return str;
         };
 
@@ -551,9 +572,7 @@
                 const rowVals = Object.values(row);
                 const rawYM = normalizeDateToYM(row['연-월'] || row['날짜'] || rowVals[0]);
                 const assetVal = parseCleanNumber(row['총 자산'] || row['자산총액'] || rowVals[11] || rowVals[3] || rowVals[4]);
-                if (assetVal > 0) {
-                    return { ...row, '_normalizedYM': rawYM };
-                }
+                if (assetVal > 0) return { ...row, '_normalizedYM': rawYM };
             }
             return {};
         }
@@ -578,13 +597,13 @@
 
         function changeDividendMonth(dir) {
             selectedDividendMonth = shiftMonth(selectedDividendMonth, dir);
-            document.getElementById('current-dividend-month-label').innerText = `${selectedDividendMonth} 배당금 분석`;
+            document.getElementById('current-dividend-month-label').innerText = selectedDividendMonth;
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
 
         function changeAccountMonth(dir) {
             selectedExpenseMonth = shiftMonth(selectedExpenseMonth, dir);
-            document.getElementById('current-account-month-label').innerText = `${selectedExpenseMonth} 가계부 분석`;
+            document.getElementById('current-account-month-label').innerText = selectedExpenseMonth;
             if (globalRawData.data) updateAccountbookUI(processAccountbookData(globalRawData.data));
         }
 
@@ -604,8 +623,10 @@
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
 
+        // ================= Chart.js 커스텀 플러그인 & 기본 설정 =================
+        Chart.defaults.font.family = "'Pretendard', sans-serif";
+        Chart.defaults.color = "#8B95A1";
 
-        // ================= Chart.js 커스텀 플러그인 (도넛 차트 중앙 총합 표시 - 소수점 둘째 자리 적용) =================
         const centerTextPlugin = {
             id: 'centerTextPlugin',
             afterDraw(chart) {
@@ -617,13 +638,9 @@
                 const total = dataset.data.reduce((acc, val) => acc + (Number(val) || 0), 0);
                 
                 let displayStr = '';
-                if (total >= 100000000) {
-                    displayStr = (total / 100000000).toFixed(2) + '억';
-                } else if (total >= 10000) {
-                    displayStr = (total / 10000).toFixed(1) + '만';
-                } else {
-                    displayStr = total.toLocaleString() + '원';
-                }
+                if (total >= 100000000) { displayStr = (total / 100000000).toFixed(2) + '억'; }
+                else if (total >= 10000) { displayStr = (total / 10000).toFixed(1) + '만'; }
+                else { displayStr = total.toLocaleString() + '원'; }
 
                 ctx.font = 'bold 12px Pretendard, sans-serif';
                 ctx.fillStyle = '#8B95A1';
@@ -631,16 +648,17 @@
                 ctx.textBaseline = 'bottom';
                 ctx.fillText('총 합계', width / 2, height / 2 - 2);
 
-                ctx.font = 'extrabold 15px Pretendard, sans-serif';
+                ctx.font = 'extrabold 16px Pretendard, sans-serif';
                 ctx.fillStyle = '#191F28';
                 ctx.textBaseline = 'top';
-                ctx.fillText(displayStr, width / 2, height / 2 + 2);
-                
+                ctx.fillText(displayStr, width / 2, height / 2 + 4);
                 ctx.restore();
             }
         };
         Chart.register(centerTextPlugin);
 
+        // Toss Style Colors Palette
+        const tossPalette = ['#3182F6', '#04C755', '#7C3AED', '#F97316', '#F04452', '#06B6D4', '#EC4899', '#64748B'];
 
         // ================= 1. 포트폴리오 데이터 프로세싱 =================
         function processPortfolioData(dataObj) {
@@ -655,102 +673,65 @@
             }).map(item => {
                 const evalAmt = parseCleanNumber(item['평가금액']);
                 const principalAmt = parseCleanNumber(item['원금']);
-                const finalEvalAmount = evalAmt > 0 ? evalAmt : principalAmt;
-
                 return {
                     ...item,
                     '_owner': String(item['이름'] || item['사용자'] || '공동').trim(),
                     '_broker': String(item['증권사'] || '').trim(),
                     '_accType': String(item['계좌종류'] || '').trim(),
                     '_stockName': String(item['종목'] || item['종목명'] || '').trim(),
-                    '_evalAmount': finalEvalAmount,
+                    '_evalAmount': evalAmt > 0 ? evalAmt : principalAmt,
                     '_qty': parseCleanNumber(item['수량']),
                     '_profitAmt': parseCleanNumber(item['현재수익금'] || item['수익금'] || item['현재 수익금'] || 0)
                 };
             });
 
             const totalStockAsset = parseCleanNumber(validStockList.reduce((sum, s) => sum + s._evalAmount, 0));
-
             const targetAccountRow = getTargetAccountRow(accountHistory, "2026-08");
             const rowValues = Object.values(targetAccountRow);
-            const mortgageDebt = parseCleanNumber(targetAccountRow['주택담보대출'] || targetAccountRow['주담대'] || rowValues[8] || 0);
-            const parentDebt = parseCleanNumber(targetAccountRow['부모님대출'] || targetAccountRow['부모님 대출'] || rowValues[9] || 0);
-            const totalDebt = mortgageDebt + parentDebt;
-
-            const apartmentValue = 400000000; // 4억 원
-            const calculatedTotalAsset = totalStockAsset + totalDebt + apartmentValue;
+            const totalDebt = parseCleanNumber(targetAccountRow['주택담보대출'] || rowValues[8] || 0) + parseCleanNumber(targetAccountRow['부모님대출'] || rowValues[9] || 0);
+            const calculatedTotalAsset = totalStockAsset + totalDebt + 400000000;
 
             let livingAccountSum = 0, retirementAccountSum = 0, carAccountSum = 0, mortgageStockAccountSum = 0;
-
             validStockList.forEach(item => {
-                const accType = item._accType;
-                const stockName = item._stockName;
-                const broker = item._broker;
-                const evalAmount = item._evalAmount;
-
-                if (isLivingAccountItem(accType, broker, stockName)) livingAccountSum += evalAmount;
-                if (['연금1', 'IRP'].includes(accType)) retirementAccountSum += evalAmount;
-                if (accType === '일반' && stockName.toLowerCase() === 'google') carAccountSum += evalAmount;
-                if (broker.includes('토스') && stockName.includes('KODEX 200 타겟위클리커버드콜')) mortgageStockAccountSum += evalAmount;
+                if (isLivingAccountItem(item._accType, item._broker, item._stockName)) livingAccountSum += item._evalAmount;
+                if (['연금1', 'IRP'].includes(item._accType)) retirementAccountSum += item._evalAmount;
+                if (item._accType === '일반' && item._stockName.toLowerCase() === 'google') carAccountSum += item._evalAmount;
+                if (item._broker.includes('토스') && item._stockName.includes('KODEX 200 타겟위클리커버드콜')) mortgageStockAccountSum += item._evalAmount;
             });
 
-            // [수정됨] '계좌내역' 시트 A열(날짜: index 0)과 L열(총 자산: index 11) 확실한 매핑
             const trendLabels = [], trendValues = [];
             accountHistory.forEach(row => {
                 const rowVals = Object.values(row);
-                // A열 데이터 (날짜)
-                const rawDate = row['날짜'] || row['연-월'] || rowVals[0];
-                // L열 데이터 (총 자산 - 함수 결과값 포함 완벽 파싱)
-                const rawAsset = row['총 자산'] || row['자산총액'] || rowVals[11];
-                
-                const assetVal = parseCleanNumber(rawAsset);
-                const normYM = normalizeDateToYM(rawDate);
-
-                if (normYM && assetVal > 0) {
-                    trendLabels.push(normYM);
-                    trendValues.push(assetVal);
-                }
+                const assetVal = parseCleanNumber(row['총 자산'] || row['자산총액'] || rowVals[11]);
+                const normYM = normalizeDateToYM(row['날짜'] || row['연-월'] || rowVals[0]);
+                if (normYM && assetVal > 0) { trendLabels.push(normYM); trendValues.push(assetVal); }
             });
 
-            // 포트폴리오 원형 차트 데이터 매핑
             const aggregatedStockMap = {};
-            validStockList.forEach(item => {
-                const name = item._stockName;
-                if (!aggregatedStockMap[name]) aggregatedStockMap[name] = 0;
-                aggregatedStockMap[name] += item._evalAmount;
-            });
-
-            const sortedAggregatedStocks = Object.entries(aggregatedStockMap)
-                .map(([name, amount]) => ({ name, amount }))
-                .sort((a, b) => b.amount - a.amount);
+            validStockList.forEach(item => { aggregatedStockMap[item._stockName] = (aggregatedStockMap[item._stockName] || 0) + item._evalAmount; });
+            const sortedAggregatedStocks = Object.entries(aggregatedStockMap).map(([name, amount]) => ({ name, amount })).sort((a, b) => b.amount - a.amount);
 
             return {
-                totalAsset: calculatedTotalAsset,
-                totalDebt,
-                totalStockAsset,
-                livingAccountSum,
-                retirementAccountSum,
-                carAccountSum,
-                mortgageStockAccountSum,
-                allStocks: validStockList,
-                aggregatedStocks: sortedAggregatedStocks,
-                trend: { labels: trendLabels, values: trendValues },
-                matchedYM: targetAccountRow._normalizedYM || "2026-08"
+                totalAsset: calculatedTotalAsset, totalDebt, totalStockAsset,
+                livingAccountSum, retirementAccountSum, carAccountSum, mortgageStockAccountSum,
+                allStocks: validStockList, aggregatedStocks: sortedAggregatedStocks,
+                trend: { labels: trendLabels, values: trendValues }, matchedYM: targetAccountRow._normalizedYM || "2026-08"
             };
         }
 
         function updatePortfolioUI(data) {
-            document.getElementById('card-total-stock').innerText = formatKRW(data.totalStockAsset);
-            document.getElementById('card-total-debt').innerText = formatKRW(data.totalDebt);
-            document.getElementById('card-total-asset').innerText = formatKRW(data.totalAsset);
+            // CountUp 적용
+            animateValue(document.getElementById('card-total-stock'), data.totalStockAsset, formatKRW);
+            animateValue(document.getElementById('card-total-debt'), data.totalDebt, formatKRW);
+            animateValue(document.getElementById('card-total-asset'), data.totalAsset, formatKRW);
+            
+            animateValue(document.getElementById('card-living-account'), data.livingAccountSum, formatKRW);
+            animateValue(document.getElementById('card-mortgage-stock-account'), data.mortgageStockAccountSum, formatKRW);
+            animateValue(document.getElementById('card-car-account'), data.carAccountSum, formatKRW);
+            animateValue(document.getElementById('card-retirement-account'), data.retirementAccountSum, formatKRW);
             
             const debtLabel = document.getElementById('debt-status-label');
-            if (debtLabel) debtLabel.innerText = `현재월(${data.matchedYM}) 기준 1:1 매칭`;
-
-            document.getElementById('card-living-account').innerText = formatKRW(data.livingAccountSum);
-            document.getElementById('card-mortgage-stock-account').innerText = formatKRW(data.mortgageStockAccountSum);
-            document.getElementById('card-car-account').innerText = formatKRW(data.carAccountSum);
-            document.getElementById('card-retirement-account').innerText = formatKRW(data.retirementAccountSum);
+            if (debtLabel) debtLabel.innerText = `현재월(${data.matchedYM}) 기준 매칭 연동`;
 
             renderAccountFilterChipsAndTable(data.allStocks);
             renderPortfolioCharts(data);
@@ -764,36 +745,24 @@
             const uniqueAccounts = Array.from(new Set(allStocks.map(s => String(s['계좌종류'] || '기타').trim())));
             if (activeAccountFilters.size === 0) uniqueAccounts.forEach(acc => activeAccountFilters.add(acc));
 
-            let chipsHTML = `
-                <button onclick="toggleAllAccountFilters('${uniqueAccounts.join(',')}')" class="px-3.5 py-1.5 rounded-full font-bold border transition ${activeAccountFilters.size === uniqueAccounts.length ? 'bg-toss-blue text-white border-toss-blue shadow-sm' : 'bg-slate-100 text-[#6B7684] border-slate-200'}">
-                    전체 선택
-                </button>
-            `;
+            let chipsHTML = `<button onclick="toggleAllAccountFilters('${uniqueAccounts.join(',')}')" class="px-4 py-1.5 rounded-full font-bold transition-all border ${activeAccountFilters.size === uniqueAccounts.length ? 'bg-[#333D4B] text-white border-[#333D4B] shadow-sm' : 'bg-white text-[#6B7684] border-toss-border hover:bg-slate-50'}">전체 선택</button>`;
             uniqueAccounts.forEach(acc => {
                 const isActive = activeAccountFilters.has(acc);
-                chipsHTML += `
-                    <button onclick="toggleAccountFilter('${acc}')" class="px-3.5 py-1.5 rounded-full font-bold border transition ${isActive ? 'bg-toss-blue text-white border-toss-blue shadow-sm' : 'bg-slate-100 text-[#6B7684] border-slate-200'}">
-                        ${acc}
-                    </button>
-                `;
+                chipsHTML += `<button onclick="toggleAccountFilter('${acc}')" class="px-4 py-1.5 rounded-full font-bold transition-all border ${isActive ? 'bg-[#333D4B] text-white border-[#333D4B] shadow-sm' : 'bg-white text-[#6B7684] border-toss-border hover:bg-slate-50'}">${acc}</button>`;
             });
             if (chipsContainer) chipsContainer.innerHTML = chipsHTML;
 
             let filteredStocks = allStocks.filter(stock => activeAccountFilters.has(String(stock['계좌종류'] || '기타').trim()));
-
             if (currentSortColumn) {
                 filteredStocks.sort((a, b) => {
                     let valA, valB;
                     if (['수량', '평가금액'].includes(currentSortColumn)) {
-                        valA = currentSortColumn === '수량' ? a._qty : a._evalAmount;
-                        valB = currentSortColumn === '수량' ? b._qty : b._evalAmount;
+                        valA = currentSortColumn === '수량' ? a._qty : a._evalAmount; valB = currentSortColumn === '수량' ? b._qty : b._evalAmount;
                     } else if (currentSortColumn === '수익률') {
-                        valA = parseFloat(String(a['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
-                        valB = parseFloat(String(b['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
+                        valA = parseFloat(String(a['수익률']).replace(/[^0-9.\-]/g, '')) || 0; valB = parseFloat(String(b['수익률']).replace(/[^0-9.\-]/g, '')) || 0;
                     } else {
-                        const keyMap = { '소유자': '_owner', '계좌종류': '계좌종류', '증권사': '_broker', '종목명': '_stockName' };
-                        valA = String(a[keyMap[currentSortColumn] || currentSortColumn] || '').trim();
-                        valB = String(b[keyMap[currentSortColumn] || currentSortColumn] || '').trim();
+                        const k = {'소유자': '_owner', '계좌종류': '계좌종류', '증권사': '_broker', '종목명': '_stockName'};
+                        valA = String(a[k[currentSortColumn]] || '').trim(); valB = String(b[k[currentSortColumn]] || '').trim();
                     }
                     return valA < valB ? (currentSortDirection === 'asc' ? -1 : 1) : valA > valB ? (currentSortDirection === 'asc' ? 1 : -1) : 0;
                 });
@@ -801,669 +770,357 @@
 
             tableBody.innerHTML = '';
             let totalFilteredEval = 0, totalFilteredProfit = 0;
-
             filteredStocks.forEach(stock => {
-                totalFilteredEval += stock._evalAmount;
-                totalFilteredProfit += stock._profitAmt;
-                const ownerBadgeClass = stock._owner.includes('남편') ? 'bg-blue-50 text-toss-blue' : 'bg-purple-50 text-purple-700';
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50/80 transition";
-                tr.innerHTML = `
-                    <td class="p-3.5"><span class="text-xs ${ownerBadgeClass} px-2.5 py-1 rounded-lg font-bold">${stock._owner}</span></td>
-                    <td class="p-3.5"><span class="text-xs bg-slate-100 text-[#333D4B] px-2.5 py-1 rounded-lg font-semibold">${stock['계좌종류'] || '-'}</span></td>
-                    <td class="p-3.5 text-[#6B7684]">${stock._broker || '-'}</td>
-                    <td class="p-3.5 font-bold text-[#191F28]">${stock._stockName}</td>
-                    <td class="p-3.5 text-[#333D4B] text-right">${stock._qty.toLocaleString()}주</td>
-                    <td class="p-3.5 font-bold text-[#191F28] text-right">${formatKRW(stock._evalAmount)}</td>
-                    <td class="p-3.5 text-toss-green font-bold text-right">${formatPercent(stock['수익률'])}</td>
+                totalFilteredEval += stock._evalAmount; totalFilteredProfit += stock._profitAmt;
+                const badgeStyle = stock._owner.includes('남편') ? 'bg-blue-50 text-toss-blue' : 'bg-purple-50 text-purple-600';
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4"><span class="text-[11px] ${badgeStyle} px-2.5 py-1 rounded-md font-bold">${stock._owner}</span></td>
+                        <td class="p-4"><span class="text-[12px] bg-toss-bg text-[#4E5968] px-2.5 py-1 rounded-md font-bold">${stock['계좌종류'] || '-'}</span></td>
+                        <td class="p-4 text-[#8B95A1] text-[13px] font-medium">${stock._broker || '-'}</td>
+                        <td class="p-4 font-bold text-toss-text">${stock._stockName}</td>
+                        <td class="p-4 text-[#4E5968] text-right font-medium tabular-nums">${stock._qty.toLocaleString()}주</td>
+                        <td class="p-4 font-bold text-toss-text text-right tabular-nums">${formatKRW(stock._evalAmount)}</td>
+                        <td class="p-4 font-bold text-right tabular-nums ${String(stock['수익률']).includes('-') ? 'text-toss-red' : 'text-toss-green'}">${formatPercent(stock['수익률'])}</td>
+                    </tr>
                 `;
-                tableBody.appendChild(tr);
             });
 
             const totalPrincipal = totalFilteredEval - totalFilteredProfit;
-            const weightedAverageReturn = totalPrincipal > 0 ? (totalFilteredProfit / totalPrincipal) * 100 : 0;
-            
+            const avgRet = totalPrincipal > 0 ? (totalFilteredProfit / totalPrincipal) * 100 : 0;
             tableFoot.innerHTML = `
                 <tr>
-                    <td colspan="5" class="p-4 text-left font-extrabold text-[#191F28]">합계 / 총 수익률 (가중평균)</td>
-                    <td class="p-4 text-right font-extrabold text-[#191F28]">${formatKRW(totalFilteredEval)}</td>
-                    <td class="p-4 text-right font-extrabold ${weightedAverageReturn >= 0 ? 'text-toss-green' : 'text-toss-red'}">${weightedAverageReturn >= 0 ? '+' : ''}${weightedAverageReturn.toFixed(1)}%</td>
+                    <td colspan="5" class="p-5 text-left font-extrabold text-[13px]">합계 / 총 수익률</td>
+                    <td class="p-5 text-right font-extrabold text-[15px] tabular-nums">${formatKRW(totalFilteredEval)}</td>
+                    <td class="p-5 text-right font-extrabold text-[15px] tabular-nums ${avgRet >= 0 ? 'text-toss-green' : 'text-toss-red'}">${avgRet >= 0 ? '+' : ''}${avgRet.toFixed(1)}%</td>
                 </tr>
             `;
         }
 
-        function toggleAccountFilter(accName) {
-            if (activeAccountFilters.has(accName)) {
-                if (activeAccountFilters.size > 1) activeAccountFilters.delete(accName);
-            } else {
-                activeAccountFilters.add(accName);
-            }
-            if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks);
-        }
-
-        function toggleAllAccountFilters(allAccStr) {
-            const allAccs = allAccStr.split(',');
-            if (activeAccountFilters.size === allAccs.length) {
-                activeAccountFilters.clear();
-                activeAccountFilters.add(allAccs[0]);
-            } else {
-                allAccs.forEach(acc => activeAccountFilters.add(acc));
-            }
-            if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks);
-        }
+        function toggleAccountFilter(acc) { activeAccountFilters.has(acc) ? (activeAccountFilters.size > 1 && activeAccountFilters.delete(acc)) : activeAccountFilters.add(acc); if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks); }
+        function toggleAllAccountFilters(accStr) { const arr = accStr.split(','); if (activeAccountFilters.size === arr.length) { activeAccountFilters.clear(); activeAccountFilters.add(arr[0]); } else { arr.forEach(a => activeAccountFilters.add(a)); } if (globalRawData.data) renderAccountFilterChipsAndTable(processPortfolioData(globalRawData.data).allStocks); }
 
         function renderPortfolioCharts(data) {
             if (chartInstances.allStocksPie) chartInstances.allStocksPie.destroy();
             if (chartInstances.totalTrend) chartInstances.totalTrend.destroy();
 
-            const colorPalette = ['#3182F6', '#00C853', '#9333EA', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#EC4899', '#64748B', '#10B981'];
-
-            chartInstances.allStocksPie = new Chart(document.getElementById('allStocksPieChart').getContext('2d'), {
+            chartInstances.allStocksPie = new Chart(document.getElementById('allStocksPieChart'), {
                 type: 'doughnut',
-                data: {
-                    labels: data.aggregatedStocks.map(s => s.name),
-                    datasets: [{ data: data.aggregatedStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, data.aggregatedStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '65%' }
+                data: { labels: data.aggregatedStocks.map(s => s.name), datasets: [{ data: data.aggregatedStocks.map(s => s.amount), backgroundColor: tossPalette, borderWidth: 0, hoverOffset: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
             });
 
-            const legendContainer = document.getElementById('portfolio-legend-container');
-            if (legendContainer) {
-                legendContainer.innerHTML = data.aggregatedStocks.length === 0 ? `<p class="text-xs text-[#8B95A1] text-center py-2">보유 종목 데이터가 없습니다.</p>` : '';
-                const totalAggAmount = data.aggregatedStocks.reduce((sum, item) => sum + item.amount, 0);
-                data.aggregatedStocks.forEach((item, index) => {
-                    const percentage = totalAggAmount > 0 ? ((item.amount / totalAggAmount) * 100).toFixed(1) : '0.0';
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
-                    rowDiv.innerHTML = `
-                        <div class="flex items-center space-x-2 truncate pr-2">
-                            <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorPalette[index % colorPalette.length]};"></span>
-                            <span class="font-bold text-[#191F28] truncate">${item.name}</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
-                            <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
-                        </div>
-                    `;
-                    legendContainer.appendChild(rowDiv);
+            const legendBox = document.getElementById('portfolio-legend-container');
+            if (legendBox) {
+                legendBox.innerHTML = '';
+                const tot = data.aggregatedStocks.reduce((s, i) => s + i.amount, 0);
+                data.aggregatedStocks.forEach((item, idx) => {
+                    const bg = tossPalette[idx % tossPalette.length];
+                    legendBox.innerHTML += `
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-50 last:border-0">
+                            <div class="flex items-center gap-2 truncate pr-2">
+                                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${bg}"></span>
+                                <span class="font-bold text-[#4E5968] truncate text-[12px]">${item.name}</span>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="font-extrabold text-[#333D4B] tabular-nums">${formatKRW(item.amount)}</span>
+                                <span class="text-[10px] text-[#8B95A1] font-semibold ml-1 tabular-nums">(${((item.amount/tot)*100).toFixed(1)}%)</span>
+                            </div>
+                        </div>`;
                 });
             }
 
-            chartInstances.totalTrend = new Chart(document.getElementById('totalAssetTrendChart').getContext('2d'), {
+            const ctxTrend = document.getElementById('totalAssetTrendChart').getContext('2d');
+            let gradient = ctxTrend.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(49, 130, 246, 0.15)'); // Toss Blue light
+            gradient.addColorStop(1, 'rgba(49, 130, 246, 0)');
+
+            chartInstances.totalTrend = new Chart(ctxTrend, {
                 type: 'line',
                 data: {
                     labels: data.trend.labels,
-                    datasets: [{ label: '총 자산', data: data.trend.values, borderColor: '#3182F6', backgroundColor: 'rgba(49, 130, 246, 0.08)', fill: true, tension: 0.3, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#3182F6' }]
+                    datasets: [{ 
+                        data: data.trend.values, 
+                        borderColor: '#3182F6', 
+                        backgroundColor: gradient, 
+                        fill: true, 
+                        tension: 0.3, // 부드러운 곡선
+                        borderWidth: 3, 
+                        pointRadius: 3, 
+                        pointBackgroundColor: '#FFFFFF',
+                        pointBorderColor: '#3182F6',
+                        pointBorderWidth: 2
+                    }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: {
-                            ticks: {
-                                font: { family: 'Pretendard', size: 11 },
-                                callback: value => {
-                                    if (value >= 100000000) return (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
-                                    if (value >= 10000) return (value / 10000).toLocaleString() + '만';
-                                    return value.toLocaleString();
-                                }
-                            },
-                            grid: { color: 'rgba(0,0,0,0.03)' }
+                        y: { 
+                            beginAtZero: false, 
+                            border: { display: false },
+                            grid: { color: 'rgba(0,0,0,0.03)' },
+                            ticks: { font: { size: 11 }, callback: v => v >= 100000000 ? (v/100000000).toFixed(1).replace(/\.0$/, '')+'억' : v.toLocaleString() } 
                         },
-                        x: { ticks: { font: { family: 'Pretendard', size: 11 } }, grid: { display: false } }
-                    }
+                        x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 11 } } }
+                    },
+                    interaction: { mode: 'index', intersect: false }
                 }
             });
         }
-
 
         // ================= 2. 배당금 데이터 프로세싱 =================
         function processDividendData(dataObj) {
-            const stockList = Array.isArray(dataObj['주식']) ? dataObj['주식'] : [];
-            const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
-            const dividendInfoList = Array.isArray(dataObj['분배금정보']) ? dataObj['분배금정보'] : (Array.isArray(dataObj['분배금 정보']) ? dataObj['분배금 정보'] : []);
+            const validStocks = (dataObj['주식']||[]).map(i => ({
+                '_owner': String(i['이름']||i['사용자']||'').trim(),
+                '_accType': String(i['계좌종류']||'').trim(),
+                '_broker': String(i['증권사']||'').trim(),
+                '_stockName': String(i['종목']||i['종목명']||'').trim(),
+                '_evalAmount': parseCleanNumber(i['평가금액'])>0 ? parseCleanNumber(i['평가금액']) : parseCleanNumber(i['원금']),
+                '_qty': parseCleanNumber(i['수량'])
+            })).filter(i => i._qty>0 && i._evalAmount>0);
 
-            const validStockList = stockList.filter(item => {
-                const evalAmt = parseCleanNumber(item['평가금액']);
-                const principalAmt = parseCleanNumber(item['원금']);
-                const qty = parseCleanNumber(item['수량']);
-                return (evalAmt > 0 || principalAmt > 0) && qty > 0;
-            }).map(item => {
-                const evalAmt = parseCleanNumber(item['평가금액']);
-                const principalAmt = parseCleanNumber(item['원금']);
-                return {
-                    ...item,
-                    '_owner': String(item['이름'] || item['사용자'] || '').trim(),
-                    '_accType': String(item['계좌종류'] || '').trim(),
-                    '_broker': String(item['증권사'] || '').trim(),
-                    '_stockName': String(item['종목'] || item['종목명'] || '').trim(),
-                    '_evalAmount': evalAmt > 0 ? evalAmt : principalAmt,
-                    '_qty': parseCleanNumber(item['수량'])
-                };
-            });
+            const divList = dataObj['분배금']||[];
+            const divInfo = dataObj['분배금정보']||dataObj['분배금 정보']||[];
 
-            const livingStocks = validStockList.filter(item => isLivingAccountItem(item._accType, item._broker, item._stockName));
-
-            const monthlyDividends = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const afterTax = parseCleanNumber(item['세후분배금']);
-                const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
-                return normMonth === selectedDividendMonth && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
-            });
-            const monthlyDividendSum = monthlyDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
-
+            let monthlySum=0, annualSum=0, sideSum=0, tossQty=0, tossDiv=0, dps=0;
             const targetYear = selectedDividendMonth.split('-')[0];
-            const annualDividends = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const afterTax = parseCleanNumber(item['세후분배금']);
-                const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
-                return normMonth.startsWith(targetYear) && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']);
-            });
-            const annualDividendSum = annualDividends.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            const trendArr = Array(12).fill(0);
+            
+            divList.forEach(item => {
+                const ym = normalizeDateToYM(item['월']||item['지급일']);
+                const amt = parseCleanNumber(item['세후분배금']);
+                const brk = String(item['증권사']||'');
+                const acc = String(item['계좌종류']||'');
+                const stg = normalizeText(item['종목']||item['종목명']);
+                if(amt<=0) return;
 
-            const sideIncomes = dividendList.filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedDividendMonth && String(item['계좌종류'] || '').trim() === '부가수입');
-            const sideIncomeSum = sideIncomes.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
-
-            let tossStockQty = 0;
-            validStockList.forEach(item => {
-                const brk = normalizeText(item._broker);
-                const stgNorm = normalizeText(item._stockName);
-                if (brk.includes('토스') && stgNorm.includes('KODEX200타겟위클리커버드콜')) {
-                    tossStockQty += item._qty;
+                if (ym === selectedDividendMonth && acc === '부가수입') sideSum += amt;
+                if (brk.includes('토스') && stg.includes('KODEX200타겟위클리커버드콜')) {
+                    if(ym === selectedDividendMonth) tossDiv += amt;
+                } else if (isLivingAccountItem(acc, brk, item['종목'])) {
+                    if(ym === selectedDividendMonth) monthlySum += amt;
+                    if(ym.startsWith(targetYear)) { annualSum += amt; let m = parseInt(ym.split('-')[1]); if(m>=1&&m<=12) trendArr[m-1]+=amt; }
                 }
             });
 
-            const tossDivItems = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const brk = normalizeText(item['증권사'] || item['브로커'] || '');
-                const stgNorm = normalizeText(item['종목'] || item['종목명']);
-                return normMonth === selectedDividendMonth && brk.includes('토스') && stgNorm.includes('KODEX200타겟위클리커버드콜');
-            });
-            const tossMonthlyDivSum = tossDivItems.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            validStocks.forEach(i => { if(i._broker.includes('토스') && normalizeText(i._stockName).includes('KODEX200타겟위클리커버드콜')) tossQty += i._qty; });
+            const targetNormM = normalizeMonth(selectedDividendMonth);
+            const tInfo = divInfo.find(info => normalizeMonth(info['월']||info['지급일']||Object.values(info)[1]||Object.values(info)[0]) === targetNormM && normalizeText(info['종목']||info['종목명']||Object.values(info)[0]).includes('KODEX200타겟위클리커버드콜'));
+            if(tInfo) dps = parseCleanNumber(tInfo['주당분배금']||tInfo['분배금']||Object.values(tInfo)[4]);
 
-            let dpsValue = 0;
-            const targetNormMonth = normalizeMonth(selectedDividendMonth);
-            const targetInfo = dividendInfoList.find(info => {
-                const infoMonthNorm = normalizeMonth(info['월'] || info['지급일'] || Object.values(info)[1] || Object.values(info)[0]);
-                const infoStockNorm = normalizeText(info['종목'] || info['종목명'] || Object.values(info)[0] || Object.values(info)[1]);
-                return infoMonthNorm === targetNormMonth && infoStockNorm.includes('KODEX200타겟위클리커버드콜');
+            const livingStocks = validStocks.filter(i => isLivingAccountItem(i._accType, i._broker, i._stockName)).reduce((acc, i) => { acc[i._stockName] = (acc[i._stockName]||0)+i._evalAmount; return acc; }, {});
+            
+            const currDivs = divList.filter(i => normalizeDateToYM(i['월']||i['지급일'])===selectedDividendMonth && parseCleanNumber(i['세후분배금'])>0 && !(String(i['증권사']).includes('토스')&&normalizeText(i['종목']).includes('KODEX200타겟위클리커버드콜')));
+            let detailRows = currDivs.map(i => {
+                const stgN = normalizeText(i['종목']||i['종목명']);
+                const tQty = isAccountGrouped ? validStocks.filter(s => s._accType===String(i['계좌종류']).trim() && normalizeText(s._stockName)===stgN).reduce((sum,s)=>sum+s._qty,0) : validStocks.filter(s => normalizeText(s._stockName)===stgN).reduce((sum,s)=>sum+s._qty,0);
+                return { owner: String(i['이름']||i['사용자']||'').trim()||'-', accType: String(i['계좌종류']||'').trim()||'-', stockName: String(i['종목']||i['종목명']||'').trim(), qty: tQty, afterTax: parseCleanNumber(i['세후분배금']) };
             });
-            if (targetInfo) {
-                dpsValue = parseCleanNumber(targetInfo['주당분배금'] || targetInfo['분배금'] || targetInfo['Dps'] || Object.values(targetInfo)[4]);
+            if(!isAccountGrouped) {
+                const gm = {}; detailRows.forEach(r => { if(!gm[r.stockName]) gm[r.stockName]={...r, owner:'통합', accType:'전체', afterTax:0}; gm[r.stockName].afterTax += r.afterTax; });
+                detailRows = Object.values(gm);
             }
+            const totGroup = detailRows.reduce((s,r)=>s+r.afterTax,0);
+            detailRows.forEach(r => r.ratio = totGroup>0 ? (r.afterTax/totGroup)*100 : 0);
 
-            const monthlyTrendArr = Array(12).fill(0);
-            dividendList.forEach(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const afterTax = parseCleanNumber(item['세후분배금']);
-                const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return;
-                if (normMonth.startsWith(targetYear)) {
-                    let mNum = parseInt(normMonth.split('-')[1], 10);
-                    if (mNum >= 1 && mNum <= 12 && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목'])) {
-                        monthlyTrendArr[mNum - 1] += afterTax;
-                    }
-                }
-            });
-
-            const livingStockAggMap = {};
-            livingStocks.forEach(item => {
-                livingStockAggMap[item._stockName] = (livingStockAggMap[item._stockName] || 0) + item._evalAmount;
-            });
-            const sortedLivingStocks = Object.entries(livingStockAggMap).map(([name, amount]) => ({ name, amount })).sort((a, b) => b.amount - a.amount);
-
-            const currentMonthDividends = dividendList.filter(item => {
-                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
-                const afterTax = parseCleanNumber(item['세후분배금']);
-                const broker = String(item['증권사'] || '');
-                if (afterTax <= 0 || (broker.includes('토스') && normalizeText(item['종목']).includes('KODEX200타겟위클리커버드콜'))) return false;
-                return normMonth === selectedDividendMonth;
-            });
-
-            let detailRows = currentMonthDividends.map(divItem => {
-                const owner = String(divItem['이름'] || divItem['사용자'] || '').trim();
-                const accType = String(divItem['계좌종류'] || '').trim();
-                const stockName = String(divItem['종목'] || divItem['종목명'] || '').trim();
-                const cleanStockNameNorm = normalizeText(stockName);
-                const afterTaxDiv = parseCleanNumber(divItem['세후분배금']);
-
-                let totalQty = 0;
-                if (isAccountGrouped) {
-                    totalQty = validStockList.filter(s => (!owner || s._owner === owner) && s._accType === accType && normalizeText(s._stockName) === cleanStockNameNorm).reduce((sum, s) => sum + s._qty, 0);
-                } else {
-                    totalQty = validStockList.filter(s => normalizeText(s._stockName) === cleanStockNameNorm).reduce((sum, s) => sum + s._qty, 0);
-                }
-
-                const infoMatch = dividendInfoList.find(info => {
-                    const infoMonthNorm = normalizeMonth(info['월'] || info['지급일'] || Object.values(info)[1] || Object.values(info)[0]);
-                    const infoStockNorm = normalizeText(info['종목'] || info['종목명'] || Object.values(info)[0] || Object.values(info)[1]);
-                    return infoMonthNorm === targetNormMonth && infoStockNorm.includes(cleanStockNameNorm);
-                });
-
-                return {
-                    owner: owner || '-',
-                    accType: accType || '-',
-                    stockName: stockName || '-',
-                    qty: totalQty,
-                    dps: infoMatch ? parseCleanNumber(infoMatch['주당분배금'] || infoMatch['분배금'] || infoMatch['Dps'] || Object.values(infoMatch)[4]) : 0,
-                    dpsDollar: infoMatch ? parseCleanNumber(infoMatch['분배금액(달러)'] || infoMatch['달러분배금'] || Object.values(infoMatch)[6] || 0) : 0,
-                    afterTax: afterTaxDiv
-                };
-            });
-
-            if (!isAccountGrouped) {
-                const groupedMap = {};
-                detailRows.forEach(row => {
-                    if (!groupedMap[row.stockName]) {
-                        groupedMap[row.stockName] = { owner: '통합', accType: '전체', stockName: row.stockName, qty: row.qty, dps: row.dps, dpsDollar: row.dpsDollar, afterTax: 0 };
-                    }
-                    groupedMap[row.stockName].afterTax += row.afterTax;
-                });
-                detailRows = Object.values(groupedMap);
-            }
-
-            const totalGroupAfterTax = detailRows.reduce((sum, r) => sum + r.afterTax, 0);
-            detailRows = detailRows.map(row => ({ ...row, ratio: totalGroupAfterTax > 0 ? (row.afterTax / totalGroupAfterTax) * 100 : 0 }));
-
-            return {
-                monthlySum: monthlyDividendSum,
-                annualSum: annualDividendSum,
-                sideIncome: sideIncomeSum,
-                tossDiv: tossMonthlyDivSum,
-                tossQty: tossStockQty,
-                dps: dpsValue,
-                trendArr: monthlyTrendArr,
-                livingStocks: sortedLivingStocks,
-                detailRows
-            };
+            return { monthlySum, annualSum, sideIncome: sideSum, tossDiv, tossQty, dps, trendArr, livingStocks: Object.entries(livingStocks).map(([n,a])=>({name:n,amount:a})).sort((a,b)=>b.amount-a.amount), detailRows };
         }
 
         function updateDividendUI(data) {
-            document.getElementById('card-monthly-dividend').innerText = formatKRW(data.monthlySum);
-            document.getElementById('card-annual-dividend').innerText = formatKRW(data.annualSum);
-            document.getElementById('card-side-income').innerText = formatKRW(data.sideIncome);
+            // CountUp 적용
+            animateValue(document.getElementById('card-monthly-dividend'), data.monthlySum, formatKRW);
+            animateValue(document.getElementById('card-annual-dividend'), data.annualSum, formatKRW);
+            animateValue(document.getElementById('card-side-income'), data.sideIncome, formatKRW);
 
-            document.getElementById('widget-toss-qty').innerText = data.tossQty.toLocaleString();
-            document.getElementById('widget-dps').innerText = formatKRW(data.dps);
-            document.getElementById('widget-toss-div').innerText = formatKRW(data.tossDiv);
+            animateValue(document.getElementById('widget-toss-qty'), data.tossQty);
+            animateValue(document.getElementById('widget-dps'), data.dps, formatKRW);
+            animateValue(document.getElementById('widget-toss-div'), data.tossDiv, formatKRW);
             
-            const mortgageTarget = 1940000;
-            const remainReinvest = data.tossDiv - mortgageTarget;
-            const remainEl = document.getElementById('widget-remain-reinvest');
-            remainEl.innerText = (remainReinvest >= 0 ? '+ ' : '') + formatKRW(remainReinvest);
-            remainEl.className = `text-xs font-extrabold mt-0.5 ${remainReinvest >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
+            const diff = data.tossDiv - 1940000;
+            const re = document.getElementById('widget-remain-reinvest');
+            // 부호 표시를 위해 특수 포맷 적용
+            animateValue(re, Math.abs(diff), (val) => (diff >= 0 ? '+ ' : '- ') + formatKRW(val));
+            re.className = `text-lg font-extrabold tabular-nums ${diff >= 0 ? 'text-blue-400' : 'text-rose-400'}`;
 
-            const progressPercent = Math.min(Math.max((data.tossDiv / mortgageTarget) * 100, 0), 100);
-            document.getElementById('widget-progress-text').innerText = `${progressPercent.toFixed(1)}% 달성`;
-            document.getElementById('widget-progress-bar').style.width = `${progressPercent}%`;
+            const pct = Math.min(Math.max((data.tossDiv/1940000)*100,0),100);
+            document.getElementById('widget-progress-text').innerText = pct.toFixed(1) + '%';
+            document.getElementById('widget-progress-bar').style.width = pct + '%';
 
-            const theadEl = document.getElementById('dividend-table-thead');
-            const detailTbody = document.getElementById('dividend-detail-tbody');
-            const detailTfoot = document.getElementById('dividend-detail-tfoot');
+            const th = document.getElementById('dividend-table-thead');
+            const tb = document.getElementById('dividend-detail-tbody');
+            const tf = document.getElementById('dividend-detail-tfoot');
             
-            let theadHTML = `
-                <tr>
-                    <th onclick="sortTable('owner')" class="p-3.5 rounded-l-xl cursor-pointer hover:text-[#191F28] transition">이름 <i id="sort-icon-owner" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('accType')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">계좌종류 <i id="sort-icon-accType" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('stockName')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">종목명 <i id="sort-icon-stockName" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('qty')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">보유 수량 <i id="sort-icon-qty" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('dps')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">주당 분배금 <i id="sort-icon-dps" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-            `;
-            if (!isAccountGrouped) theadHTML += `<th onclick="sortTable('ratio')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">비중 <i id="sort-icon-ratio" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>`;
-            theadHTML += `<th onclick="sortTable('afterTax')" class="p-3.5 rounded-r-xl cursor-pointer hover:text-[#191F28] transition text-right">세후 분배금 <i id="sort-icon-afterTax" class="fa-solid fa-sort text-slate-300 ml-1"></i></th></tr>`;
-            theadEl.innerHTML = theadHTML;
+            let theadStr = `<tr>
+                <th onclick="sortTable('owner')" class="p-4 rounded-l-xl cursor-pointer hover:text-toss-text transition">이름 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                <th onclick="sortTable('accType')" class="p-4 cursor-pointer hover:text-toss-text transition">구분 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                <th onclick="sortTable('stockName')" class="p-4 cursor-pointer hover:text-toss-text transition">종목 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+                <th onclick="sortTable('qty')" class="p-4 cursor-pointer text-right hover:text-toss-text transition">수량 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>`;
+            if(!isAccountGrouped) theadStr += `<th onclick="sortTable('ratio')" class="p-4 cursor-pointer text-right hover:text-toss-text transition">비중 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>`;
+            theadStr += `<th onclick="sortTable('afterTax')" class="p-4 rounded-r-xl cursor-pointer text-right hover:text-toss-text transition">세후 배당금 <i class="fa-solid fa-sort ml-1 opacity-50"></i></th></tr>`;
+            th.innerHTML = theadStr;
 
-            detailTbody.innerHTML = '';
-            let totalDetailAfterTax = 0;
-
-            if (data.detailRows.length === 0) {
-                detailTbody.innerHTML = `<tr><td colspan="${isAccountGrouped ? 6 : 7}" class="p-6 text-center text-[#8B95A1]">선택된 월의 배당 내역이 없습니다.</td></tr>`;
-                detailTfoot.innerHTML = '';
-            } else {
-                data.detailRows.forEach(row => {
-                    totalDetailAfterTax += row.afterTax;
-                    let dpsStr = formatKRW(row.dps);
-                    if (row.dpsDollar > 0) dpsStr += ` ($ ${row.dpsDollar.toFixed(2)})`;
-
-                    let rowHTML = `
-                        <td class="p-3.5"><span class="text-xs bg-slate-100 text-[#333D4B] px-2.5 py-1 rounded-lg font-bold">${row.owner}</span></td>
-                        <td class="p-3.5"><span class="text-xs bg-slate-50 text-[#6B7684] px-2.5 py-1 rounded-lg font-semibold">${row.accType}</span></td>
-                        <td class="p-3.5 font-bold text-[#191F28]">${row.stockName}</td>
-                        <td class="p-3.5 text-[#333D4B] text-right">${row.qty > 0 ? row.qty.toLocaleString() + '주' : '-'}</td>
-                        <td class="p-3.5 text-[#6B7684] text-right">${dpsStr}</td>
-                    `;
-                    if (!isAccountGrouped) {
-                        const ratioVal = Math.min(Math.max(row.ratio, 0), 100);
-                        rowHTML += `
-                            <td class="p-3.5 text-right font-bold text-[#191F28] relative">
-                                <div class="absolute inset-y-1.5 right-2 left-3 rounded-md bg-blue-50 overflow-hidden pointer-events-none">
-                                    <div class="h-full bg-blue-400/20 rounded-md transition-all duration-300" style="width: ${ratioVal}%;"></div>
-                                </div>
-                                <span class="relative z-10">${ratioVal.toFixed(1)}%</span>
-                            </td>
-                        `;
-                    }
-                    rowHTML += `<td class="p-3.5 text-toss-green font-bold text-right">${formatKRW(row.afterTax)}</td>`;
-
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50/80 transition";
-                    tr.innerHTML = rowHTML;
-                    detailTbody.appendChild(tr);
+            tb.innerHTML = '';
+            if (data.detailRows.length === 0) tb.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-toss-subText">데이터가 없습니다.</td></tr>`;
+            else {
+                let sum = 0;
+                data.detailRows.forEach(r => {
+                    sum += r.afterTax;
+                    let rowStr = `<tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4"><span class="text-[11px] bg-slate-100 text-[#4E5968] px-2.5 py-1 rounded-md font-bold">${r.owner}</span></td>
+                        <td class="p-4"><span class="text-[12px] text-[#8B95A1] font-semibold">${r.accType}</span></td>
+                        <td class="p-4 font-bold text-toss-text">${r.stockName}</td>
+                        <td class="p-4 text-right tabular-nums text-[#4E5968] font-medium">${r.qty>0 ? r.qty.toLocaleString()+'주' : '-'}</td>`;
+                    if(!isAccountGrouped) rowStr += `<td class="p-4 text-right tabular-nums font-bold text-toss-text"><div class="absolute inset-y-1.5 right-2 left-3 rounded-md bg-blue-50 overflow-hidden pointer-events-none -z-10"><div class="h-full bg-blue-100 transition-all" style="width: ${r.ratio}%;"></div></div><span class="relative z-10">${r.ratio.toFixed(1)}%</span></td>`;
+                    rowStr += `<td class="p-4 text-right tabular-nums font-bold text-toss-green">${formatKRW(r.afterTax)}</td></tr>`;
+                    tb.innerHTML += rowStr;
                 });
-
-                detailTfoot.innerHTML = `
-                    <tr>
-                        <td colspan="${isAccountGrouped ? 5 : 6}" class="p-4 text-left font-extrabold text-[#191F28]">합계 총 세후 분배금</td>
-                        <td class="p-4 text-right font-extrabold text-toss-green">${formatKRW(totalDetailAfterTax)}</td>
-                    </tr>
-                `;
+                tf.innerHTML = `<tr><td colspan="${isAccountGrouped ? 4 : 5}" class="p-5 text-left text-[13px]">합계</td><td class="p-5 text-right font-extrabold text-[15px] text-toss-green tabular-nums">${formatKRW(sum)}</td></tr>`;
             }
-
             renderDividendCharts(data);
         }
 
         function renderDividendCharts(data) {
-            if (chartInstances.livingDonut) chartInstances.livingDonut.destroy();
-            if (chartInstances.divBar) chartInstances.divBar.destroy();
+            if(chartInstances.livingDonut) chartInstances.livingDonut.destroy();
+            if(chartInstances.divBar) chartInstances.divBar.destroy();
 
-            const colorPalette = ['#3182F6', '#00C853', '#9333EA', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#EC4899', '#64748B', '#10B981'];
-            const totalLivingAmt = data.livingStocks.reduce((sum, s) => sum + s.amount, 0);
-
-            chartInstances.livingDonut = new Chart(document.getElementById('livingAccountChart').getContext('2d'), {
+            chartInstances.livingDonut = new Chart(document.getElementById('livingAccountChart'), {
                 type: 'doughnut',
-                data: {
-                    labels: data.livingStocks.map(s => s.name),
-                    datasets: [{ data: data.livingStocks.map(s => s.amount), backgroundColor: colorPalette.slice(0, data.livingStocks.length), borderWidth: 2, borderColor: '#ffffff' }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '72%' }
+                data: { labels: data.livingStocks.map(s=>s.name), datasets: [{data: data.livingStocks.map(s=>s.amount), backgroundColor: tossPalette, borderWidth: 0}] },
+                options: { responsive: true, maintainAspectRatio: false, plugins:{legend:{display:false}}, cutout:'70%' }
             });
 
-            const livingLegendContainer = document.getElementById('living-legend-container');
-            if (livingLegendContainer) {
-                livingLegendContainer.innerHTML = data.livingStocks.length === 0 ? `<p class="text-xs text-[#8B95A1] text-center py-2">생활비 계좌 종목 데이터가 없습니다.</p>` : '';
-                data.livingStocks.forEach((item, index) => {
-                    const percentage = totalLivingAmt > 0 ? ((item.amount / totalLivingAmt) * 100).toFixed(1) : '0.0';
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = "flex items-center justify-between py-1.5 first:pt-0 last:pb-0";
-                    rowDiv.innerHTML = `
-                        <div class="flex items-center space-x-2 truncate pr-2">
-                            <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${colorPalette[index % colorPalette.length]};"></span>
-                            <span class="font-bold text-[#191F28] truncate">${item.name}</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-extrabold text-[#333D4B]">${formatKRW(item.amount)}</span>
-                            <span class="text-[11px] text-[#8B95A1] ml-1 font-semibold">(${percentage}%)</span>
-                        </div>
-                    `;
-                    livingLegendContainer.appendChild(rowDiv);
+            const leg = document.getElementById('living-legend-container');
+            if(leg) {
+                leg.innerHTML = '';
+                const tot = data.livingStocks.reduce((s,i)=>s+i.amount,0);
+                data.livingStocks.forEach((item, idx) => {
+                    const bg = tossPalette[idx % tossPalette.length];
+                    leg.innerHTML += `<div class="flex justify-between py-1.5 border-b border-slate-50 last:border-0"><div class="flex items-center gap-2 truncate pr-2"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${bg}"></span><span class="font-bold text-[#4E5968] truncate text-[12px]">${item.name}</span></div><div class="text-[11px] font-semibold text-[#8B95A1] tabular-nums">${((item.amount/tot)*100).toFixed(1)}%</div></div>`;
                 });
             }
 
-            chartInstances.divBar = new Chart(document.getElementById('monthlyDividendChart').getContext('2d'), {
+            chartInstances.divBar = new Chart(document.getElementById('monthlyDividendChart'), {
                 type: 'bar',
-                data: {
-                    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    datasets: [{ label: '월 세후 배당금', data: data.trendArr, backgroundColor: '#00C853', borderRadius: 8 }]
-                },
+                data: { labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], datasets: [{data: data.trendArr, backgroundColor: '#04C755', borderRadius: 6, hoverBackgroundColor: '#03B04A'}] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    responsive: true, maintainAspectRatio: false, plugins: { legend:{display:false} },
                     scales: {
-                        y: {
-                            ticks: {
-                                font: { family: 'Pretendard', size: 11 },
-                                callback: value => value >= 100000000 ? (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억' : value.toLocaleString()
-                            },
-                            grid: { color: 'rgba(0,0,0,0.03)' }
-                        },
-                        x: { ticks: { font: { family: 'Pretendard', size: 11 } }, grid: { display: false } }
+                        y: { border: {display:false}, grid: {color:'rgba(0,0,0,0.03)'}, ticks: {font:{size:11}, callback: v=>v>=10000?v/10000+'만':v} },
+                        x: { border: {display:false}, grid: {display:false}, ticks: {font:{size:11}} }
                     }
                 }
             });
         }
-
 
         // ================= 3. 가계부 데이터 프로세싱 =================
         function processAccountbookData(dataObj) {
-            const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
-            const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
+            const divs = dataObj['분배금']||[], exps = dataObj['월별지출']||[];
+            let tInc=0, tExp=0, rein=0, emerg=0, trav=0;
+            const ann = {}; for(let i=1;i<=12;i++) ann[String(i).padStart(2,'0')] = {tot:0, lg:{}};
+            const sub = {};
 
-            const accMonthlyDividendSum = dividendList
-                .filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedExpenseMonth && isLivingAccountItem(item['계좌종류'], item['증권사'], item['종목']))
-                .reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            divs.filter(i=>normalizeDateToYM(i['월']||i['지급일'])===selectedExpenseMonth).forEach(i=>{
+                const acc=String(i['계좌종류']||'').trim(), brk=String(i['증권사']||''), stg=item=>(i['종목']||i['종목명']);
+                if(isLivingAccountItem(acc,brk,stg) || acc==='부가수입') tInc += parseCleanNumber(i['세후분배금']);
+            });
 
-            const accSideIncomeSum = dividendList
-                .filter(item => normalizeDateToYM(item['월'] || item['지급일']) === selectedExpenseMonth && String(item['계좌종류'] || '').trim() === '부가수입')
-                .reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
+            exps.forEach(r => {
+                const ym = normalizeDateToYM(r['월']); if(!ym||!ym.includes('-')) return;
+                const mk = ym.split('-')[1]; if(!ann[mk]) return;
+                const lc = String(r['대분류']||'').trim(), sc = String(r['소분류']||'').trim(), src = String(r['출처']||'');
+                const amt = parseCleanNumber(r['금액']) * (src.includes('지역화폐')?0.9:1);
 
-            const totalIncome = accMonthlyDividendSum + accSideIncomeSum;
-            
-            let reinvestSum = 0, emergencySum = 0, travelSum = 0, totalExpenseSum = 0;
-            const annualExpenseMap = {};
-            for (let i = 1; i <= 12; i++) annualExpenseMap[String(i).padStart(2, '0')] = { total: 0, details: {}, largeCategories: {} };
-
-            const currentMonthSubCategories = {};
-
-            expenseList.forEach(row => {
-                const normRowMonth = normalizeDateToYM(row['월']);
-                if (!normRowMonth || !normRowMonth.includes('-')) return;
-                const mKey = normRowMonth.split('-')[1];
-                if (!annualExpenseMap[mKey]) return;
-
-                const largeCat = String(row['대분류'] || '').trim();
-                const smallCat = String(row['소분류'] || '').trim();
-                const source = String(row['출처'] || '').trim();
-                const calculatedAmount = parseCleanNumber(row['금액']) * (source.includes('지역화폐') || source.includes('지역인증') ? 0.9 : 1);
-
-                annualExpenseMap[mKey].total += calculatedAmount;
-                if (!annualExpenseMap[mKey].details[largeCat]) annualExpenseMap[mKey].details[largeCat] = {};
-                annualExpenseMap[mKey].details[largeCat][smallCat] = (annualExpenseMap[mKey].details[largeCat][smallCat] || 0) + calculatedAmount;
-                annualExpenseMap[mKey].largeCategories[largeCat] = (annualExpenseMap[mKey].largeCategories[largeCat] || 0) + calculatedAmount;
-
-                if (normRowMonth === selectedExpenseMonth) {
-                    totalExpenseSum += calculatedAmount;
-                    if (largeCat === '저축') {
-                        if (smallCat === '재투자') reinvestSum += calculatedAmount;
-                        if (smallCat === '비상금') emergencySum += calculatedAmount;
-                        if (smallCat === '여행용적금') travelSum += calculatedAmount;
-                    }
-                    const subKey = `${largeCat} > ${smallCat}`;
-                    if (!currentMonthSubCategories[subKey]) currentMonthSubCategories[subKey] = { large: largeCat, small: smallCat, amount: 0 };
-                    currentMonthSubCategories[subKey].amount += calculatedAmount;
+                ann[mk].tot += amt; ann[mk].lg[lc] = (ann[mk].lg[lc]||0)+amt;
+                if(ym === selectedExpenseMonth) {
+                    tExp += amt;
+                    if(lc==='저축') { if(sc==='재투자') rein+=amt; if(sc==='비상금') emerg+=amt; if(sc==='여행용적금') trav+=amt; }
+                    const k = `${lc} > ${sc}`; if(!sub[k]) sub[k]={l:lc, s:sc, a:0}; sub[k].a+=amt;
                 }
             });
 
-            return {
-                totalIncome,
-                totalExpense: totalExpenseSum,
-                surplus: totalIncome - totalExpenseSum,
-                reinvest: reinvestSum,
-                emergency: emergencySum,
-                travel: travelSum,
-                annualMap: annualExpenseMap,
-                sortedSubCategories: Object.values(currentMonthSubCategories).sort((a, b) => b.amount - a.amount)
-            };
+            return { totalIncome:tInc, totalExpense:tExp, surplus:tInc-tExp, reinvest:rein, emergency:emerg, travel:trav, annualMap:ann, sortedSub: Object.values(sub).sort((a,b)=>b.a-a.a) };
         }
 
-        function updateAccountbookUI(accData) {
-            document.getElementById('acc-total-income').innerText = formatKRW(accData.totalIncome);
-            document.getElementById('acc-total-expense').innerText = formatKRW(accData.totalExpense);
-            document.getElementById('acc-surplus').innerText = (accData.surplus >= 0 ? '+ ' : '') + formatKRW(accData.surplus);
+        function updateAccountbookUI(data) {
+            // CountUp 적용
+            animateValue(document.getElementById('acc-total-income'), data.totalIncome, formatKRW);
+            animateValue(document.getElementById('acc-total-expense'), data.totalExpense, formatKRW);
             
-            document.getElementById('alloc-reinvest').innerText = formatKRW(accData.reinvest);
-            document.getElementById('alloc-emergency').innerText = formatKRW(accData.emergency);
-            document.getElementById('alloc-travel').innerText = formatKRW(accData.travel);
+            const surplusEl = document.getElementById('acc-surplus');
+            animateValue(surplusEl, Math.abs(data.surplus), (val) => (data.surplus >= 0 ? '+ ' : '- ') + formatKRW(val));
+            surplusEl.className = `text-3xl md:text-[32px] font-extrabold tracking-tight mt-1 ${data.surplus >= 0 ? 'text-toss-green' : 'text-rose-400'}`;
 
-            renderSubCategoryAnalysis(accData);
-            renderAccountbookCharts(accData);
-        }
+            animateValue(document.getElementById('alloc-reinvest'), data.reinvest, formatKRW);
+            animateValue(document.getElementById('alloc-emergency'), data.emergency, formatKRW);
+            animateValue(document.getElementById('alloc-travel'), data.travel, formatKRW);
 
-        function renderSubCategoryAnalysis(accData) {
-            const top3Container = document.getElementById('top3-subcat-container');
-            const tbodyEl = document.getElementById('subcat-table-tbody');
-            const subList = accData.sortedSubCategories;
-            const totalExp = accData.totalExpense;
-
-            top3Container.innerHTML = subList.length === 0 ? `<div class="col-span-3 text-center text-xs text-[#8B95A1] py-4">지출 데이터가 없습니다.</div>` : '';
-            subList.slice(0, 3).forEach((item, idx) => {
-                const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
-                const badges = [{ bg: 'bg-amber-500', text: '1위' }, { bg: 'bg-slate-400', text: '2위' }, { bg: 'bg-amber-700', text: '3위' }];
-
-                const card = document.createElement('div');
-                card.className = "bg-[#F7F8FA] border border-slate-200/60 p-4.5 rounded-2xl flex flex-col justify-between";
-                card.innerHTML = `
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-white ${badges[idx].bg} px-2.5 py-0.5 rounded-full shadow-sm">${badges[idx].text}</span>
-                        <span class="text-xs font-bold text-toss-blue">${ratio.toFixed(1)}% 비중</span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-extrabold text-[#191F28] truncate">${item.small}</p>
-                        <p class="text-xs text-[#8B95A1] mt-0.5">${item.large}</p>
-                    </div>
-                    <p class="text-lg font-extrabold text-[#191F28] mt-3 tracking-tight">${formatKRW(item.amount)}</p>
-                `;
-                top3Container.appendChild(card);
+            const t3 = document.getElementById('top3-subcat-container'), tb = document.getElementById('subcat-table-tbody');
+            t3.innerHTML = ''; tb.innerHTML = '';
+            
+            data.sortedSub.slice(0,3).forEach((i, idx) => {
+                const bg = ['bg-amber-100 text-amber-600', 'bg-slate-200 text-slate-600', 'bg-orange-100 text-orange-600'][idx];
+                t3.innerHTML += `<div class="flex flex-col justify-center items-center text-center p-3 rounded-[12px] bg-white border border-toss-border/50"><span class="text-[10px] font-extrabold ${bg} px-2 py-0.5 rounded-md mb-1">${idx+1}위</span><span class="text-[12px] font-bold text-[#4E5968] truncate w-full">${i.s}</span><span class="text-sm font-extrabold text-toss-text mt-1 tabular-nums">${formatKRW(i.a)}</span></div>`;
             });
 
-            tbodyEl.innerHTML = '';
-            if (subList.length === 0) {
-                tbodyEl.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-[#8B95A1]">해당 월의 상세 지출 내역이 없습니다.</td></tr>`;
-            } else {
-                subList.forEach((item, index) => {
-                    const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50/80 transition";
-                    tr.innerHTML = `
-                        <td class="p-3.5 font-bold text-[#8B95A1] w-16">#${index + 1}</td>
-                        <td class="p-3.5 font-bold text-[#191F28]">${item.large} > <span class="text-toss-blue">${item.small}</span></td>
-                        <td class="p-3.5 text-[#333D4B] text-right font-extrabold">${formatKRW(item.amount)}</td>
-                        <td class="p-3.5 text-right font-bold text-[#6B7684]">${ratio.toFixed(1)}%</td>
-                        <td class="p-3.5">
-                            <div class="flex items-center space-x-2">
-                                <div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-toss-blue h-full rounded-full transition-all duration-300" style="width: ${Math.min(Math.max(ratio, 0), 100)}%;"></div>
-                                </div>
-                            </div>
-                        </td>
-                    `;
-                    tbodyEl.appendChild(tr);
-                });
-            }
-        }
+            if(data.sortedSub.length===0) tb.innerHTML = `<tr><td class="p-6 text-center text-toss-subText text-sm">내역이 없습니다.</td></tr>`;
+            data.sortedSub.forEach((i, idx) => {
+                const pct = data.totalExpense>0 ? (i.a/data.totalExpense)*100 : 0;
+                tb.innerHTML += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-4 text-[12px] text-[#8B95A1] font-bold w-12">#${idx+1}</td><td class="p-4"><div class="text-[13px] font-bold text-toss-text">${i.s}</div><div class="text-[11px] text-[#8B95A1]">${i.l}</div></td><td class="p-4 text-right font-bold text-toss-text tabular-nums">${formatKRW(i.a)}</td><td class="p-4 w-28"><div class="flex items-center gap-2"><div class="flex-1 bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-toss-blue h-full rounded-full" style="width:${pct}%"></div></div><span class="text-[10px] font-bold text-[#8B95A1] tabular-nums w-8 text-right">${pct.toFixed(0)}%</span></div></td></tr>`;
+            });
 
-        function renderAccountbookCharts(accData) {
-            if (chartInstances.annualCat) chartInstances.annualCat.destroy();
-
-            const annualMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-            chartInstances.annualCat = new Chart(document.getElementById('annualCategoryBarChart').getContext('2d'), {
+            if(chartInstances.annualCat) chartInstances.annualCat.destroy();
+            const mos = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+            chartInstances.annualCat = new Chart(document.getElementById('annualCategoryBarChart'), {
                 type: 'bar',
-                data: {
-                    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    datasets: [{ label: '월 총 지출', data: annualMonths.map(m => accData.annualMap[m].total), backgroundColor: '#3182F6', borderRadius: 8 }]
-                },
+                data: { labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], datasets: [{data: mos.map(m=>data.annualMap[m].tot), backgroundColor: '#3182F6', borderRadius: 6, hoverBackgroundColor: '#1B64DA'}] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                title: context => `${context[0].label} 지출 요약 (지역화폐 90% 반영)`,
-                                label: context => {
-                                    const monthData = accData.annualMap[annualMonths[context.dataIndex]];
-                                    let lines = [`총 지출: ₩ ${Math.round(monthData.total).toLocaleString('ko-KR')}`, `----------------------------------`];
-                                    Object.entries(monthData.largeCategories).sort((a, b) => b[1] - a[1]).slice(0, 3).forEach(([largeName, amt], idx) => {
-                                        lines.push(`${idx + 1}. [${largeName}]: ₩ ${Math.round(amt).toLocaleString('ko-KR')}`);
-                                    });
-                                    return lines;
-                                }
-                            }
-                        }
-                    },
+                    responsive: true, maintainAspectRatio: false, plugins: { legend:{display:false} },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: { family: 'Pretendard', size: 11 },
-                                callback: value => value >= 100000000 ? (value / 100000000).toFixed(1).replace(/\.0$/, '') + '억' : value.toLocaleString()
-                            },
-                            grid: { color: 'rgba(0,0,0,0.03)' }
-                        },
-                        x: { ticks: { font: { family: 'Pretendard', size: 11 } }, grid: { display: false } }
+                        y: { border: {display:false}, grid: {color:'rgba(0,0,0,0.03)'}, ticks: {font:{size:11}, callback: v=>v>=10000?v/10000+'만':v} },
+                        x: { border: {display:false}, grid: {display:false}, ticks: {font:{size:11}} }
                     }
                 }
             });
         }
 
-
-        // ================= 통합 데이터 Fetch & 초기화 =================
+        // ================= API 연동 =================
         async function fetchSheetData() {
             const overlay = document.getElementById('loading-overlay');
             const statusText = document.getElementById('data-status-text');
             
-            if (overlay) {
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-                overlay.style.display = 'flex';
-            }
-            if (statusText) {
-                statusText.innerText = "● 동기화 진행 중...";
-                statusText.className = "text-amber-500 font-semibold";
-            }
+            if (overlay) { overlay.classList.remove('opacity-0', 'pointer-events-none'); overlay.style.display = 'flex'; }
+            if (statusText) { statusText.innerText = "● 동기화 중..."; statusText.className = "text-toss-blue font-bold mb-3"; }
 
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error(`HTTP 에러 발생: ${response.status}`);
-                
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 const jsonResult = await response.json();
                 
                 if (jsonResult && jsonResult.data) {
                     globalRawData = jsonResult;
-
-                    if (!selectedDividendMonth || !selectedExpenseMonth) {
-                        const now = new Date();
-                        let curYear = now.getFullYear(), curMonth = now.getMonth() - 1;
-                        if (curMonth < 0) { curMonth = 11; curYear -= 1; }
-                        const prevMonthStr = `${curYear}-${String(curMonth + 1).padStart(2, '0')}`;
-                        
-                        if (!selectedDividendMonth) selectedDividendMonth = prevMonthStr;
-                        if (!selectedExpenseMonth) selectedExpenseMonth = prevMonthStr;
+                    if (!selectedDividendMonth) {
+                        const now = new Date(); let y = now.getFullYear(), m = now.getMonth()-1; if (m<0) {m=11; y--;}
+                        selectedDividendMonth = selectedExpenseMonth = `${y}-${String(m+1).padStart(2, '0')}`;
                     }
-
-                    document.getElementById('current-dividend-month-label').innerText = `${selectedDividendMonth} 배당금 분석`;
-                    document.getElementById('current-account-month-label').innerText = `${selectedExpenseMonth} 가계부 분석`;
+                    document.getElementById('current-dividend-month-label').innerText = selectedDividendMonth;
+                    document.getElementById('current-account-month-label').innerText = selectedExpenseMonth;
 
                     updatePortfolioUI(processPortfolioData(jsonResult.data));
                     updateDividendUI(processDividendData(jsonResult.data));
                     updateAccountbookUI(processAccountbookData(jsonResult.data));
                     
-                    if (statusText) {
-                        statusText.innerText = "● 연동 완료";
-                        statusText.className = "text-toss-green font-bold";
-                    }
-                } else {
-                    throw new Error("API 응답 데이터 형식이 올바르지 않습니다.");
+                    if (statusText) { statusText.innerText = "● 연동 완료"; statusText.className = "text-toss-green font-bold mb-3"; }
                 }
-            } catch (error) {
-                console.error("구글 시트 데이터 로드 실패:", error);
-                if (statusText) {
-                    statusText.innerText = "● 연동 실패";
-                    statusText.className = "text-toss-red font-bold";
-                }
-                alert("구글 시트 데이터를 불러오는 데 실패했습니다.\n네트워크 상태 또는 API URL을 확인해주세요.");
+            } catch (e) {
+                console.error(e);
+                if (statusText) { statusText.innerText = "● 연결 실패"; statusText.className = "text-toss-red font-bold mb-3"; }
+                alert("데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.");
             } finally {
-                if (overlay) {
-                    overlay.classList.add('opacity-0');
-                    setTimeout(() => { overlay.style.display = 'none'; }, 300);
-                }
+                if (overlay) { overlay.classList.add('opacity-0'); setTimeout(() => overlay.style.display = 'none', 300); }
             }
         }
-
-        window.addEventListener('DOMContentLoaded', () => { fetchSheetData(); });
+        window.addEventListener('DOMContentLoaded', fetchSheetData);
     </script>
 </body>
 </html>
