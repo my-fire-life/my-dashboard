@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,6 +11,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Number input 화살표 옵션 */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            opacity: 0.6;
+        }
+    </style>
+
     <script>
         tailwind.config = {
             theme: {
@@ -71,6 +90,10 @@
                 <i class="fa-solid fa-wallet w-5 text-center"></i>
                 <span>가계부</span>
             </button>
+            <button onclick="switchTab('strategy')" id="nav-pc-strategy" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium text-sm transition-all text-[#6B7684] hover:bg-slate-50 hover:text-[#191F28]">
+                <i class="fa-solid fa-compass w-5 text-center"></i>
+                <span>자산 전략</span>
+            </button>
         </nav>
         <div class="p-4 border-t border-slate-100">
             <div class="bg-[#F7F8FA] p-3.5 rounded-2xl text-xs text-[#6B7684] space-y-1.5">
@@ -114,7 +137,7 @@
                     <div class="absolute right-3 top-3 text-emerald-500/10 text-5xl font-extrabold pointer-events-none">ASSET</div>
                     <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 자산</p>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-asset">₩ 0</h3>
-                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 부동산)</span>
+                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 부동산</span>
                 </div>
             </div>
 
@@ -257,7 +280,9 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <!-- 높이 균형 맞춤 (items-stretch 적용) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                <!-- 생활비 계좌 비중 카치 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">생활비 계좌 비중</h3>
@@ -269,47 +294,48 @@
                     <div id="living-legend-container" class="space-y-2 max-h-44 overflow-y-auto pr-1 text-xs divide-y divide-slate-100"></div>
                 </div>
 
-                <div class="bg-gradient-to-br from-[#191F28] to-[#333D4B] text-white p-5 md:p-6 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between relative overflow-hidden h-auto">
-                    <div class="absolute right-0 top-0 translate-x-6 -translate-y-6 w-32 h-32 bg-toss-blue/20 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="space-y-3.5">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <!-- 주담대 상환용 전용 위젯 (가독성 향상 & 높이 맞춤) -->
+                <div class="bg-gradient-to-br from-[#191F28] to-[#333D4B] text-white p-6 md:p-8 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute right-0 top-0 translate-x-6 -translate-y-6 w-40 h-40 bg-toss-blue/20 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="space-y-5">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                             <div>
-                                <span class="bg-toss-blue text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">주담대 상환용 전용 위젯</span>
-                                <h3 class="text-base font-extrabold mt-1 tracking-tight">KODEX 200 타겟위클리커버드콜 상환 현황</h3>
+                                <span class="bg-toss-blue text-white text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">주담대 상환용 전용 위젯</span>
+                                <h3 class="text-lg md:text-xl font-extrabold mt-2 tracking-tight">KODEX 200 타겟위클리커버드콜 상환 현황</h3>
                             </div>
-                            <div class="bg-white/10 px-3 py-1.5 rounded-xl text-right backdrop-blur-md shrink-0">
-                                <p class="text-[10px] text-slate-300 font-medium">월 고정 주담대 목표</p>
-                                <p class="text-xs font-extrabold text-emerald-400">₩ 1,940,000</p>
+                            <div class="bg-white/10 px-4 py-2.5 rounded-xl text-right backdrop-blur-md shrink-0 border border-white/10">
+                                <p class="text-xs text-slate-300 font-medium">월 고정 주담대 목표</p>
+                                <p class="text-sm md:text-base font-extrabold text-emerald-400">₩ 1,940,000</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-white/5 p-3 rounded-xl backdrop-blur-md border border-white/10">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white/5 p-4 rounded-xl backdrop-blur-md border border-white/10">
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">보유 수량 / 주당 분배금</p>
-                                <p class="text-xs font-extrabold mt-0.5"><span id="widget-toss-qty">0</span>주 <span class="text-[11px] text-toss-blue font-semibold">(주당 <span id="widget-dps">₩ 0</span>)</span></p>
+                                <p class="text-xs text-slate-300 font-semibold">보유 수량 / 주당 분배금</p>
+                                <p class="text-sm md:text-base font-extrabold mt-1"><span id="widget-toss-qty">0</span>주 <span class="text-xs text-toss-blue font-bold">(주당 <span id="widget-dps">₩ 0</span>)</span></p>
                             </div>
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">이번 달 세후 분배금</p>
-                                <p class="text-xs font-extrabold mt-0.5 text-emerald-400" id="widget-toss-div">₩ 0</p>
+                                <p class="text-xs text-slate-300 font-semibold">이번 달 세후 분배금</p>
+                                <p class="text-sm md:text-base font-extrabold mt-1 text-emerald-400" id="widget-toss-div">₩ 0</p>
                             </div>
                             <div>
-                                <p class="text-[11px] text-slate-400 font-medium">상환 후 잔여 재투자금</p>
-                                <p class="text-xs font-extrabold mt-0.5 text-sky-400" id="widget-remain-reinvest">₩ 0</p>
+                                <p class="text-xs text-slate-300 font-semibold">상환 후 잔여 재투자금</p>
+                                <p class="text-sm md:text-base font-extrabold mt-1 text-sky-400" id="widget-remain-reinvest">₩ 0</p>
                             </div>
                         </div>
 
-                        <div class="bg-white/5 p-3 rounded-xl backdrop-blur-md border border-white/10 space-y-1.5">
-                            <div class="flex justify-between items-center text-[11px]">
-                                <span class="text-slate-300 font-medium">주담대 목표 달성률</span>
-                                <span id="widget-progress-text" class="font-bold text-emerald-400">0%</span>
+                        <div class="bg-white/5 p-4 rounded-xl backdrop-blur-md border border-white/10 space-y-2">
+                            <div class="flex justify-between items-center text-xs md:text-sm">
+                                <span class="text-slate-200 font-bold">주담대 목표 달성률</span>
+                                <span id="widget-progress-text" class="font-extrabold text-emerald-400">0%</span>
                             </div>
-                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                            <div class="w-full bg-white/10 h-3 rounded-full overflow-hidden">
                                 <div id="widget-progress-bar" class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-2 text-[11px] text-slate-300 bg-black/30 p-2.5 rounded-lg mt-3.5">
+                    <div class="flex items-center space-x-2 text-xs md:text-sm text-slate-200 bg-black/30 p-3 rounded-xl mt-5">
                         <i class="fa-solid fa-circle-check text-toss-blue shrink-0"></i>
                         <span class="truncate">토스증권 주담대 종목 분배금으로 원리금 상환 및 잔여금 재투자 수량 증식 구조 모니터링</span>
                     </div>
@@ -445,10 +471,430 @@
             </div>
         </section>
 
+        <!-- ================= [탭 4] 자산 전략 ================= -->
+        <section id="tab-strategy" class="space-y-8 hidden">
+            <!-- Header Banner -->
+            <div class="bg-indigo-900 text-white p-6 md:p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">🔥 3인 가구 FIRE 후 자산 전략</h2>
+                        <p class="text-indigo-200 text-xs md:text-sm">건보료 최소, 비과세 중심의 3인가구 완벽한 현금흐름 파이프라인</p>
+                    </div>
+                    <div class="bg-white/10 px-5 py-3 rounded-2xl border border-white/10 backdrop-blur-md">
+                        <p class="text-xs text-indigo-200">목표 월 생활비</p>
+                        <p class="text-2xl md:text-3xl font-bold text-emerald-400">₩ 6,000,000 <span class="text-sm font-normal text-indigo-200">+ α</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Key Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 shadow-toss border border-slate-100 flex items-center space-x-4">
+                    <div class="p-3.5 bg-emerald-100 text-emerald-600 rounded-2xl">
+                        <i class="fa-solid fa-wallet fa-2x"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider">월 생활비 (세후)</p>
+                        <p class="text-2xl font-extrabold text-[#191F28] mt-0.5">600만 원</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 shadow-toss border border-slate-100 flex items-center space-x-4">
+                    <div class="p-3.5 bg-amber-100 text-amber-600 rounded-2xl">
+                        <i class="fa-solid fa-house-chimney fa-2x"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider">주담대 비용 (월)</p>
+                        <p class="text-2xl font-extrabold text-[#191F28] mt-0.5">194만 원</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 shadow-toss border border-slate-100 flex items-center space-x-4">
+                    <div class="p-3.5 bg-blue-100 text-blue-600 rounded-2xl">
+                        <i class="fa-solid fa-shield-heart fa-2x"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider">절세계좌 활용</p>
+                        <p class="text-2xl font-extrabold text-[#191F28] mt-0.5">건강보험료 최소화</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Flow Strategy -->
+            <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-indigo-500 space-y-6">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+                    <h3 class="text-lg font-bold flex items-center text-[#191F28]">
+                        <i class="fa-solid fa-gears text-indigo-500 mr-2"></i> 핵심 엔진 : 비과세 생활비 추출 시스템 (연저2 + ISA)
+                    </h3>
+                    <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold border border-indigo-100 self-start md:self-auto">
+                        * 연저 : 연금저축펀드
+                    </span>
+                </div>
+
+                <p class="text-gray-600 text-xs md:text-sm leading-relaxed">연금저축계좌의 <b>'원금 인출 시 과세 제외'</b> 조항을 활용하여 세금과 건보료를 완벽하게 방어하는 전략입니다.</p>
+
+                <div class="flex flex-col md:flex-row items-center justify-between bg-slate-50 p-6 rounded-2xl border border-slate-200/80 gap-4">
+                    <div class="text-center w-full md:w-1/3">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 inline-block w-full max-w-[220px]">
+                            <p class="font-bold text-base text-indigo-700">ISA 계좌 (3년 만기)</p>
+                            <p class="text-xs text-gray-600 mt-1">매년 2,000만원 납입<br>3년 후 해지 및 재생성</p>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-400 my-1 md:my-0 flex-shrink-0">
+                        <i class="fa-solid fa-arrow-right fa-2x hidden md:block"></i>
+                        <i class="fa-solid fa-arrow-down fa-2x md:hidden"></i>
+                    </div>
+
+                    <div class="text-center w-full md:w-1/3">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-300 inline-block w-full max-w-[220px]">
+                            <p class="font-bold text-base text-blue-700">연저2 (안세공 계좌)</p>
+                            <p class="text-xs text-gray-600 mt-1">매년 900만원(비공제) +<br>ISA 만기금액 이전 (원금화)</p>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-400 my-1 md:my-0 flex-shrink-0">
+                        <i class="fa-solid fa-arrow-right fa-2x hidden md:block"></i>
+                        <i class="fa-solid fa-arrow-down fa-2x md:hidden"></i>
+                    </div>
+
+                    <div class="text-center w-full md:w-1/3">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-300 inline-block w-full max-w-[220px]">
+                            <p class="font-bold text-base text-emerald-700">비과세 인출 (생활비)</p>
+                            <p class="text-xs text-gray-600 mt-1">배당금을 '원금' 항목으로 인출<br>건보료 미산정, 세금 0원</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 flex items-start shadow-sm space-x-3">
+                    <i class="fa-solid fa-lightbulb text-blue-600 mt-1 fa-xl shrink-0"></i>
+                    <div class="text-xs md:text-sm text-blue-800 space-y-1">
+                        <h4 class="font-bold text-base text-blue-900">💡 연저2의 '원금 규모(Pie)'를 키우는 것이 핵심!</h4>
+                        <p class="leading-relaxed text-blue-700">
+                            연저2 계좌에서 <b>세금이나 건보료 부과 없이 인출할 수 있는 한도는 '납입 원금'까지</b>입니다. (예: 원금이 7억이라면 20년간 월 300만원씩 무과세 인출 가능)<br>
+                            따라서 <b>ISA 계좌의 3년 만기 자금을 지속적으로 연저2로 이전하여 '비과세 인출이 가능한 원금의 파이'를 최대한 거대하게 키워두는 것</b>이 이 FIRE 시스템의 가장 중요하고 강력한 포인트입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Pillars Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pillar 1: Living Expenses -->
+                <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-emerald-400 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold mb-4 flex items-center text-[#191F28]"><i class="fa-solid fa-basket-shopping text-emerald-500 mr-2"></i> 월 600만원 생활비 구성</h3>
+                        
+                        <div class="relative h-40 mb-4">
+                            <canvas id="livingExpenseChart"></canvas>
+                        </div>
+                        
+                        <ul class="space-y-2 mt-4 text-xs md:text-sm">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">연저2 계좌 인출:</span>
+                                    <span class="text-gray-600">주식 배당금을 비과세 원금 인출</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">일반계좌:</span>
+                                    <span class="text-gray-600">각 연 1천만원 이하(건보료 방어)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-5 bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+                        <p class="text-xs md:text-sm font-bold text-emerald-800 mb-2 flex items-center">
+                            <i class="fa-solid fa-calculator mr-2"></i> 월 600만원 - 자본 규모별 필요 연 목표 이율
+                        </p>
+                        <div class="space-y-1.5 text-xs text-gray-700">
+                            <div class="flex justify-between items-center bg-white p-2 rounded border border-emerald-100">
+                                <span>총 자본 <b>15억</b> 운용 시</span> <span class="font-mono bg-emerald-100 px-2 py-0.5 rounded text-emerald-700 font-bold">연 4.8%</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 rounded border border-emerald-100">
+                                <span>총 자본 <b>12억</b> 운용 시</span> <span class="font-mono bg-emerald-100 px-2 py-0.5 rounded text-emerald-700 font-bold">연 6.0%</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 rounded border border-emerald-100">
+                                <span>총 자본 <b>10억</b> 운용 시</span> <span class="font-mono bg-emerald-100 px-2 py-0.5 rounded text-emerald-700 font-bold">연 7.2%</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed">
+                            ※ 주식 포트폴리오를 약 10~15억 원 규모로 구축하고, <b>연 4.8% ~ 7.2%</b> 수준의 수익만 달성하면 <b>월 600만 원(연 7,200만 원)</b>의 현금흐름이 창출됩니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Mortgage Auto-pay -->
+                <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-amber-400 space-y-4">
+                    <h3 class="text-base font-bold flex items-center text-[#191F28]"><i class="fa-solid fa-house-lock text-amber-500 mr-2"></i> 주담대 상환 자동화</h3>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-gray-700">관리 계좌</span>
+                            <span class="text-[11px] bg-blue-500 text-white px-2.5 py-0.5 rounded-full font-bold">토스증권 (분리운영)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-gray-700">투자 종목</span>
+                            <span class="text-xs font-medium text-gray-800">코타위 10,000주</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 pt-1">
+                        <div class="border-l-4 border-amber-400 pl-3">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Target</p>
+                            <p class="font-bold text-sm text-gray-800">월 194만원 주담대 상환</p>
+                        </div>
+                        <div class="border-l-4 border-amber-400 pl-3">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Condition</p>
+                            <p class="font-bold text-sm text-gray-800">주당 최소 190원 분배금 필요</p>
+                        </div>
+                        <div class="border-l-4 border-emerald-400 pl-3">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Rule</p>
+                            <p class="font-bold text-sm text-gray-800">상환 후 잔액 무조건 재투자</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: Long Term & Goals -->
+                <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-purple-500 space-y-6">
+                    <h3 class="text-base font-bold flex items-center text-[#191F28]"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i> 장기 노후 및 목적자금</h3>
+                    
+                    <!-- QQQ -->
+                    <div>
+                        <div class="flex items-center mb-1.5">
+                            <i class="fa-brands fa-apple text-lg mr-2 text-gray-700"></i>
+                            <span class="font-bold text-gray-800 text-base">QQQ (미국 나스닥 100)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-2"><b>계좌:</b> 연저1(세공), IRP, 퇴직연금</p>
+                        
+                        <div class="bg-purple-50 p-3.5 rounded-xl border border-purple-100 text-xs">
+                            <p class="text-gray-700 mb-2.5 leading-relaxed">
+                                세액공제를 받으며 모은 자산. 55세까지 <b>20년간 복리로 눈덩이</b>처럼 굴려 든든한 노후 자금으로 활용합니다.
+                            </p>
+                            
+                            <div class="bg-white rounded-lg border border-purple-200 p-3 space-y-1">
+                                <p class="text-[11px] font-bold text-purple-700 mb-1">📈 2028년 2억 원 거치 후 20년 복리 시 (2048년)</p>
+                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                                    <span class="text-gray-600">연 5% 성장</span> <span class="font-bold text-gray-800">약 5억 3,060만 원</span>
+                                </div>
+                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                                    <span class="text-gray-600">연 7% 성장</span> <span class="font-bold text-purple-600">약 7억 7,390만 원</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">연 9% 성장</span> <span class="font-bold text-pink-600">약 11억 2,080만 원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google -->
+                    <div>
+                        <div class="flex items-center mb-1.5">
+                            <i class="fa-brands fa-google text-lg mr-2 text-blue-500"></i>
+                            <span class="font-bold text-gray-800 text-base">Google 150주 (일반계좌)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-2"><b>목적:</b> 10년 주기 자동차 교체</p>
+                        
+                        <div class="bg-blue-50 p-3.5 rounded-xl border border-blue-100 text-xs">
+                            <p class="text-gray-700 mb-2.5 flex items-center">
+                                <i class="fa-solid fa-car-side text-blue-500 mr-2"></i>
+                                <span>10년 성장 후 차 교체 비용 마련, 잔액은 장기 거치.</span>
+                            </p>
+
+                            <div class="bg-white rounded-lg border border-blue-200 p-3 space-y-1">
+                                <div class="mb-2 pb-1.5 border-b border-gray-200">
+                                    <p class="text-[11px] font-bold text-blue-700">현재 평가금액 (2026.08 기준)</p>
+                                    <div class="flex justify-between mt-0.5 items-end">
+                                        <span class="text-[10px] text-gray-500">$355 / 1,410원 적용</span>
+                                        <span class="font-bold text-gray-800">약 7,508만 원 <span class="text-[10px] font-normal text-gray-500">($53,250)</span></span>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-[11px] font-bold text-blue-700 mb-1">🚀 향후 10년 거치 시 예상 금액</p>
+                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                                    <span class="text-gray-600">연 5% 성장</span> <span class="font-bold text-gray-800">약 1억 2,230만 원</span>
+                                </div>
+                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                                    <span class="text-gray-600">연 7% 성장</span> <span class="font-bold text-blue-600">약 1억 4,770만 원</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">연 9% 성장</span> <span class="font-bold text-indigo-600">약 1억 7,770만 원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Portfolio Table & Interactive Simulator -->
+            <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-cyan-500 space-y-4">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3">
+                    <div>
+                        <h3 class="text-lg font-bold flex items-center text-[#191F28]">
+                            <i class="fa-solid fa-chart-pie text-cyan-500 mr-2"></i> 월 600만+ 현금흐름 목표 포트폴리오
+                        </h3>
+                        <p class="text-xs text-gray-500 mt-0.5">목표 비율과 분배율 칸의 숫자를 직접 수정하여 월 예상분배금을 실시간으로 시뮬레이션할 수 있습니다.</p>
+                    </div>
+                    
+                    <!-- 상단 리셋 버튼, 총 예상 합계 배지 & 위/아래 2줄 문구 -->
+                    <div class="flex flex-col items-start md:items-end gap-1.5 shrink-0 self-start md:self-auto">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="resetSimulation()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-lg font-bold transition active:scale-95 flex items-center shadow-sm">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> 비율 리셋
+                            </button>
+                            <span class="bg-cyan-100 text-cyan-800 text-xs font-bold px-3 py-1 rounded-full border border-cyan-200 inline-block" id="strategy-top-total">
+                                총 예상 합계: ₩ 0
+                            </span>
+                        </div>
+                        <!-- 위/아래 2줄 문구 배치 -->
+                        <div class="text-[10px] text-gray-400 font-medium text-left md:text-right leading-tight">
+                            <p id="strategy-top-date">* 현재 날짜 기준 : YYYY.MM.DD</p>
+                            <p class="mt-0.5 text-gray-400">* SCHD 및 비상금 항목은 15.4% 세금 자동 차감 계산</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto no-scrollbar border border-gray-200 rounded-xl">
+                    <table class="w-full text-xs md:text-sm text-left text-gray-600 min-w-[700px]">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100 border-b border-gray-200">
+                            <tr>
+                                <th class="px-4 py-3 text-center border-r">계좌</th>
+                                <th class="px-4 py-3 border-r">종목명</th>
+                                <th class="px-4 py-3 text-right border-r w-32">목표비율</th>
+                                <th class="px-4 py-3 text-right border-r">목표 비중(금액)</th>
+                                <th class="px-4 py-3 text-right border-r w-32">목표 분배율</th>
+                                <th class="px-4 py-3 text-right font-bold text-gray-900">월 예상분배금</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 연금2 (연저2 + ISA 실시간 상호 연동 시뮬레이터 적용) -->
+                            <tr class="border-b hover:bg-gray-50">
+                                <td rowspan="3" class="px-4 py-3 text-center border-r bg-indigo-50 font-bold text-indigo-700 align-middle">연저2</td>
+                                <td class="px-4 py-3 border-r font-medium text-gray-800">TIGER 미국나스닥100타겟데일리커버드콜</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-nasdaq-ratio" value="50.0" step="0.5" min="0" max="100" oninput="recalculatePortfolio(false, 'nasdaq')" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right border-r font-mono" id="pension-nasdaq-amt">0</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-nasdaq-dist" value="14.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="pension-nasdaq-monthly">₩0</td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-4 py-3 border-r font-medium text-gray-800">TIGER 미국배당다우존스</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-schd-ratio" value="50.0" step="0.5" min="0" max="100" oninput="recalculatePortfolio(false, 'pension-schd')" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right border-r font-mono" id="pension-schd-amt">0</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-schd-dist" value="3.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="pension-schd-monthly">₩0</td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-4 py-3 border-r text-gray-500">Tiger 미국 나스닥 100 <span class="text-[11px]">(남은돈 재투자)</span></td>
+                                <td class="px-4 py-3 text-right border-r text-gray-500">0.0%</td>
+                                <td class="px-4 py-3 text-right border-r font-mono text-gray-500">0</td>
+                                <td class="px-4 py-3 text-right border-r text-gray-500">0.5%</td>
+                                <td class="px-4 py-3 text-right font-mono text-gray-500">₩0</td>
+                            </tr>
+
+                            <!-- 일반계좌 (* SCHD & 코타위 목표비율 인풋 변경 및 세금 적용) -->
+                            <tr class="border-b hover:bg-gray-50">
+                                <td rowspan="3" class="px-4 py-3 text-center border-r bg-blue-50 font-bold text-blue-700 align-middle">일반</td>
+                                <td class="px-4 py-3 border-r font-bold text-gray-800">* SCHD</td>
+                                <td class="px-4 py-3 text-right border-r font-medium">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-gen-schd-ratio" value="0.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right border-r font-mono" id="general-schd-amt">400,000,000</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-gen-schd-dist" value="3.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="general-schd-monthly">₩846,000</td>
+                            </tr>
+                            <tr class="border-b bg-amber-50/30 hover:bg-amber-50">
+                                <td class="px-4 py-3 border-r font-bold text-amber-700">KODEX 200 타겟위클리커버드콜</td>
+                                <td class="px-4 py-3 text-right border-r font-bold text-amber-700">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-gen-kotawi-ratio" value="0.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-amber-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-amber-700">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right border-r font-mono font-bold text-amber-700" id="general-kotawi-amt">200,000,000</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-gen-kotawi-dist" value="14.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="general-kotawi-monthly">₩2,333,333</td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-4 py-3 border-r font-bold text-gray-800">* 비상금 + 목적자금 <br><span class="text-[10px] text-gray-400 font-normal">(26년 ISA 4000, 27/28년 ISA 8000, 연저2 7200)</span></td>
+                                <td class="px-4 py-3 text-right border-r font-medium" id="general-emergency-ratio">0.0%</td>
+                                <td class="px-4 py-3 text-right border-r font-mono" id="general-emergency-amt">0</td>
+                                <td class="px-4 py-3 text-right border-r">
+                                    <div class="inline-flex items-center justify-end gap-1">
+                                        <input type="number" id="rate-gen-emergency-dist" value="3.0" step="0.1" min="0" max="100" oninput="recalculatePortfolio(false)" class="w-14 sm:w-16 bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-right font-bold text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <span class="text-xs font-bold text-slate-600">%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="general-emergency-monthly">₩0</td>
+                            </tr>
+
+                            <!-- 합계 행 (생활비 계좌 금액 & 총 월 예상 분배금 실시간 연동) -->
+                            <tr class="bg-gray-100 text-gray-800 font-bold border-t-2 border-gray-300">
+                                <td colspan="2" class="px-4 py-3.5 text-center border-r border-gray-300 text-sm md:text-base">합 계</td>
+                                <td colspan="2" class="px-4 py-3.5 text-right border-r border-gray-300 text-sm md:text-base font-mono tracking-wide text-cyan-700" id="strategy-table-total-row">₩ 0</td>
+                                <td class="px-4 py-3.5 text-right border-r border-gray-300"></td>
+                                <td class="px-4 py-3.5 text-right text-emerald-600 text-base md:text-lg font-mono tracking-wide" id="strategy-table-monthly-total">₩ 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-amber-50/80 p-4 rounded-xl border border-amber-200 flex items-start text-xs md:text-sm">
+                    <i class="fa-solid fa-arrows-rotate text-amber-500 mt-1 mr-3 fa-lg shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-amber-800 mb-1">※ 일반계좌 코타위 비중 축소 및 미국 지수 교체 계획</h4>
+                        <p class="text-amber-700 leading-relaxed text-xs">
+                            현재 일반계좌에 있는 <b>KODEX 200 타겟위클리커버드콜(코타위)</b>는 <b>국내 코스피 시장의 변동성과 불안정성</b>을 고려하여 매년 비중을 축소하고 <b>ISA 계좌로 우선 이전</b>할 예정입니다.<br>
+                            이후 ISA 만기 시 이 자금을 <b>연저2로 최종 이전하여 장기 성장에 유리한 미국 지수 추종 ETF로 교체</b>함으로써 포트폴리오의 견고함과 안정성을 높이는 리밸런싱 셋팅입니다.<br>
+                            <span class="text-[10px] text-amber-600/80">(※ 참고: 코타위의 분배금은 옵션 프리미엄 성격으로 본래 건보료 산정에 포함되지 않으나, 온전한 자산 안정성을 위한 교체입니다.)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer notes -->
+            <div class="text-center text-xs text-gray-400 py-2">
+                <p>※ 이 대시보드는 부부의 파이어(FIRE) 자산 전략을 시각화한 것입니다. 시장 상황에 따라 분배금, 주가 및 환율은 변동될 수 있습니다.</p>
+            </div>
+        </section>
+
     </main>
 
     <!-- [모바일 전용] 하단 네비게이션 바 -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-30 px-6 py-2.5 flex justify-around items-center shadow-lg">
+    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-30 px-3 py-2 flex justify-around items-center shadow-lg">
         <button onclick="switchTab('portfolio')" id="nav-mob-portfolio" class="flex flex-col items-center space-y-1 text-toss-blue font-bold">
             <i class="fa-solid fa-chart-pie text-lg"></i>
             <span class="text-[10px]">포트폴리오</span>
@@ -460,6 +906,10 @@
         <button onclick="switchTab('accountbook')" id="nav-mob-accountbook" class="flex flex-col items-center space-y-1 text-[#8B95A1] font-semibold">
             <i class="fa-solid fa-wallet text-lg"></i>
             <span class="text-[10px]">가계부</span>
+        </button>
+        <button onclick="switchTab('strategy')" id="nav-mob-strategy" class="flex flex-col items-center space-y-1 text-[#8B95A1] font-semibold">
+            <i class="fa-solid fa-compass text-lg"></i>
+            <span class="text-[10px]">전략</span>
         </button>
     </nav>
 
@@ -478,8 +928,13 @@
         let currentSortColumn = null;
         let currentSortDirection = 'asc';
 
+        // 전략 탭 전용 글로벌 변수
+        let globalPensionIsaSum = 0;
+        let globalGeneralFilteredSum = 0;
+        let isInitialLoad = true;
+
         function switchTab(tabName) {
-            ['portfolio', 'dividend', 'accountbook'].forEach(t => {
+            ['portfolio', 'dividend', 'accountbook', 'strategy'].forEach(t => {
                 const section = document.getElementById(`tab-${t}`);
                 const navPc = document.getElementById(`nav-pc-${t}`);
                 const navMob = document.getElementById(`nav-mob-${t}`);
@@ -489,6 +944,9 @@
                     if (navMob) navMob.className = "flex flex-col items-center space-y-1 text-toss-blue font-bold";
                     if (document.getElementById('mobile-header-title') && navPc) {
                         document.getElementById('mobile-header-title').innerText = navPc.innerText.trim();
+                    }
+                    if (t === 'strategy') {
+                        renderLivingExpenseChart();
                     }
                 } else {
                     section.classList.add('hidden');
@@ -517,12 +975,10 @@
             return isNaN(parsed) ? 0 : parsed;
         };
 
-        // [수정] A열 날짜 형태("2024. 12. 25." 혹은 "2025-1" 등)를 "YYYY-MM" 형태로 견고하게 변환하는 함수
         const normalizeDateToYM = rawDate => {
             if (!rawDate) return "";
             const str = String(rawDate).trim();
             
-            // "2024. 12. 25." 또는 "2024.12" 형태 매칭
             const dotMatch = str.match(/(\d{4})\D+(\d{1,2})/);
             if (dotMatch) {
                 return `${dotMatch[1]}-${dotMatch[2].padStart(2, '0')}`;
@@ -560,11 +1016,11 @@
 
         const isLivingAccountItem = (accType, broker, stockName) => {
             const acc = String(accType || '').trim();
-            const brk = String(broker || '').trim();
-            const stg = normalizeText(stockName);
+            const brk = String(broker || '').toLowerCase();
+            const stg = String(stockName || '').toUpperCase();
             if (!['연금2', 'ISA', '일반'].includes(acc)) return false;
-            if (brk.includes('토스') || brk.toLowerCase().includes('toss')) return false;
-            if (stg === 'GOOGLE' || stg.includes('GOOGLE')) return false;
+            if (brk.includes('토스') || brk.includes('toss')) return false;
+            if (stg.includes('GOOGLE')) return false;
             return true;
         };
 
@@ -604,12 +1060,13 @@
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
 
-
-        // ================= Chart.js 커스텀 플러그인 (도넛 차트 중앙 총합 표시 - 소수점 둘째 자리 적용) =================
+        // ================= Chart.js 커스텀 플러그인 =================
         const centerTextPlugin = {
             id: 'centerTextPlugin',
             afterDraw(chart) {
                 if (chart.config.type !== 'doughnut') return;
+                if (chart.canvas.id === 'livingExpenseChart') return; // 전략 차트는 자체 플러그인 사용
+                
                 const { ctx, width, height } = chart;
                 ctx.save();
                 
@@ -641,7 +1098,6 @@
         };
         Chart.register(centerTextPlugin);
 
-
         // ================= 1. 포트폴리오 데이터 프로세싱 =================
         function processPortfolioData(dataObj) {
             const accountHistory = Array.isArray(dataObj['계좌내역']) ? dataObj['계좌내역'] : [];
@@ -671,11 +1127,9 @@
 
             const totalStockAsset = parseCleanNumber(validStockList.reduce((sum, s) => sum + s._evalAmount, 0));
 
-            // [변경 핵심] 시스템의 '현재 연-월'을 실시간으로 가져옵니다.
             const today = new Date();
             const currentYM = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
 
-            // 타겟 월(현재 달)을 전달하여 해당 달 데이터를 찾습니다. (만약 12월까지 시트가 미리 만들어져 있어도, 오늘 날짜 기준 달을 우선 찾습니다)
             const targetAccountRow = getTargetAccountRow(accountHistory, currentYM);
             const rowValues = Object.values(targetAccountRow);
             
@@ -683,10 +1137,8 @@
             const parentDebt = parseCleanNumber(targetAccountRow['부모님대출'] || targetAccountRow['부모님 대출'] || rowValues[9] || 0);
             const totalDebt = mortgageDebt + parentDebt;
 
-            // [변경 핵심] 부동산 하드코딩 4억 제거, 계좌내역 시트의 최신 "부동산" 열 값 가져오기
             const realEstateValue = parseCleanNumber(targetAccountRow['부동산'] || targetAccountRow['아파트'] || 0);
             
-            // 총 자산 = 주식자산 + 대출합산 + 부동산
             const calculatedTotalAsset = totalStockAsset + totalDebt + realEstateValue;
 
             let livingAccountSum = 0, retirementAccountSum = 0, carAccountSum = 0, mortgageStockAccountSum = 0;
@@ -740,7 +1192,7 @@
                 allStocks: validStockList,
                 aggregatedStocks: sortedAggregatedStocks,
                 trend: { labels: trendLabels, values: trendValues },
-                matchedYM: targetAccountRow._normalizedYM || currentYM // 매칭된 실제 월 반환
+                matchedYM: targetAccountRow._normalizedYM || currentYM
             };
         }
 
@@ -749,7 +1201,6 @@
             document.getElementById('card-total-debt').innerText = formatKRW(data.totalDebt);
             document.getElementById('card-total-asset').innerText = formatKRW(data.totalAsset);
             
-            // [변경 핵심] 매칭된 월(ex: 2026-08)을 유동적으로 라벨에 표시해줍니다.
             const debtLabel = document.getElementById('debt-status-label');
             if (debtLabel) debtLabel.innerText = `현재 기준(${data.matchedYM}) 자동 연동`;
 
@@ -761,7 +1212,6 @@
             renderAccountFilterChipsAndTable(data.allStocks);
             renderPortfolioCharts(data);
         }
-        
 
         function renderAccountFilterChipsAndTable(allStocks) {
             const chipsContainer = document.getElementById('account-filter-chips');
@@ -924,7 +1374,6 @@
                 }
             });
         }
-
 
         // ================= 2. 배당금 데이터 프로세싱 =================
         function processDividendData(dataObj) {
@@ -1102,7 +1551,7 @@
             const remainReinvest = data.tossDiv - mortgageTarget;
             const remainEl = document.getElementById('widget-remain-reinvest');
             remainEl.innerText = (remainReinvest >= 0 ? '+ ' : '') + formatKRW(remainReinvest);
-            remainEl.className = `text-xs font-extrabold mt-0.5 ${remainReinvest >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
+            remainEl.className = `text-sm md:text-base font-extrabold mt-1 ${remainReinvest >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
 
             const progressPercent = Math.min(Math.max((data.tossDiv / mortgageTarget) * 100, 0), 100);
             document.getElementById('widget-progress-text').innerText = `${progressPercent.toFixed(1)}% 달성`;
@@ -1233,7 +1682,6 @@
                 }
             });
         }
-
 
         // ================= 3. 가계부 데이터 프로세싱 =================
         function processAccountbookData(dataObj) {
@@ -1407,6 +1855,214 @@
             });
         }
 
+        // ================= 4. 자산 전략 동적 시뮬레이터 & 차트 렌더링 =================
+        function getFormattedToday() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}.${mm}.${dd}`;
+        }
+
+        // 연저2 목표비율(100%) 상호 연동 & 대화형 시뮬레이터 연산 함수
+        function recalculatePortfolio(isReset = false, sourceInput = null) {
+            const pensionIsaSum = globalPensionIsaSum;
+            const generalFilteredSum = globalGeneralFilteredSum;
+
+            // ================= 1. 연저2 + ISA 계좌 그룹 상호 연동 시뮬레이션 =================
+            const nasdaqRatioInput = document.getElementById('rate-nasdaq-ratio');
+            const pensionSchdRatioInput = document.getElementById('rate-schd-ratio');
+
+            if (sourceInput === 'nasdaq') {
+                const nasdaqVal = parseFloat(nasdaqRatioInput?.value) || 0;
+                const remainingVal = Math.max(0, 100 - nasdaqVal);
+                if (pensionSchdRatioInput) pensionSchdRatioInput.value = remainingVal.toFixed(1);
+            } else if (sourceInput === 'pension-schd') {
+                const schdVal = parseFloat(pensionSchdRatioInput?.value) || 0;
+                const remainingVal = Math.max(0, 100 - schdVal);
+                if (nasdaqRatioInput) nasdaqRatioInput.value = remainingVal.toFixed(1);
+            }
+
+            const nasdaqRatio = (parseFloat(nasdaqRatioInput?.value) || 0) / 100;
+            const nasdaqDist = (parseFloat(document.getElementById('rate-nasdaq-dist')?.value) || 0) / 100;
+
+            const schdRatio = (parseFloat(pensionSchdRatioInput?.value) || 0) / 100;
+            const schdDist = (parseFloat(document.getElementById('rate-schd-dist')?.value) || 0) / 100;
+
+            const nasdaqAmount = pensionIsaSum * nasdaqRatio;
+            const nasdaqMonthly = (nasdaqAmount * nasdaqDist) / 12;
+
+            const schdAmount = pensionIsaSum * schdRatio;
+            const schdMonthly = (schdAmount * schdDist) / 12;
+
+            const nasdaqAmtEl = document.getElementById('pension-nasdaq-amt');
+            if (nasdaqAmtEl) nasdaqAmtEl.innerText = Math.trunc(nasdaqAmount).toLocaleString('ko-KR');
+
+            const nasdaqMonthlyEl = document.getElementById('pension-nasdaq-monthly');
+            if (nasdaqMonthlyEl) nasdaqMonthlyEl.innerText = formatKRW(nasdaqMonthly);
+
+            const pensionSchdAmtEl = document.getElementById('pension-schd-amt');
+            if (pensionSchdAmtEl) pensionSchdAmtEl.innerText = Math.trunc(schdAmount).toLocaleString('ko-KR');
+
+            const pensionSchdMonthlyEl = document.getElementById('pension-schd-monthly');
+            if (pensionSchdMonthlyEl) pensionSchdMonthlyEl.innerText = formatKRW(schdMonthly);
+
+            // ================= 2. 일반 계좌 그룹 시뮬레이션 (4억/2억 리셋 & 세금 연산) =================
+            const genSchdRatioInput = document.getElementById('rate-gen-schd-ratio');
+            const genKotawiRatioInput = document.getElementById('rate-gen-kotawi-ratio');
+
+            let genSchdTargetAmt = 400000000; // 기본 4억
+            let genKotawiTargetAmt = 200000000; // 기본 2억
+
+            if (isReset || isInitialLoad) {
+                const defaultSchdRatio = generalFilteredSum > 0 ? (400000000 / generalFilteredSum) * 100 : 0;
+                const defaultKotawiRatio = generalFilteredSum > 0 ? (200000000 / generalFilteredSum) * 100 : 0;
+
+                if (genSchdRatioInput) genSchdRatioInput.value = defaultSchdRatio.toFixed(1);
+                if (genKotawiRatioInput) genKotawiRatioInput.value = defaultKotawiRatio.toFixed(1);
+            } else {
+                const userSchdRatio = (parseFloat(genSchdRatioInput?.value) || 0) / 100;
+                const userKotawiRatio = (parseFloat(genKotawiRatioInput?.value) || 0) / 100;
+
+                genSchdTargetAmt = generalFilteredSum * userSchdRatio;
+                genKotawiTargetAmt = generalFilteredSum * userKotawiRatio;
+            }
+
+            const emergencyAmt = generalFilteredSum - genSchdTargetAmt - genKotawiTargetAmt;
+            const emergencyRatioVal = generalFilteredSum > 0 ? (emergencyAmt / generalFilteredSum) * 100 : 0;
+
+            const genSchdDist = (parseFloat(document.getElementById('rate-gen-schd-dist')?.value) || 0) / 100;
+            const genKotawiDist = (parseFloat(document.getElementById('rate-gen-kotawi-dist')?.value) || 0) / 100;
+            const genEmergencyDist = (parseFloat(document.getElementById('rate-gen-emergency-dist')?.value) || 0) / 100;
+
+            const TAX_FACTOR = 1 - 0.154; // 15.4% 세금 자동 공제
+            const generalSchdMonthly = ((genSchdTargetAmt * genSchdDist) * TAX_FACTOR) / 12;
+            const generalKotawiMonthly = (genKotawiTargetAmt * genKotawiDist) / 12;
+            const generalEmergencyMonthly = emergencyAmt > 0 ? ((emergencyAmt * genEmergencyDist) * TAX_FACTOR) / 12 : 0;
+
+            const genSchdAmtEl = document.getElementById('general-schd-amt');
+            if (genSchdAmtEl) genSchdAmtEl.innerText = Math.trunc(genSchdTargetAmt).toLocaleString('ko-KR');
+
+            const genSchdMonthlyEl = document.getElementById('general-schd-monthly');
+            if (genSchdMonthlyEl) genSchdMonthlyEl.innerText = formatKRW(generalSchdMonthly);
+
+            const kotawiAmtEl = document.getElementById('general-kotawi-amt');
+            if (kotawiAmtEl) kotawiAmtEl.innerText = Math.trunc(genKotawiTargetAmt).toLocaleString('ko-KR');
+
+            const kotawiMonthlyEl = document.getElementById('general-kotawi-monthly');
+            if (kotawiMonthlyEl) kotawiMonthlyEl.innerText = formatKRW(generalKotawiMonthly);
+
+            const emergencyRatioEl = document.getElementById('general-emergency-ratio');
+            if (emergencyRatioEl) emergencyRatioEl.innerText = emergencyRatioVal.toFixed(1) + '%';
+
+            const emergencyAmtEl = document.getElementById('general-emergency-amt');
+            if (emergencyAmtEl) emergencyAmtEl.innerText = Math.trunc(emergencyAmt).toLocaleString('ko-KR');
+
+            const emergencyMonthlyEl = document.getElementById('general-emergency-monthly');
+            if (emergencyMonthlyEl) emergencyMonthlyEl.innerText = formatKRW(generalEmergencyMonthly);
+
+            // ================= 3. 전체 월 예상분배금 합산 반영 =================
+            const grandTotalMonthlySum = nasdaqMonthly + schdMonthly + generalSchdMonthly + generalKotawiMonthly + generalEmergencyMonthly;
+
+            const totalMonthlyEl = document.getElementById('strategy-table-monthly-total');
+            if (totalMonthlyEl) totalMonthlyEl.innerText = formatKRW(grandTotalMonthlySum);
+        }
+
+        function resetSimulation() {
+            document.getElementById('rate-nasdaq-ratio').value = "50.0";
+            document.getElementById('rate-nasdaq-dist').value = "14.0";
+
+            document.getElementById('rate-schd-ratio').value = "50.0";
+            document.getElementById('rate-schd-dist').value = "3.0";
+
+            document.getElementById('rate-gen-schd-dist').value = "3.0";
+            document.getElementById('rate-gen-kotawi-dist').value = "14.0";
+            document.getElementById('rate-gen-emergency-dist').value = "3.0";
+
+            recalculatePortfolio(true);
+        }
+
+        function updateStrategyUI(livingAccountSum) {
+            const formattedSum = formatKRW(livingAccountSum);
+            const todayStr = getFormattedToday();
+            const dateLabelText = `* 현재 날짜 기준 : ${todayStr}`;
+
+            const topTotalEl = document.getElementById('strategy-top-total');
+            if (topTotalEl) topTotalEl.innerText = `총 예상 합계: ${formattedSum}`;
+
+            const topDateEl = document.getElementById('strategy-top-date');
+            if (topDateEl) topDateEl.innerText = dateLabelText;
+
+            const tableTotalRowEl = document.getElementById('strategy-table-total-row');
+            if (tableTotalRowEl) tableTotalRowEl.innerText = formattedSum;
+        }
+
+        function renderLivingExpenseChart() {
+            const ctx = document.getElementById('livingExpenseChart');
+            if (!ctx) return;
+            if (chartInstances.livingExpense) chartInstances.livingExpense.destroy();
+
+            chartInstances.livingExpense = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['연저2 인출 (비과세)', '일반계좌 (부부합산)'],
+                    datasets: [{
+                        data: [5200, 2000],
+                        backgroundColor: ['#10b981', '#3b82f6'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Pretendard', size: 11 },
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) { label += ': '; }
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((context.parsed / total) * 100);
+                                    label += percentage + '%';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'strategyTextCenter',
+                    beforeDraw: function(chart) {
+                        const { ctx, chartArea } = chart;
+                        if (!chartArea) return;
+
+                        ctx.save();
+                        const fontSize = (chartArea.height / 160).toFixed(2);
+                        ctx.font = "bold " + fontSize + "em Pretendard";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = "#1f2937";
+                        
+                        const text = "월 600만";
+                        
+                        const textX = chartArea.left + (chartArea.width - ctx.measureText(text).width) / 2;
+                        const textY = chartArea.top + (chartArea.height / 2);
+                        
+                        ctx.fillText(text, textX, textY);
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
 
         // ================= 통합 데이터 Fetch & 초기화 =================
         async function fetchSheetData() {
@@ -1444,7 +2100,41 @@
                     document.getElementById('current-dividend-month-label').innerText = `${selectedDividendMonth} 배당금 분석`;
                     document.getElementById('current-account-month-label').innerText = `${selectedExpenseMonth} 가계부 분석`;
 
-                    updatePortfolioUI(processPortfolioData(jsonResult.data));
+                    // 1) 탭 1: 포트폴리오 UI 업데이트
+                    const portfolioData = processPortfolioData(jsonResult.data);
+                    updatePortfolioUI(portfolioData);
+
+                    // 2) 탭 4: 자산 전략 글로벌 데이터 연산 & 시뮬레이터 초기화
+                    if (Array.isArray(jsonResult.data['주식'])) {
+                        globalPensionIsaSum = 0;
+                        globalGeneralFilteredSum = 0;
+
+                        jsonResult.data['주식'].forEach(item => {
+                            const evalAmt = parseCleanNumber(item['평가금액']);
+                            const principalAmt = parseCleanNumber(item['원금']);
+                            const qty = parseCleanNumber(item['수량']);
+                            
+                            if ((evalAmt > 0 || principalAmt > 0) && qty > 0) {
+                                const finalEvalAmount = evalAmt > 0 ? evalAmt : principalAmt;
+                                const accType = String(item['계좌종류'] || '').trim();
+                                const broker = String(item['증권사'] || '').toLowerCase();
+                                const stockName = String(item['종목'] || item['종목명'] || '').toUpperCase();
+
+                                if (accType === '연금2' || accType === 'ISA') {
+                                    globalPensionIsaSum += finalEvalAmount;
+                                }
+                                if (accType === '일반' && !broker.includes('토스') && !broker.includes('toss') && !stockName.includes('GOOGLE')) {
+                                    globalGeneralFilteredSum += finalEvalAmount;
+                                }
+                            }
+                        });
+
+                        recalculatePortfolio(true);
+                        isInitialLoad = false;
+                        updateStrategyUI(globalPensionIsaSum + globalGeneralFilteredSum);
+                    }
+
+                    // 3) 탭 2 & 3: 배당금, 가계부 UI 업데이트
                     updateDividendUI(processDividendData(jsonResult.data));
                     updateAccountbookUI(processAccountbookData(jsonResult.data));
                     
@@ -1470,7 +2160,11 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => { fetchSheetData(); });
+        window.addEventListener('DOMContentLoaded', () => { 
+            fetchSheetData(); 
+            renderLivingExpenseChart();
+        });
     </script>
 </body>
 </html>
+```
