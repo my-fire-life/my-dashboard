@@ -137,7 +137,7 @@
                     <div class="absolute right-3 top-3 text-emerald-500/10 text-5xl font-extrabold pointer-events-none">ASSET</div>
                     <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">총 자산</p>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-total-asset">₩ 0</h3>
-                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 부동산</span>
+                    <span class="text-xs text-toss-green font-bold mt-3 inline-block" id="asset-date-label">주식자산 + 총대출 + 부동산)</span>
                 </div>
             </div>
 
@@ -282,7 +282,7 @@
 
             <!-- 높이 균형 맞춤 (items-stretch 적용) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-                <!-- 생활비 계좌 비중 카치 -->
+                <!-- 생활비 계좌 비중 카드 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">생활비 계좌 비중</h3>
@@ -768,7 +768,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 연금2 (연저2 + ISA 실시간 상호 연동 시뮬레이터 적용) -->
+                            <!-- 연금2 (연저2 + ISA 100% 상호 연동 시뮬레이터) -->
                             <tr class="border-b hover:bg-gray-50">
                                 <td rowspan="3" class="px-4 py-3 text-center border-r bg-indigo-50 font-bold text-indigo-700 align-middle">연저2</td>
                                 <td class="px-4 py-3 border-r font-medium text-gray-800">TIGER 미국나스닥100타겟데일리커버드콜</td>
@@ -1060,7 +1060,7 @@
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
 
-        // ================= Chart.js 커스텀 플러그인 =================
+        // ================= Chart.js 커스텀 플러그인 (모바일 강제 다크모드 대응 외곽선 적용) =================
         const centerTextPlugin = {
             id: 'centerTextPlugin',
             afterDraw(chart) {
@@ -1082,15 +1082,24 @@
                     displayStr = total.toLocaleString() + '원';
                 }
 
+                const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const textColor = isDarkMode ? '#FFFFFF' : '#191F28';
+                const subTextColor = isDarkMode ? '#A1A1A1' : '#8B95A1';
+
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = isDarkMode ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
+
                 ctx.font = 'bold 12px Pretendard, sans-serif';
-                ctx.fillStyle = '#8B95A1';
+                ctx.fillStyle = subTextColor;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
+                ctx.strokeText('총 합계', width / 2, height / 2 - 2);
                 ctx.fillText('총 합계', width / 2, height / 2 - 2);
 
                 ctx.font = 'extrabold 15px Pretendard, sans-serif';
-                ctx.fillStyle = '#191F28';
+                ctx.fillStyle = textColor;
                 ctx.textBaseline = 'top';
+                ctx.strokeText(displayStr, width / 2, height / 2 + 2);
                 ctx.fillText(displayStr, width / 2, height / 2 + 2);
                 
                 ctx.restore();
@@ -1551,6 +1560,7 @@
             const remainReinvest = data.tossDiv - mortgageTarget;
             const remainEl = document.getElementById('widget-remain-reinvest');
             remainEl.innerText = (remainReinvest >= 0 ? '+ ' : '') + formatKRW(remainReinvest);
+            // [수정] 큰 글씨(text-sm md:text-base mt-1) 스타일 고정
             remainEl.className = `text-sm md:text-base font-extrabold mt-1 ${remainReinvest >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
 
             const progressPercent = Math.min(Math.max((data.tossDiv / mortgageTarget) * 100, 0), 100);
@@ -1864,7 +1874,7 @@
             return `${yyyy}.${mm}.${dd}`;
         }
 
-        // 연저2 목표비율(100%) 상호 연동 & 대화형 시뮬레이터 연산 함수
+        // 연저2 목표비율(100%) 상호 자동 연동 & 대화형 시뮬레이터 연산 함수
         function recalculatePortfolio(isReset = false, sourceInput = null) {
             const pensionIsaSum = globalPensionIsaSum;
             const generalFilteredSum = globalGeneralFilteredSum;
@@ -1873,6 +1883,7 @@
             const nasdaqRatioInput = document.getElementById('rate-nasdaq-ratio');
             const pensionSchdRatioInput = document.getElementById('rate-schd-ratio');
 
+            // 한쪽 변경 시 100% 기준으로 나머지 한쪽 비율 자동 차감 연동
             if (sourceInput === 'nasdaq') {
                 const nasdaqVal = parseFloat(nasdaqRatioInput?.value) || 0;
                 const remainingVal = Math.max(0, 100 - nasdaqVal);
@@ -1997,6 +2008,7 @@
             if (tableTotalRowEl) tableTotalRowEl.innerText = formattedSum;
         }
 
+        // 자산전략 도넛 차트 렌더링 (모바일 강제 다크모드 대응 3D 외곽선 포함)
         function renderLivingExpenseChart() {
             const ctx = document.getElementById('livingExpenseChart');
             if (!ctx) return;
@@ -2048,15 +2060,24 @@
 
                         ctx.save();
                         const fontSize = (chartArea.height / 160).toFixed(2);
+                        
+                        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        const textColor = isDarkMode ? '#FFFFFF' : '#1f2937';
+
                         ctx.font = "bold " + fontSize + "em Pretendard";
                         ctx.textBaseline = "middle";
-                        ctx.fillStyle = "#1f2937";
-                        
+                        ctx.textAlign = "center";
+
+                        // 3D 외곽선 보호막 적용 (다크모드에서도 100% 선명함)
+                        ctx.lineWidth = 3;
+                        ctx.strokeStyle = isDarkMode ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
+
                         const text = "월 600만";
-                        
-                        const textX = chartArea.left + (chartArea.width - ctx.measureText(text).width) / 2;
+                        const textX = chartArea.left + (chartArea.width) / 2;
                         const textY = chartArea.top + (chartArea.height / 2);
                         
+                        ctx.strokeText(text, textX, textY);
+                        ctx.fillStyle = textColor;
                         ctx.fillText(text, textX, textY);
                         ctx.restore();
                     }
@@ -2167,4 +2188,3 @@
     </script>
 </body>
 </html>
-```
