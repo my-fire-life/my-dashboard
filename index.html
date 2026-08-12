@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -62,8 +61,8 @@
     <!-- 로딩 스피너 오버레이 -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white transition-opacity duration-300">
         <div class="w-12 h-12 border-4 border-toss-blue border-white/20 rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-lg tracking-tight">구글 시트 금융 데이터를 동기화하는 중...</p>
-        <p class="text-xs text-slate-300 mt-1">잠시만 기다려 주세요.</p>
+        <p class="font-bold text-lg tracking-tight">불평하시는 분 눈치보며 빨리 동기화 하는중...</p>
+        <p class="text-xs text-slate-300 mt-1">예나는 좀 기달려주세요.기분 좋은 하루 되시구요</p>
     </div>
 
     <!-- [PC 전용] 사이드바 내비게이션 -->
@@ -226,7 +225,6 @@
                         <p class="text-xs text-[#8B95A1] mt-0.5">"주식" 시트 기반 실시간 동기화</p>
                     </div>
                     <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-                        <!-- 국가 지수 비율 뱃지 추가 -->
                         <div id="index-ratio-badge" class="bg-slate-100 border border-slate-200 text-xs px-3.5 py-1.5 rounded-full font-bold text-[#333D4B] flex items-center space-x-2">
                             <span>국가 지수 비율:</span>
                             <span class="text-toss-blue">미국 0.0%</span>
@@ -268,24 +266,40 @@
                 <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">배당금 실시간 연동</span>
             </div>
 
+            <!-- [업그레이드] 배당금 탭 상단 카드 3개 토스 스타일 모던 리디자인 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-[#00C853] text-white p-6 rounded-2xl shadow-md">
-                    <p class="text-xs text-emerald-100 font-semibold tracking-wide mb-1.5 uppercase">이번 달 받은 배당금 (생활비 기준)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="card-monthly-dividend">₩ 0</h3>
-                    <div class="mt-4 pt-3 border-t border-emerald-400/30 text-xs flex justify-between text-emerald-100 font-medium">
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">이번 달 받은 배당금</p>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-md font-bold">생활비 기준</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-monthly-dividend">₩ 0</h3>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-xs flex justify-between text-[#8B95A1] font-medium">
                         <span>선택된 월 기준 세후 합산</span>
-                        <span class="font-bold">안정권</span>
+                        <span class="font-bold text-toss-green">안정권</span>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">올해 누적 생활비 배당금</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-annual-dividend">₩ 0</h3>
-                    <span class="text-xs text-toss-blue font-bold mt-3 inline-block">당해 연도 누적 합산</span>
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">올해 누적 생활비 배당금</p>
+                            <span class="text-[10px] bg-blue-50 text-toss-blue px-2 py-0.5 rounded-md font-bold">연도 누적</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-annual-dividend">₩ 0</h3>
+                    </div>
+                    <span class="text-xs text-toss-blue font-bold mt-4 pt-3 border-t border-slate-100 inline-block">당해 연도 누적 합산</span>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">부가 수입 (당월)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-side-income">₩ 0</h3>
-                    <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block">계좌종류: 부가수입</span>
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">부가 수입 (당월)</p>
+                            <span class="text-[10px] bg-slate-100 text-[#6B7684] px-2 py-0.5 rounded-md font-bold">기타 수입</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="card-side-income">₩ 0</h3>
+                    </div>
+                    <span class="text-xs text-[#8B95A1] font-medium mt-4 pt-3 border-t border-slate-100 inline-block">계좌종류: 부가수입</span>
                 </div>
             </div>
 
@@ -344,7 +358,30 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-2 text-xs md:text-sm text-slate-200 bg-black/30 p-3 rounded-xl mt-5">
+                    <!-- 주담대 위젯 하단 여백 추가 영역 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl mt-5 border border-white/10 items-center">
+                        <div class="space-y-1">
+                            <p class="text-[11px] text-slate-400 font-medium flex items-center">
+                                <i class="fa-solid fa-chart-line text-sky-400 mr-1.5"></i> 역대 월평균 잔여 재투자금
+                            </p>
+                            <div class="flex items-baseline space-x-1">
+                                <span class="text-sm md:text-base font-extrabold text-sky-300" id="widget-avg-remain">₩ 0</span>
+                                <span class="text-xs text-slate-400 font-medium">/월</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400">주담대 상환(194만) 후 남은 순수 잉여 평균</p>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                                <span><i class="fa-solid fa-coins text-emerald-400 mr-1"></i> 코타위 주당 분배금(DPS) 추이</span>
+                                <span class="text-[10px] text-slate-400">선택 월 기준 최근 1년</span>
+                            </div>
+                            <div class="relative h-14 w-full">
+                                <canvas id="dpsMiniTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-2 text-xs md:text-sm text-slate-200 bg-black/20 p-3 rounded-xl mt-3">
                         <i class="fa-solid fa-circle-check text-toss-blue shrink-0"></i>
                         <span class="truncate">토스증권 주담대 종목 분배금으로 원리금 상환 및 잔여금 재투자 수량 증식 구조 모니터링</span>
                     </div>
@@ -394,24 +431,40 @@
                 <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">가계부 독립 상태</span>
             </div>
 
+            <!-- [업그레이드] 가계부 탭 상단 카드 3개 토스 스타일 모던 리디자인 -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-[#00C853] text-white p-6 rounded-2xl shadow-md">
-                    <p class="text-xs text-emerald-100 font-semibold tracking-wide mb-1.5 uppercase">당월 총 수입 (배당 + 부가수입)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="acc-total-income">₩ 0</h3>
-                    <div class="mt-4 pt-3 border-t border-emerald-400/30 text-xs flex justify-between text-emerald-100 font-medium">
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">당월 총 수입</p>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-md font-bold">배당 + 부가수입</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="acc-total-income">₩ 0</h3>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-xs flex justify-between text-[#8B95A1] font-medium">
                         <span>가계부 선택 월 기준 수입 합산</span>
-                        <span class="font-bold">확정</span>
+                        <span class="font-bold text-emerald-600">확정</span>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">당월 총 지출 (지역화폐 할인 반영)</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="acc-total-expense">₩ 0</h3>
-                    <span class="text-xs text-toss-blue font-bold mt-3 inline-block">월별지출 시트 연동</span>
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">당월 총 지출</p>
+                            <span class="text-[10px] bg-blue-50 text-toss-blue px-2 py-0.5 rounded-md font-bold">지역화폐 할인 반영</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#191F28] tracking-tight" id="acc-total-expense">₩ 0</h3>
+                    </div>
+                    <span class="text-xs text-toss-blue font-bold mt-4 pt-3 border-t border-slate-100 inline-block">월별지출 시트 연동</span>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                    <p class="text-xs text-[#8B95A1] font-semibold tracking-wide mb-1.5 uppercase">이달의 잉여 흐름</p>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-toss-green tracking-tight" id="acc-surplus">₩ 0</h3>
-                    <span class="text-xs text-[#8B95A1] font-medium mt-3 inline-block">수입 - 지출</span>
+                <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-[#8B95A1] font-semibold tracking-wide uppercase">이달의 잉여 흐름</p>
+                            <span class="text-[10px] bg-slate-100 text-[#6B7684] px-2 py-0.5 rounded-md font-bold">수입 - 지출</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="acc-surplus">₩ 0</h3>
+                    </div>
+                    <span class="text-xs text-[#8B95A1] font-medium mt-4 pt-3 border-t border-slate-100 inline-block">순수 자산 증가액</span>
                 </div>
             </div>
 
@@ -445,23 +498,14 @@
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
-                <div class="mb-4">
-                    <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 지출 비교 현황</h3>
-                    <p class="text-xs text-[#8B95A1]">출처가 '지역화폐'인 경우 90% 할인 금액이 반영되며, 막대에 마우스를 올리면 주요 지출 요약이 표시됩니다.</p>
-                </div>
-                <div class="relative h-80">
-                    <canvas id="annualCategoryBarChart"></canvas>
-                </div>
-            </div>
-
+            <!-- [업그레이드] 대표 지출 3개 카드 토스 스타일 개편 및 소분류 테이블 비중 바 삭제 반영 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-6">
                 <div>
                     <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">선택 월 전체 소분류 지출 분석</h3>
-                    <p class="text-xs text-[#8B95A1] mt-0.5">이번 달 발생한 모든 지출 소분류 항목의 금액순 정렬 및 비중 분석</p>
+                    <p class="text-xs text-[#8B95A1] mt-0.5">이번 달 발생한 모든 지출 소분류 항목의 금액순 정렬, 누적 평균 비교 및 비중 분석</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="top3-subcat-container"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5" id="top3-subcat-container"></div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
@@ -470,12 +514,22 @@
                                 <th class="p-3.5 rounded-l-xl">순위</th>
                                 <th class="p-3.5">대분류 > 소분류명</th>
                                 <th class="p-3.5 text-right">지출 금액</th>
-                                <th class="p-3.5 text-right">전체 대비 비중</th>
-                                <th class="p-3.5 rounded-r-xl w-48">지출 비중 바</th>
+                                <th onclick="sortSubcatTable('avgAmount')" class="p-3.5 text-right cursor-pointer hover:text-[#191F28] transition">누적 월평균 <i id="sort-icon-avgAmount" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                                <th class="p-3.5 rounded-r-xl text-right">전체 대비 비중</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-semibold text-[#333D4B]" id="subcat-table-tbody"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80">
+                <div class="mb-4">
+                    <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">연간 월별 지출 비교 현황</h3>
+                    <p class="text-xs text-[#8B95A1]">출처가 '지역화폐'인 경우 90% 할인 금액이 반영되며, 막대에 마우스를 올리면 주요 지출 요약이 표시됩니다.</p>
+                </div>
+                <div class="relative h-80">
+                    <canvas id="annualCategoryBarChart"></canvas>
                 </div>
             </div>
         </section>
@@ -930,13 +984,18 @@
 
         let selectedDividendMonth = "";
         let selectedExpenseMonth = "";
-        let activeAccountFilters = new Set(['종합']); // 기본값을 '종합'으로 설정
+        let activeAccountFilters = new Set(['종합']);
         let isAccountGrouped = false;
 
         let currentSortColumn = null;
         let currentSortDirection = 'asc';
 
-        // 전략 탭 전용 글로벌 변수
+        let currentDividendSortColumn = null;
+        let currentDividendSortDirection = 'asc';
+
+        let currentSubcatSortColumn = null;
+        let currentSubcatSortDirection = 'asc';
+
         let globalPensionIsaSum = 0;
         let globalGeneralFilteredSum = 0;
         let isInitialLoad = true;
@@ -986,17 +1045,14 @@
         const normalizeDateToYM = rawDate => {
             if (!rawDate) return "";
             const str = String(rawDate).trim();
-            
             const dotMatch = str.match(/(\d{4})\D+(\d{1,2})/);
             if (dotMatch) {
                 return `${dotMatch[1]}-${dotMatch[2].padStart(2, '0')}`;
             }
-
             if (/^\d{4}-\d{1,2}$/.test(str)) {
                 const parts = str.split('-');
                 return `${parts[0]}-${parts[1].padStart(2, '0')}`;
             }
-
             return str;
         };
 
@@ -1054,11 +1110,10 @@
 
         function toggleAccountGrouping() {
             isAccountGrouped = document.getElementById('toggle-account-group')?.checked || false;
-            currentSortColumn = null;
+            currentDividendSortColumn = null;
             if (globalRawData.data) updateDividendUI(processDividendData(globalRawData.data));
         }
 
-        // 보유 종목 테이블 정렬 함수 수정
         function sortTable(columnName) {
             if (currentSortColumn === columnName) {
                 currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
@@ -1069,6 +1124,30 @@
             if (globalRawData.data) {
                 const portfolioData = processPortfolioData(globalRawData.data);
                 renderAccountFilterChipsAndTable(portfolioData.allStocks);
+            }
+        }
+
+        function sortDividendTable(columnName) {
+            if (currentDividendSortColumn === columnName) {
+                currentDividendSortDirection = currentDividendSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentDividendSortColumn = columnName;
+                currentDividendSortDirection = 'asc';
+            }
+            if (globalRawData.data) {
+                updateDividendUI(processDividendData(globalRawData.data));
+            }
+        }
+
+        function sortSubcatTable(columnName) {
+            if (currentSubcatSortColumn === columnName) {
+                currentSubcatSortDirection = currentSubcatSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSubcatSortColumn = columnName;
+                currentSubcatSortDirection = 'asc';
+            }
+            if (globalRawData.data) {
+                updateAccountbookUI(processAccountbookData(globalRawData.data));
             }
         }
 
@@ -1245,7 +1324,6 @@
             document.getElementById('card-car-account').innerText = formatKRW(data.carAccountSum);
             document.getElementById('card-retirement-account').innerText = formatKRW(data.retirementAccountSum);
 
-            // 국가 지수 비율 뱃지 업데이트
             const indexBadge = document.getElementById('index-ratio-badge');
             if (indexBadge) {
                 indexBadge.innerHTML = `
@@ -1267,7 +1345,6 @@
 
             const uniqueAccounts = Array.from(new Set(allStocks.map(s => String(s['계좌종류'] || '기타').trim())));
             
-            // 최초 실행 시 기본값이 없을 경우 '종합' 선택
             if (activeAccountFilters.size === 0) activeAccountFilters.add('종합');
 
             let chipsHTML = `
@@ -1292,7 +1369,6 @@
             const isComprehensive = activeAccountFilters.has('종합');
 
             if (isComprehensive) {
-                // '종합' 선택 시: 소유자, 계좌종류, 증권사 무관 종목명 기준 합산
                 const map = {};
                 allStocks.forEach(s => {
                     const name = s._stockName;
@@ -1324,7 +1400,6 @@
                 displayStocks = allStocks.filter(stock => activeAccountFilters.has(String(stock['계좌종류'] || '기타').trim()));
             }
 
-            // 정렬 로직 적용
             if (currentSortColumn) {
                 displayStocks.sort((a, b) => {
                     let valA, valB;
@@ -1539,6 +1614,71 @@
             });
             const tossMonthlyDivSum = tossDivItems.reduce((acc, cur) => acc + parseCleanNumber(cur['세후분배금']), 0);
 
+            const mortgageTarget = 1940000;
+            const tossDivByMonthMap = {};
+            dividendList.forEach(item => {
+                const normMonth = normalizeDateToYM(item['월'] || item['지급일']);
+                const brk = normalizeText(item['증권사'] || item['브로커'] || '');
+                const stgNorm = normalizeText(item['종목'] || item['종목명']);
+                const afterTax = parseCleanNumber(item['세후분배금']);
+                if (normMonth && brk.includes('토스') && stgNorm.includes('KODEX200타겟위클리커버드콜') && afterTax > 0) {
+                    tossDivByMonthMap[normMonth] = (tossDivByMonthMap[normMonth] || 0) + afterTax;
+                }
+            });
+
+            const recordedMonths = Object.keys(tossDivByMonthMap).sort();
+            let totalRemainSum = 0;
+            recordedMonths.forEach(m => {
+                const remain = tossDivByMonthMap[m] - mortgageTarget;
+                totalRemainSum += remain;
+            });
+            const avgRemainMonthly = recordedMonths.length > 0 ? totalRemainSum / recordedMonths.length : (tossMonthlyDivSum - mortgageTarget);
+
+            const selectedDateObj = new Date(selectedDividendMonth + '-01');
+            const past12MonthsKeys = [];
+            for (let i = 11; i >= 0; i--) {
+                const d = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth() - i, 1);
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                past12MonthsKeys.push(`${y}-${m}`);
+            }
+
+            const infoMapByYM = {};
+            dividendInfoList.forEach(info => {
+                const infoStockNorm = normalizeText(info['종목'] || info['종목명'] || Object.values(info)[0] || Object.values(info)[1]);
+                if (infoStockNorm.includes('KODEX200타겟위클리커버드콜')) {
+                    const rawM = String(info['월'] || info['지급일'] || Object.values(info)[1] || Object.values(info)[0] || '');
+                    const normYM = normalizeDateToYM(rawM);
+                    const dpsVal = parseCleanNumber(info['주당분배금'] || info['분배금'] || info['Dps'] || Object.values(info)[4]);
+                    if (normYM && dpsVal > 0) {
+                        infoMapByYM[normYM] = dpsVal;
+                    }
+                }
+            });
+
+            const dpsTrendLabels = [];
+            const dpsTrendValues = [];
+            past12MonthsKeys.forEach(ym => {
+                if (infoMapByYM[ym] !== undefined) {
+                    dpsTrendLabels.push(ym.slice(5));
+                    dpsTrendValues.push(infoMapByYM[ym]);
+                }
+            });
+
+            if (dpsTrendValues.length === 0 && dividendInfoList.length > 0) {
+                dividendInfoList.forEach(info => {
+                    const infoStockNorm = normalizeText(info['종목'] || info['종목명'] || Object.values(info)[0] || Object.values(info)[1]);
+                    if (infoStockNorm.includes('KODEX200타겟위클리커버드콜')) {
+                        const rawM = String(info['월'] || info['지급일'] || Object.values(info)[1] || Object.values(info)[0] || '');
+                        const dpsVal = parseCleanNumber(info['주당분배금'] || info['분배금'] || info['Dps'] || Object.values(info)[4]);
+                        if (dpsVal > 0) {
+                            dpsTrendLabels.push(rawM.length >= 7 ? rawM.slice(5) : rawM);
+                            dpsTrendValues.push(dpsVal);
+                        }
+                    }
+                });
+            }
+
             let dpsValue = 0;
             const targetNormMonth = normalizeMonth(selectedDividendMonth);
             const targetInfo = dividendInfoList.find(info => {
@@ -1623,6 +1763,18 @@
             const totalGroupAfterTax = detailRows.reduce((sum, r) => sum + r.afterTax, 0);
             detailRows = detailRows.map(row => ({ ...row, ratio: totalGroupAfterTax > 0 ? (row.afterTax / totalGroupAfterTax) * 100 : 0 }));
 
+            if (currentDividendSortColumn) {
+                detailRows.sort((a, b) => {
+                    let valA = a[currentDividendSortColumn];
+                    let valB = b[currentDividendSortColumn];
+                    if (typeof valA === 'string') {
+                        return currentDividendSortDirection === 'asc' ? valA.localeCompare(valB, 'ko') : valB.localeCompare(valA, 'ko');
+                    } else {
+                        return currentDividendSortDirection === 'asc' ? valA - valB : valB - valA;
+                    }
+                });
+            }
+
             return {
                 monthlySum: monthlyDividendSum,
                 annualSum: annualDividendSum,
@@ -1630,6 +1782,8 @@
                 tossDiv: tossMonthlyDivSum,
                 tossQty: tossStockQty,
                 dps: dpsValue,
+                avgRemainMonthly,
+                dpsTrend: { labels: dpsTrendLabels, values: dpsTrendValues },
                 trendArr: monthlyTrendArr,
                 livingStocks: sortedLivingStocks,
                 detailRows
@@ -1651,6 +1805,12 @@
             remainEl.innerText = (remainReinvest >= 0 ? '+ ' : '') + formatKRW(remainReinvest);
             remainEl.className = `text-sm md:text-base font-extrabold mt-1 ${remainReinvest >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
 
+            const avgRemainEl = document.getElementById('widget-avg-remain');
+            if (avgRemainEl) {
+                avgRemainEl.innerText = (data.avgRemainMonthly >= 0 ? '+ ' : '') + formatKRW(data.avgRemainMonthly);
+                avgRemainEl.className = `text-sm md:text-base font-extrabold ${data.avgRemainMonthly >= 0 ? 'text-sky-300' : 'text-rose-400'}`;
+            }
+
             const progressPercent = Math.min(Math.max((data.tossDiv / mortgageTarget) * 100, 0), 100);
             document.getElementById('widget-progress-text').innerText = `${progressPercent.toFixed(1)}% 달성`;
             document.getElementById('widget-progress-bar').style.width = `${progressPercent}%`;
@@ -1659,16 +1819,21 @@
             const detailTbody = document.getElementById('dividend-detail-tbody');
             const detailTfoot = document.getElementById('dividend-detail-tfoot');
             
+            const getDivSortIcon = (col) => {
+                if (currentDividendSortColumn !== col) return '<i class="fa-solid fa-sort text-slate-300 ml-1"></i>';
+                return currentDividendSortDirection === 'asc' ? '<i class="fa-solid fa-sort-up text-toss-blue ml-1"></i>' : '<i class="fa-solid fa-sort-down text-toss-blue ml-1"></i>';
+            };
+
             let theadHTML = `
                 <tr>
-                    <th onclick="sortTable('owner')" class="p-3.5 rounded-l-xl cursor-pointer hover:text-[#191F28] transition">이름 <i id="sort-icon-owner" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('accType')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">계좌종류 <i id="sort-icon-accType" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('stockName')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">종목명 <i id="sort-icon-stockName" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('qty')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">보유 수량 <i id="sort-icon-qty" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
-                    <th onclick="sortTable('dps')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">주당 분배금 <i id="sort-icon-dps" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>
+                    <th onclick="sortDividendTable('owner')" class="p-3.5 rounded-l-xl cursor-pointer hover:text-[#191F28] transition">이름 ${getDivSortIcon('owner')}</th>
+                    <th onclick="sortDividendTable('accType')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">계좌종류 ${getDivSortIcon('accType')}</th>
+                    <th onclick="sortDividendTable('stockName')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition">종목명 ${getDivSortIcon('stockName')}</th>
+                    <th onclick="sortDividendTable('qty')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">보유 수량 ${getDivSortIcon('qty')}</th>
+                    <th onclick="sortDividendTable('dps')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">주당 분배금 ${getDivSortIcon('dps')}</th>
             `;
-            if (!isAccountGrouped) theadHTML += `<th onclick="sortTable('ratio')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">비중 <i id="sort-icon-ratio" class="fa-solid fa-sort text-slate-300 ml-1"></i></th>`;
-            theadHTML += `<th onclick="sortTable('afterTax')" class="p-3.5 rounded-r-xl cursor-pointer hover:text-[#191F28] transition text-right">세후 분배금 <i id="sort-icon-afterTax" class="fa-solid fa-sort text-slate-300 ml-1"></i></th></tr>`;
+            if (!isAccountGrouped) theadHTML += `<th onclick="sortDividendTable('ratio')" class="p-3.5 cursor-pointer hover:text-[#191F28] transition text-right">비중 ${getDivSortIcon('ratio')}</th>`;
+            theadHTML += `<th onclick="sortDividendTable('afterTax')" class="p-3.5 rounded-r-xl cursor-pointer hover:text-[#191F28] transition text-right">세후 분배금 ${getDivSortIcon('afterTax')}</th></tr>`;
             theadEl.innerHTML = theadHTML;
 
             detailTbody.innerHTML = '';
@@ -1723,6 +1888,7 @@
         function renderDividendCharts(data) {
             if (chartInstances.livingDonut) chartInstances.livingDonut.destroy();
             if (chartInstances.divBar) chartInstances.divBar.destroy();
+            if (chartInstances.dpsMini) chartInstances.dpsMini.destroy();
 
             const colorPalette = ['#3182F6', '#00C853', '#9333EA', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#EC4899', '#64748B', '#10B981'];
             const totalLivingAmt = data.livingStocks.reduce((sum, s) => sum + s.amount, 0);
@@ -1757,6 +1923,54 @@
                 });
             }
 
+            chartInstances.dpsMini = new Chart(document.getElementById('dpsMiniTrendChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: data.dpsTrend.labels,
+                    datasets: [{
+                        data: data.dpsTrend.values,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.15)',
+                        fill: true,
+                        tension: 0.35,
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#38bdf8',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: context => `주당 분배금: ₩ ${context.parsed.y.toLocaleString()}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            grid: { display: false },
+                            suggestedMin: function(context) {
+                                const vals = context.chart.data.datasets[0].data;
+                                if (vals.length === 0) return 0;
+                                const min = Math.min(...vals);
+                                const max = Math.max(...vals);
+                                return min === max ? min * 0.95 : min - (max - min) * 0.3;
+                            }
+                        },
+                        x: {
+                            ticks: { font: { size: 9, family: 'Pretendard' }, color: '#94a3b8' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
             chartInstances.divBar = new Chart(document.getElementById('monthlyDividendChart').getContext('2d'), {
                 type: 'bar',
                 data: {
@@ -1781,7 +1995,7 @@
             });
         }
 
-        // ================= 3. 가계부 데이터 프로세싱 =================
+        // ================= 3. 가계부 데이터 프로세싱 (비중 바 삭제 반영) =================
         function processAccountbookData(dataObj) {
             const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
             const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
@@ -1801,10 +2015,14 @@
             for (let i = 1; i <= 12; i++) annualExpenseMap[String(i).padStart(2, '0')] = { total: 0, details: {}, largeCategories: {} };
 
             const currentMonthSubCategories = {};
+            const subcatHistoryMap = {};
+            const recordedMonthsSet = new Set();
 
             expenseList.forEach(row => {
                 const normRowMonth = normalizeDateToYM(row['월']);
                 if (!normRowMonth || !normRowMonth.includes('-')) return;
+                
+                recordedMonthsSet.add(normRowMonth);
                 const mKey = normRowMonth.split('-')[1];
                 if (!annualExpenseMap[mKey]) return;
 
@@ -1818,6 +2036,13 @@
                 annualExpenseMap[mKey].details[largeCat][smallCat] = (annualExpenseMap[mKey].details[largeCat][smallCat] || 0) + calculatedAmount;
                 annualExpenseMap[mKey].largeCategories[largeCat] = (annualExpenseMap[mKey].largeCategories[largeCat] || 0) + calculatedAmount;
 
+                const subKey = `${largeCat} > ${smallCat}`;
+                if (!subcatHistoryMap[subKey]) {
+                    subcatHistoryMap[subKey] = { large: largeCat, small: smallCat, totalAmt: 0, activeMonths: new Set() };
+                }
+                subcatHistoryMap[subKey].totalAmt += calculatedAmount;
+                subcatHistoryMap[subKey].activeMonths.add(normRowMonth);
+
                 if (normRowMonth === selectedExpenseMonth) {
                     totalExpenseSum += calculatedAmount;
                     if (largeCat === '저축') {
@@ -1825,11 +2050,30 @@
                         if (smallCat === '비상금') emergencySum += calculatedAmount;
                         if (smallCat === '여행용적금') travelSum += calculatedAmount;
                     }
-                    const subKey = `${largeCat} > ${smallCat}`;
                     if (!currentMonthSubCategories[subKey]) currentMonthSubCategories[subKey] = { large: largeCat, small: smallCat, amount: 0 };
                     currentMonthSubCategories[subKey].amount += calculatedAmount;
                 }
             });
+
+            const totalRecordedMonthsCount = Math.max(recordedMonthsSet.size, 1);
+
+            const sortedSubCategories = Object.values(currentMonthSubCategories).map(item => {
+                const subKey = `${item.large} > ${item.small}`;
+                const historyObj = subcatHistoryMap[subKey];
+                const avgAmount = historyObj ? historyObj.totalAmt / totalRecordedMonthsCount : item.amount;
+                return {
+                    ...item,
+                    avgAmount
+                };
+            }).sort((a, b) => b.amount - a.amount);
+
+            if (currentSubcatSortColumn) {
+                sortedSubCategories.sort((a, b) => {
+                    let valA = a[currentSubcatSortColumn];
+                    let valB = b[currentSubcatSortColumn];
+                    return currentSubcatSortDirection === 'asc' ? valA - valB : valB - valA;
+                });
+            }
 
             return {
                 totalIncome,
@@ -1839,7 +2083,7 @@
                 emergency: emergencySum,
                 travel: travelSum,
                 annualMap: annualExpenseMap,
-                sortedSubCategories: Object.values(currentMonthSubCategories).sort((a, b) => b.amount - a.amount)
+                sortedSubCategories
             };
         }
 
@@ -1862,50 +2106,83 @@
             const subList = accData.sortedSubCategories;
             const totalExp = accData.totalExpense;
 
+            // 상단 대표 지출 3개 카드 토스 스타일 모던 리디자인 (초록색 단색 제거 및 화이트 카드 통일)
             top3Container.innerHTML = subList.length === 0 ? `<div class="col-span-3 text-center text-xs text-[#8B95A1] py-4">지출 데이터가 없습니다.</div>` : '';
             subList.slice(0, 3).forEach((item, idx) => {
                 const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
-                const badges = [{ bg: 'bg-amber-500', text: '1위' }, { bg: 'bg-slate-400', text: '2위' }, { bg: 'bg-amber-700', text: '3위' }];
+                const badges = [
+                    { bg: 'bg-amber-500 text-white', text: '1위' }, 
+                    { bg: 'bg-slate-200 text-slate-700', text: '2위' }, 
+                    { bg: 'bg-amber-700/80 text-white', text: '3위' }
+                ];
+
+                const diff = item.amount - item.avgAmount;
+                const diffPercent = item.avgAmount > 0 ? (Math.abs(diff) / item.avgAmount) * 100 : 0;
+                let diffHTML = '';
+                if (diff > 0) {
+                    diffHTML = `<span class="text-rose-500 font-bold ml-1.5 text-xs" title="누적 평균 대비 증가"><i class="fa-solid fa-arrow-up mr-0.5"></i>+${diffPercent.toFixed(0)}%</span>`;
+                } else if (diff < 0) {
+                    diffHTML = `<span class="text-emerald-600 font-bold ml-1.5 text-xs" title="누적 평균 대비 절약"><i class="fa-solid fa-arrow-down mr-0.5"></i>-${diffPercent.toFixed(0)}%</span>`;
+                } else {
+                    diffHTML = `<span class="text-slate-400 font-medium ml-1.5 text-xs">평균 동일</span>`;
+                }
 
                 const card = document.createElement('div');
-                card.className = "bg-[#F7F8FA] border border-slate-200/60 p-4.5 rounded-2xl flex flex-col justify-between";
+                card.className = "bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm hover:shadow-md transition flex flex-col justify-between relative overflow-hidden";
                 card.innerHTML = `
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-white ${badges[idx].bg} px-2.5 py-0.5 rounded-full shadow-sm">${badges[idx].text}</span>
-                        <span class="text-xs font-bold text-toss-blue">${ratio.toFixed(1)}% 비중</span>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-extrabold ${badges[idx].bg} px-3 py-1 rounded-full shadow-2xs">${badges[idx].text}</span>
+                        <span class="text-xs font-bold text-toss-blue bg-blue-50 px-2.5 py-1 rounded-lg">${ratio.toFixed(1)}% 비중</span>
                     </div>
-                    <div>
-                        <p class="text-sm font-extrabold text-[#191F28] truncate">${item.small}</p>
-                        <p class="text-xs text-[#8B95A1] mt-0.5">${item.large}</p>
+                    <div class="space-y-0.5">
+                        <p class="text-base font-extrabold text-[#191F28] truncate">${item.small}</p>
+                        <p class="text-xs text-[#8B95A1] font-medium">${item.large}</p>
                     </div>
-                    <p class="text-lg font-extrabold text-[#191F28] mt-3 tracking-tight">${formatKRW(item.amount)}</p>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-baseline justify-between">
+                        <p class="text-xl font-extrabold text-[#191F28] tracking-tight">${formatKRW(item.amount)}</p>
+                        <div class="text-right">${diffHTML}</div>
+                    </div>
                 `;
                 top3Container.appendChild(card);
             });
 
+            // 소분류 테이블 렌더링 (비중 바 열 삭제 및 여백 정돈)
             tbodyEl.innerHTML = '';
             if (subList.length === 0) {
                 tbodyEl.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-[#8B95A1]">해당 월의 상세 지출 내역이 없습니다.</td></tr>`;
             } else {
                 subList.forEach((item, index) => {
                     const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
+                    
+                    let arrowHTML = '';
+                    if (item.amount > item.avgAmount) {
+                        arrowHTML = `<span class="text-rose-500 ml-1.5 font-bold" title="누적 월평균 대비 초과 지출"><i class="fa-solid fa-caret-up"></i></span>`;
+                    } else if (item.amount < item.avgAmount) {
+                        arrowHTML = `<span class="text-emerald-600 ml-1.5 font-bold" title="누적 월평균 대비 절약"><i class="fa-solid fa-caret-down"></i></span>`;
+                    } else {
+                        arrowHTML = `<span class="text-slate-300 ml-1.5" title="누적 월평균과 동일">-</span>`;
+                    }
+
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50/80 transition";
                     tr.innerHTML = `
                         <td class="p-3.5 font-bold text-[#8B95A1] w-16">#${index + 1}</td>
                         <td class="p-3.5 font-bold text-[#191F28]">${item.large} > <span class="text-toss-blue">${item.small}</span></td>
-                        <td class="p-3.5 text-[#333D4B] text-right font-extrabold">${formatKRW(item.amount)}</td>
+                        <td class="p-3.5 text-[#333D4B] text-right font-extrabold">${formatKRW(item.amount)} ${arrowHTML}</td>
+                        <td class="p-3.5 text-[#6B7684] text-right font-semibold">${formatKRW(item.avgAmount)}</td>
                         <td class="p-3.5 text-right font-bold text-[#6B7684]">${ratio.toFixed(1)}%</td>
-                        <td class="p-3.5">
-                            <div class="flex items-center space-x-2">
-                                <div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-toss-blue h-full rounded-full transition-all duration-300" style="width: ${Math.min(Math.max(ratio, 0), 100)}%;"></div>
-                                </div>
-                            </div>
-                        </td>
                     `;
                     tbodyEl.appendChild(tr);
                 });
+            }
+
+            const sortIcon = document.getElementById('sort-icon-avgAmount');
+            if (sortIcon) {
+                if (currentSubcatSortColumn === 'avgAmount') {
+                    sortIcon.className = currentSubcatSortDirection === 'asc' ? 'fa-solid fa-sort-up text-toss-blue ml-1' : 'fa-solid fa-sort-down text-toss-blue ml-1';
+                } else {
+                    sortIcon.className = 'fa-solid fa-sort text-slate-300 ml-1';
+                }
             }
         }
 
