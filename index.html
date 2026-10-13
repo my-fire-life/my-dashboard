@@ -61,8 +61,8 @@
     <!-- 로딩 스피너 오버레이 -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white transition-opacity duration-300">
         <div class="w-12 h-12 border-4 border-toss-blue border-white/20 rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-lg tracking-tight">불평하시는 분 눈치보며 빨리 동기화 하는중...</p>
-        <p class="text-xs text-slate-300 mt-1">예나는 좀 기달려주세요.기분 좋은 하루 되시구요</p>
+        <p class="font-bold text-lg tracking-tight">동기화 하는중...</p>
+        <p class="text-xs text-slate-300 mt-1">데이터를 불러오고 있습니다. 잠시만 기다려주세요.</p>
     </div>
 
     <!-- [PC 전용] 사이드바 내비게이션 -->
@@ -140,16 +140,16 @@
                 </div>
             </div>
 
-            <!-- 계좌별 분류 카드 -->
+            <!-- 계좌별 분류 카드 (자동차 계좌 제거 후 3칸 최적화 구성) -->
             <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 md:p-6 space-y-4 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-toss-blue animate-pulse"></span>
                         <h4 class="text-sm font-extrabold text-[#191F28] tracking-tight">총 주식 자산 세부 구성 계좌</h4>
                     </div>
-                    <span class="text-[11px] text-[#8B95A1] font-medium">생활비 + 주담대상환용 + 자동차 + 노후 계좌 합산</span>
+                    <span class="text-[11px] text-[#8B95A1] font-medium">생활비 + 주담대상환용 + 노후 계좌 합산</span>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="bg-gradient-to-br from-[#10B981] to-[#047857] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-3">
                             <span class="text-[10px] bg-white/25 px-2.5 py-1 rounded-full font-semibold text-white">생활비 계좌</span>
@@ -157,7 +157,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-living-account">₩ 0</h4>
-                            <p class="text-xs text-emerald-100/80 font-medium mt-1">연금2, ISA, 일반 (토스/Google 제외)</p>
+                            <p class="text-xs text-emerald-100/80 font-medium mt-1">연금2, ISA, 일반 (토스 제외, Google 포함)</p>
                         </div>
                     </div>
                     <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
@@ -168,16 +168,6 @@
                         <div>
                             <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-mortgage-stock-account">₩ 0</h4>
                             <p class="text-xs text-purple-100/80 font-medium mt-1">토스 / 타겟위클리커버드콜</p>
-                        </div>
-                    </div>
-                    <div class="bg-gradient-to-br from-[#333D4B] to-[#191F28] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-semibold text-slate-200">자동차 계좌</span>
-                            <i class="fa-solid fa-car text-slate-300 text-sm"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl md:text-2xl font-extrabold tracking-tight" id="card-car-account">₩ 0</h4>
-                            <p class="text-xs text-slate-300/80 font-medium mt-1">차량 교체 목적 자금 (Google)</p>
                         </div>
                     </div>
                     <div class="bg-gradient-to-br from-[#3182F6] to-[#1B64DA] text-white p-5 rounded-xl shadow-sm flex flex-col justify-between">
@@ -266,7 +256,6 @@
                 <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">배당금 실시간 연동</span>
             </div>
 
-            <!-- [업그레이드] 배당금 탭 상단 카드 3개 토스 스타일 모던 리디자인 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
                     <div>
@@ -303,13 +292,12 @@
                 </div>
             </div>
 
-            <!-- 높이 균형 맞춤 (items-stretch 적용) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
                 <!-- 생활비 계좌 비중 카드 -->
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 flex flex-col justify-between">
                     <div>
                         <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight mb-1">생활비 계좌 비중</h3>
-                        <p class="text-xs text-[#8B95A1] mb-4">연금2, ISA, 일반 (토스/Google 제외)</p>
+                        <p class="text-xs text-[#8B95A1] mb-4">연금2, ISA, 일반 (토스 제외, Google 포함)</p>
                     </div>
                     <div class="relative h-48 flex items-center justify-center mb-4">
                         <canvas id="livingAccountChart"></canvas>
@@ -324,7 +312,7 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                             <div>
                                 <span class="bg-toss-blue text-white text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">주담대 상환용 전용 위젯</span>
-                                <h3 class="text-lg md:text-xl font-extrabold mt-2 tracking-tight">KODEX 200 타겟위클리커버드콜 상환 현황</h3>
+                                <h3 class="text-lg md:xl font-extrabold mt-2 tracking-tight">KODEX 200 타겟위클리커버드콜 상환 현황</h3>
                             </div>
                             <div class="bg-white/10 px-4 py-2.5 rounded-xl text-right backdrop-blur-md shrink-0 border border-white/10">
                                 <p class="text-xs text-slate-300 font-medium">월 고정 주담대 목표</p>
@@ -358,7 +346,6 @@
                         </div>
                     </div>
 
-                    <!-- 주담대 위젯 하단 여백 추가 영역 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl mt-5 border border-white/10 items-center">
                         <div class="space-y-1">
                             <p class="text-[11px] text-slate-400 font-medium flex items-center">
@@ -431,7 +418,6 @@
                 <span class="text-xs bg-blue-50 text-toss-blue px-3 py-1.5 rounded-xl font-bold">가계부 독립 상태</span>
             </div>
 
-            <!-- [업그레이드] 가계부 탭 상단 카드 3개 토스 스타일 모던 리디자인 -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 relative overflow-hidden flex flex-col justify-between">
                     <div>
@@ -498,7 +484,6 @@
                 </div>
             </div>
 
-            <!-- [업그레이드] 대표 지출 3개 카드 토스 스타일 개편 및 소분류 테이블 비중 바 삭제 반영 -->
             <div class="bg-white p-6 rounded-2xl shadow-toss border border-slate-100/80 space-y-6">
                 <div>
                     <h3 class="font-extrabold text-[#191F28] text-lg tracking-tight">선택 월 전체 소분류 지출 분석</h3>
@@ -609,7 +594,7 @@
 
                     <div class="text-center w-full md:w-1/3">
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-300 inline-block w-full max-w-[220px]">
-                            <p class="font-bold text-base text-blue-700">연저2 (안세공 계좌)</p>
+                            <p class="font-bold text-base text-blue-700">연저2 (비공제 계좌)</p>
                             <p class="text-xs text-gray-600 mt-1">매년 900만원(비공제) +<br>ISA 만기금액 이전 (원금화)</p>
                         </div>
                     </div>
@@ -661,7 +646,7 @@
                             <li class="flex items-start">
                                 <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2"></i>
                                 <div>
-                                    <span class="font-bold text-gray-800">일반계좌:</span>
+                                    <span class="font-bold text-gray-800">일반계좌 (Google 등 포함):</span>
                                     <span class="text-gray-600">각 연 1천만원 이하(건보료 방어)</span>
                                 </div>
                             </li>
@@ -684,7 +669,7 @@
                             </div>
                         </div>
                         <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed">
-                            ※ 주식 포트폴리오를 약 10~15억 원 규모로 구축하고, <b>연 4.8% ~ 7.2%</b> 수준의 수익만 달성하면 <b>월 600만 원(연 7,200만 원)</b>의 현금흐름이 창출됩니다.
+                            ※ 생활비 포트폴리오를 약 10~15억 원 규모로 구축하고, <b>연 4.8% ~ 7.2%</b> 수준의 수익만 달성하면 <b>월 600만 원(연 7,200만 원)</b>의 현금흐름이 창출됩니다.
                         </p>
                     </div>
                 </div>
@@ -719,11 +704,10 @@
                     </div>
                 </div>
 
-                <!-- Pillar 3: Long Term & Goals -->
+                <!-- Pillar 3: Long Term Retirement (Google 삭제 후 QQQ 단일 집중) -->
                 <div class="glass-card rounded-2xl p-6 shadow-toss border-t-4 border-purple-500 space-y-6">
-                    <h3 class="text-base font-bold flex items-center text-[#191F28]"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i> 장기 노후 및 목적자금</h3>
+                    <h3 class="text-base font-bold flex items-center text-[#191F28]"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i> 장기 노후 자산 관리</h3>
                     
-                    <!-- QQQ -->
                     <div>
                         <div class="flex items-center mb-1.5">
                             <i class="fa-brands fa-apple text-lg mr-2 text-gray-700"></i>
@@ -731,61 +715,29 @@
                         </div>
                         <p class="text-xs text-gray-600 mb-2"><b>계좌:</b> 연저1(세공), IRP, 퇴직연금</p>
                         
-                        <div class="bg-purple-50 p-3.5 rounded-xl border border-purple-100 text-xs">
-                            <p class="text-gray-700 mb-2.5 leading-relaxed">
-                                세액공제를 받으며 모은 자산. 55세까지 <b>20년간 복리로 눈덩이</b>처럼 굴려 든든한 노후 자금으로 활용합니다.
+                        <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 text-xs">
+                            <p class="text-gray-700 mb-3 leading-relaxed">
+                                세액공제를 받으며 모아온 장기 복리 자산입니다. 55세 연금 수령 개시 시점까지 <b>20년간 시장 성장을 온전히 흡수</b>하여 풍요로운 노후의 보루로 활용합니다.
                             </p>
                             
-                            <div class="bg-white rounded-lg border border-purple-200 p-3 space-y-1">
-                                <p class="text-[11px] font-bold text-purple-700 mb-1">📈 2028년 2억 원 거치 후 20년 복리 시 (2048년)</p>
-                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                            <div class="bg-white rounded-lg border border-purple-200 p-3.5 space-y-2">
+                                <p class="text-[11px] font-bold text-purple-700 mb-1.5">📈 2028년 2억 원 거치 후 20년 복리 시뮬레이션 (2048년)</p>
+                                <div class="flex justify-between border-b border-gray-100 pb-1.5">
                                     <span class="text-gray-600">연 5% 성장</span> <span class="font-bold text-gray-800">약 5억 3,060만 원</span>
                                 </div>
-                                <div class="flex justify-between border-b border-gray-100 pb-1">
+                                <div class="flex justify-between border-b border-gray-100 pb-1.5">
                                     <span class="text-gray-600">연 7% 성장</span> <span class="font-bold text-purple-600">약 7억 7,390만 원</span>
                                 </div>
-                                <div class="flex justify-between">
+                                <div class="flex justify-between pt-0.5">
                                     <span class="text-gray-600">연 9% 성장</span> <span class="font-bold text-pink-600">약 11억 2,080만 원</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Google -->
-                    <div>
-                        <div class="flex items-center mb-1.5">
-                            <i class="fa-brands fa-google text-lg mr-2 text-blue-500"></i>
-                            <span class="font-bold text-gray-800 text-base">Google 150주 (일반계좌)</span>
-                        </div>
-                        <p class="text-xs text-gray-600 mb-2"><b>목적:</b> 10년 주기 자동차 교체</p>
-                        
-                        <div class="bg-blue-50 p-3.5 rounded-xl border border-blue-100 text-xs">
-                            <p class="text-gray-700 mb-2.5 flex items-center">
-                                <i class="fa-solid fa-car-side text-blue-500 mr-2"></i>
-                                <span>10년 성장 후 차 교체 비용 마련, 잔액은 장기 거치.</span>
-                            </p>
-
-                            <div class="bg-white rounded-lg border border-blue-200 p-3 space-y-1">
-                                <div class="mb-2 pb-1.5 border-b border-gray-200">
-                                    <p class="text-[11px] font-bold text-blue-700">현재 평가금액 (2026.08 기준)</p>
-                                    <div class="flex justify-between mt-0.5 items-end">
-                                        <span class="text-[10px] text-gray-500">$355 / 1,410원 적용</span>
-                                        <span class="font-bold text-gray-800">약 7,508만 원 <span class="text-[10px] font-normal text-gray-500">($53,250)</span></span>
-                                    </div>
-                                </div>
-                                
-                                <p class="text-[11px] font-bold text-blue-700 mb-1">🚀 향후 10년 거치 시 예상 금액</p>
-                                <div class="flex justify-between border-b border-gray-100 pb-1">
-                                    <span class="text-gray-600">연 5% 성장</span> <span class="font-bold text-gray-800">약 1억 2,230만 원</span>
-                                </div>
-                                <div class="flex justify-between border-b border-gray-100 pb-1">
-                                    <span class="text-gray-600">연 7% 성장</span> <span class="font-bold text-blue-600">약 1억 4,770만 원</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">연 9% 성장</span> <span class="font-bold text-indigo-600">약 1억 7,770만 원</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-600 flex items-center space-x-2.5">
+                        <i class="fa-solid fa-circle-info text-purple-500 shrink-0"></i>
+                        <span>기존 자동차 교체 목적 자산(Google)은 생활비 자산으로 일원화되어 안정적 배당 및 원금 운용 자산에 통합되었습니다.</span>
                     </div>
                 </div>
             </div>
@@ -800,7 +752,6 @@
                         <p class="text-xs text-gray-500 mt-0.5">목표 비율과 분배율 칸의 숫자를 직접 수정하여 월 예상분배금을 실시간으로 시뮬레이션할 수 있습니다.</p>
                     </div>
                     
-                    <!-- 상단 리셋 버튼, 총 예상 합계 배지 & 위/아래 2줄 문구 -->
                     <div class="flex flex-col items-start md:items-end gap-1.5 shrink-0 self-start md:self-auto">
                         <div class="flex flex-wrap items-center gap-2">
                             <button onclick="resetSimulation()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-lg font-bold transition active:scale-95 flex items-center shadow-sm">
@@ -830,7 +781,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 연금2 (연저2 + ISA 100% 상호 연동 시뮬레이터) -->
+                            <!-- 연금2 -->
                             <tr class="border-b hover:bg-gray-50">
                                 <td rowspan="3" class="px-4 py-3 text-center border-r bg-indigo-50 font-bold text-indigo-700 align-middle">연저2</td>
                                 <td class="px-4 py-3 border-r font-medium text-gray-800">TIGER 미국나스닥100타겟데일리커버드콜</td>
@@ -911,7 +862,7 @@
                                 <td class="px-4 py-3 text-right font-bold text-emerald-600 font-mono" id="general-kotawi-monthly">₩2,333,333</td>
                             </tr>
                             <tr class="border-b hover:bg-gray-50">
-                                <td class="px-4 py-3 border-r font-bold text-gray-800">* 비상금 + 목적자금 <br><span class="text-[10px] text-gray-400 font-normal">(26년 ISA 4000, 27/28년 ISA 8000, 연저2 7200)</span></td>
+                                <td class="px-4 py-3 border-r font-bold text-gray-800">* 비상금 + 목적자금 <br><span class="text-[10px] text-gray-400 font-normal">(Google 포함 일반자산 잔여분, 26년 ISA 4000 등)</span></td>
                                 <td class="px-4 py-3 text-right border-r font-medium" id="general-emergency-ratio">0.0%</td>
                                 <td class="px-4 py-3 text-right border-r font-mono" id="general-emergency-amt">0</td>
                                 <td class="px-4 py-3 text-right border-r">
@@ -1078,13 +1029,12 @@
             return {};
         }
 
+        // [수정] Google 제외 조건 제거 -> Google 150주도 생활비 계좌 항목으로 취급
         const isLivingAccountItem = (accType, broker, stockName) => {
             const acc = String(accType || '').trim();
             const brk = String(broker || '').toLowerCase();
-            const stg = String(stockName || '').toUpperCase();
             if (!['연금2', 'ISA', '일반'].includes(acc)) return false;
             if (brk.includes('토스') || brk.includes('toss')) return false;
-            if (stg.includes('GOOGLE')) return false;
             return true;
         };
 
@@ -1251,7 +1201,7 @@
             const realEstateValue = parseCleanNumber(targetAccountRow['부동산'] || targetAccountRow['아파트'] || 0);
             const calculatedTotalAsset = totalStockAsset + totalDebt + realEstateValue;
 
-            let livingAccountSum = 0, retirementAccountSum = 0, carAccountSum = 0, mortgageStockAccountSum = 0;
+            let livingAccountSum = 0, retirementAccountSum = 0, mortgageStockAccountSum = 0;
 
             validStockList.forEach(item => {
                 const accType = item._accType;
@@ -1259,9 +1209,9 @@
                 const broker = item._broker;
                 const evalAmount = item._evalAmount;
 
+                // Google을 포함하여 livingAccountSum에 자동 합산
                 if (isLivingAccountItem(accType, broker, stockName)) livingAccountSum += evalAmount;
                 if (['연금1', 'IRP'].includes(accType)) retirementAccountSum += evalAmount;
-                if (accType === '일반' && stockName.toLowerCase() === 'google') carAccountSum += evalAmount;
                 if (broker.includes('토스') && stockName.includes('KODEX 200 타겟위클리커버드콜')) mortgageStockAccountSum += evalAmount;
             });
 
@@ -1301,7 +1251,6 @@
                 totalStockAsset,
                 livingAccountSum,
                 retirementAccountSum,
-                carAccountSum,
                 mortgageStockAccountSum,
                 allStocks: validStockList,
                 aggregatedStocks: sortedAggregatedStocks,
@@ -1321,7 +1270,6 @@
 
             document.getElementById('card-living-account').innerText = formatKRW(data.livingAccountSum);
             document.getElementById('card-mortgage-stock-account').innerText = formatKRW(data.mortgageStockAccountSum);
-            document.getElementById('card-car-account').innerText = formatKRW(data.carAccountSum);
             document.getElementById('card-retirement-account').innerText = formatKRW(data.retirementAccountSum);
 
             const indexBadge = document.getElementById('index-ratio-badge');
@@ -1573,6 +1521,7 @@
                 };
             });
 
+            // Google 150주도 livingStocks에 온전히 포함
             const livingStocks = validStockList.filter(item => isLivingAccountItem(item._accType, item._broker, item._stockName));
 
             const monthlyDividends = dividendList.filter(item => {
@@ -1995,7 +1944,7 @@
             });
         }
 
-        // ================= 3. 가계부 데이터 프로세싱 (비중 바 삭제 반영) =================
+        // ================= 3. 가계부 데이터 프로세싱 =================
         function processAccountbookData(dataObj) {
             const dividendList = Array.isArray(dataObj['분배금']) ? dataObj['분배금'] : [];
             const expenseList = Array.isArray(dataObj['월별지출']) ? dataObj['월별지출'] : [];
@@ -2106,7 +2055,6 @@
             const subList = accData.sortedSubCategories;
             const totalExp = accData.totalExpense;
 
-            // 상단 대표 지출 3개 카드 토스 스타일 모던 리디자인 (초록색 단색 제거 및 화이트 카드 통일)
             top3Container.innerHTML = subList.length === 0 ? `<div class="col-span-3 text-center text-xs text-[#8B95A1] py-4">지출 데이터가 없습니다.</div>` : '';
             subList.slice(0, 3).forEach((item, idx) => {
                 const ratio = totalExp > 0 ? (item.amount / totalExp) * 100 : 0;
@@ -2146,7 +2094,6 @@
                 top3Container.appendChild(card);
             });
 
-            // 소분류 테이블 렌더링 (비중 바 열 삭제 및 여백 정돈)
             tbodyEl.innerHTML = '';
             if (subList.length === 0) {
                 tbodyEl.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-[#8B95A1]">해당 월의 상세 지출 내역이 없습니다.</td></tr>`;
@@ -2484,6 +2431,7 @@
                     updatePortfolioUI(portfolioData);
 
                     // 2) 탭 4: 자산 전략 글로벌 데이터 연산 & 시뮬레이터 초기화
+                    // [수정] Google 제외 조건을 풀어 일반계좌 생활비 자금에 Google 150주도 합산 반영
                     if (Array.isArray(jsonResult.data['주식'])) {
                         globalPensionIsaSum = 0;
                         globalGeneralFilteredSum = 0;
@@ -2497,12 +2445,11 @@
                                 const finalEvalAmount = evalAmt > 0 ? evalAmt : principalAmt;
                                 const accType = String(item['계좌종류'] || '').trim();
                                 const broker = String(item['증권사'] || '').toLowerCase();
-                                const stockName = String(item['종목'] || item['종목명'] || '').toUpperCase();
 
                                 if (accType === '연금2' || accType === 'ISA') {
                                     globalPensionIsaSum += finalEvalAmount;
                                 }
-                                if (accType === '일반' && !broker.includes('토스') && !broker.includes('toss') && !stockName.includes('GOOGLE')) {
+                                if (accType === '일반' && !broker.includes('토스') && !broker.includes('toss')) {
                                     globalGeneralFilteredSum += finalEvalAmount;
                                 }
                             }
